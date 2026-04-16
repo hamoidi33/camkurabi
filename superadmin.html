@@ -115,7 +115,7 @@
 <script type="module">
     import { initializeApp } from "firebase/app";
     import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-    import { getFirestore, collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
+    import { getFirestore, collection, getDocs, deleteDoc, doc, updateDoc, getDoc } from "firebase/firestore";
 
     const firebaseConfig = window.FIREBASE_CONFIG;
     const app = initializeApp(firebaseConfig);
@@ -286,7 +286,7 @@
                 btn.onclick = () => toggleBan(user.id, false);
                 actionCell.appendChild(btn);
             } else if (user.role !== 'superadmin') {
-                const btn = document.createElement('button'); btn.innerText = t('ban'); btn.className = 'ban-btn';
+                const btn = document.createElement('button'); btn.innerText = t('ban'); btn.className =ban-btn';
                 btn.onclick = () => toggleBan(user.id, true);
                 actionCell.appendChild(btn);
             }
@@ -352,14 +352,35 @@
     document.getElementById('logSearch').addEventListener('input', () => renderLogTable());
     
     onAuthStateChanged(auth, async (user) => {
-        if (!user) { window.location.href = 'login.html'; return; }
-        const userDoc = await getDocs(collection(db, "users"));
-        let isSuperAdmin = false;
-        userDoc.forEach(d => { if (d.id === user.uid && d.data().role === 'superadmin') isSuperAdmin = true; });
-        if (!isSuperAdmin) { window.location.href = 'admin.html'; return; }
-        document.getElementById('accessText').innerHTML = `${t('accessText')}: ${user.email}`;
-        applyLanguage();
-        await loadData();
+        if (!user) { 
+            window.location.href = 'login.html'; 
+            return; 
+        }
+        
+        try {
+            const userDocRef = doc(db, "users", user.uid);
+            const userDoc = await getDoc(userDocRef);
+            
+            if (!userDoc.exists()) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const userRole = userDoc.data().role;
+            
+            if (userRole !== 'superadmin') {
+                window.location.href = 'admin.html';
+                return;
+            }
+            
+            document.getElementById('accessText').innerHTML = `${t('accessText')}: ${user.email}`;
+            applyLanguage();
+            await loadData();
+            
+        } catch(err) {
+            console.error("Auth error:", err);
+            window.location.href = 'login.html';
+        }
     });
 </script>
 </body>
