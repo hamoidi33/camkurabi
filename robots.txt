@@ -1,12 +1,15 @@
 User-agent: *
 Disallow: /config.js
+Disallow: /login.html
 Disallow: /admin.html
+Disallow: /superadmin.html
 Disallow: /private/
 Disallow: /secret/
 
 User-agent: Googlebot
 Disallow: /config.js
 Disallow: /admin.html
+Disallow: /superadmin.html
 
 User-agent: Bingbot
 Disallow: /config.js

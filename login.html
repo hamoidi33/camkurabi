@@ -107,6 +107,8 @@
     </div>
 </div>
 
+<script src="config.js"></script>
+
 <script type="importmap">
     {
         "imports": {
@@ -122,15 +124,7 @@
     import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from "firebase/auth";
     import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyBSy4oCPNTB1h9l2M1P3rkcvwiDrhu82Ao",
-        authDomain: "camerahhh-15487.firebaseapp.com",
-        projectId: "camerahhh-15487",
-        storageBucket: "camerahhh-15487.firebasestorage.app",
-        messagingSenderId: "212849652224",
-        appId: "1:212849652224:web:19d8a85c01cd81005bdee5"
-    };
-
+    const firebaseConfig = window.FIREBASE_CONFIG;
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);

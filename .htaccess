@@ -3,7 +3,7 @@
     Deny from all
 </Files>
 
-<FilesMatch "^(config\.js|login\.html|admin\.html|superadmin\.html)$">
+<FilesMatch "^(config\.js|admin\.html|superadmin\.html)$">
     Order Allow,Deny
     Deny from all
 </FilesMatch>
@@ -11,4 +11,17 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteRule ^config\.js$ - [F,L]
+    RewriteRule ^admin\.html$ - [F,L]
+    RewriteRule ^superadmin\.html$ - [F,L]
 </IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(js|html)$">
+        Header set X-Robots-Tag "noindex, nofollow"
+    </FilesMatch>
+</IfModule>
+
+# XSS ve clickjacking koruması
+Header always append X-Frame-Options SAMEORIGIN
+Header set X-XSS-Protection "1; mode=block"
+Header set X-Content-Type-Options nosniff
