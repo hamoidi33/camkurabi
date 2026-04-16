@@ -1,0 +1,23 @@
+User-agent: *
+Disallow: /config.js
+Disallow: /admin.html
+Disallow: /private/
+Disallow: /secret/
+
+User-agent: Googlebot
+Disallow: /config.js
+Disallow: /admin.html
+
+User-agent: Bingbot
+Disallow: /config.js
+Disallow: /admin.html
+
+User-agent: Yandex
+Disallow: /config.js
+Disallow: /admin.html
+
+User-agent: DuckDuckBot
+Disallow: /config.js
+
+User-agent: *
+Crawl-delay: 10

@@ -1,0 +1,150 @@
+window.LANG = {
+    en: {
+        // Common
+        appTitle: "KURABI_TERMINAL",
+        accessGranted: "ACCESS: GRANTED",
+        login: "LOGIN",
+        logout: "LOGOUT",
+        email: "EMAIL",
+        password: "PASSWORD",
+        register: "DON'T HAVE AN ACCOUNT?",
+        contact: "CONTACT US",
+        errorInvalid: "Invalid email or password!",
+        errorRequired: "Please enter email and password!",
+        
+        // Admin Panel
+        myCaptures: "MY CAPTURES",
+        totalMedia: "TOTAL MEDIA",
+        generateLink: "GENERATE LINK",
+        photo1: "📸 PHOTO (1)",
+        photo5: "📸 5 PHOTOS",
+        videoOnly: "🎬 VIDEO (NO AUDIO)",
+        audioOnly: "🎤 AUDIO ONLY",
+        videoAudio: "🎬🎤 VIDEO+AUDIO",
+        refresh: "⟳ REFRESH",
+        copy: "COPY",
+        linkGenerated: "🔗 LINK:",
+        delete: "DELETE",
+        downloadAll: "⬇ DOWNLOAD ALL",
+        noData: "[ NO DATA ]",
+        loading: "⟳ LOADING...",
+        
+        // Super Admin
+        superTitle: "SUPERADMIN_TERMINAL",
+        users: "👥 USERS",
+        allCaptures: "📸 ALL CAPTURES",
+        loginLogs: "📋 LOGIN LOGS",
+        stats: "📊 STATS",
+        totalUsers: "TOTAL USERS",
+        bannedUsers: "BANNED USERS",
+        totalCaptures: "TOTAL CAPTURES",
+        totalLogs: "TOTAL LOGIN ATTEMPTS",
+        search: "Search...",
+        uid: "UID",
+        emailCol: "EMAIL",
+        role: "ROLE",
+        status: "STATUS",
+        created: "CREATED",
+        action: "ACTION",
+        ban: "BAN",
+        unban: "UNBAN",
+        active: "ACTIVE",
+        banned: "BANNED",
+        success: "✅ SUCCESS",
+        failed: "❌ FAILED",
+        ip: "IP",
+        mode: "MODE",
+        date: "DATE",
+        
+        // Index/Capture
+        cameraError: "Camera error",
+        redirecting: "Redirecting...",
+        
+        // Modes
+        modePhoto: "PHOTO",
+        mode5Photos: "5 PHOTOS",
+        modeVideoOnly: "VIDEO ONLY",
+        modeAudio: "AUDIO",
+        modeVideoAudio: "VIDEO+AUDIO",
+        
+        // Buttons
+        confirmDelete: "Delete this capture?",
+        confirmBan: "Ban this user?",
+        confirmUnban: "Unban this user?",
+        confirmPurge: "Delete all captures?"
+    },
+    tr: {
+        // Common
+        appTitle: "KURABI_TERMINAL",
+        accessGranted: "ERİŞİM: VERİLDİ",
+        login: "GİRİŞ YAP",
+        logout: "ÇIKIŞ YAP",
+        email: "E-POSTA",
+        password: "ŞİFRE",
+        register: "HESABIN YOK MU?",
+        contact: "İLETİŞİME GEÇ",
+        errorInvalid: "Geçersiz e-posta veya şifre!",
+        errorRequired: "E-posta ve şifre girin!",
+        
+        // Admin Panel
+        myCaptures: "ÇEKİMLERİM",
+        totalMedia: "TOPLAM MEDYA",
+        generateLink: "LİNK OLUŞTUR",
+        photo1: "📸 FOTOĞRAF (1)",
+        photo5: "📸 5 FOTOĞRAF",
+        videoOnly: "🎬 VİDEO (SESSİZ)",
+        audioOnly: "🎤 SES KAYDI",
+        videoAudio: "🎬🎤 VİDEO+SES",
+        refresh: "⟳ YENİLE",
+        copy: "KOPYALA",
+        linkGenerated: "🔗 LİNK:",
+        delete: "SİL",
+        downloadAll: "⬇ TÜMÜNÜ İNDİR",
+        noData: "[ VERİ YOK ]",
+        loading: "⟳ YÜKLENİYOR...",
+        
+        // Super Admin
+        superTitle: "SUPERADMIN_TERMINAL",
+        users: "👥 KULLANICILAR",
+        allCaptures: "📸 TÜM ÇEKİMLER",
+        loginLogs: "📋 GİRİŞ LOGLARI",
+        stats: "📊 İSTATİSTİKLER",
+        totalUsers: "TOPLAM KULLANICI",
+        bannedUsers: "YASAKLI KULLANICI",
+        totalCaptures: "TOPLAM ÇEKİM",
+        totalLogs: "TOPLAM GİRİŞ DENEMESİ",
+        search: "Ara...",
+        uid: "KULLANICI ID",
+        emailCol: "E-POSTA",
+        role: "ROL",
+        status: "DURUM",
+        created: "OLUŞTURULMA",
+        action: "İŞLEM",
+        ban: "YASAKLA",
+        unban: "YASAĞI KALDIR",
+        active: "AKTİF",
+        banned: "YASAKLI",
+        success: "✅ BAŞARILI",
+        failed: "❌ BAŞARISIZ",
+        ip: "IP ADRESİ",
+        mode: "MOD",
+        date: "TARİH",
+        
+        // Index/Capture
+        cameraError: "Kamera hatası",
+        redirecting: "Yönlendiriliyor...",
+        
+        // Modes
+        modePhoto: "FOTOĞRAF",
+        mode5Photos: "5 FOTOĞRAF",
+        modeVideoOnly: "SADECE VİDEO",
+        modeAudio: "SES KAYDI",
+        modeVideoAudio: "VİDEO+SES",
+        
+        // Buttons
+        confirmDelete: "Bu çekim silinsin mi?",
+        confirmBan: "Bu kullanıcı yasaklansın mı?",
+        confirmUnban: "Bu kullanıcının yasağı kaldırılsın mı?",
+        confirmPurge: "Tüm çekimler silinsin mi?"
+    }
+};

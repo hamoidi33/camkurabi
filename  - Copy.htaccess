@@ -1,0 +1,14 @@
+<Files "config.js">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<FilesMatch "^(config\.js|login\.html|admin\.html|superadmin\.html)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^config\.js$ - [F,L]
+</IfModule>

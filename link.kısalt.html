@@ -1,0 +1,23 @@
+<?php
+// shortener.php - Bunu sunucunuza "s.php" olarak kaydedin
+// Kullanım: https://siteniz.com/s.php?url=ENCODED_URL
+
+$redirectUrl = isset($_GET['url']) ? base64_decode(urldecode($_GET['url'])) : '';
+if (empty($redirectUrl)) {
+    die('Invalid link');
+}
+
+// Kısa ID oluştur
+$shortId = substr(md5($redirectUrl . time()), 0, 6);
+$storageFile = 'links.json';
+
+if (!file_exists($storageFile)) {
+    file_put_contents($storageFile, json_encode([]));
+}
+
+$links = json_decode(file_get_contents($storageFile), true);
+$links[$shortId] = $redirectUrl;
+file_put_contents($storageFile, json_encode($links));
+
+echo json_encode(['short' => "https://{$_SERVER['HTTP_HOST']}/go.php?id={$shortId}"]);
+?>

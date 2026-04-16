@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>⛧ KURABI_AUTH ⛧</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #0a0f1e 0%, #0d1225 100%);
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .login-container { max-width: 400px; width: 100%; }
+        .login-card {
+            background: rgba(10, 10, 10, 0.95);
+            border: 2px solid #00ff41;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.2);
+        }
+        .login-title {
+            text-align: center;
+            color: #00ff41;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ff41;
+        }
+        .login-title span { color: #ff0040; }
+        .lang-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .lang-btn {
+            background: transparent;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 5px 20px;
+            cursor: pointer;
+            border-radius: 20px;
+            font-family: monospace;
+            transition: 0.2s;
+        }
+        .lang-btn.active {
+            background: #00ff41;
+            color: #000;
+        }
+        .input-group { margin-bottom: 20px; }
+        .input-group input {
+            width: 100%;
+            background: #1f1f1f;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 14px 18px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            border-radius: 12px;
+        }
+        .input-group input:focus { outline: none; border-color: #ff0040; }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .checkbox-group label {
+            color: #00ff41;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        .login-btn {
+            width: 100%;
+            background: #00ff41;
+            color: #000;
+            border: none;
+            padding: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 40px;
+            font-family: monospace;
+            font-size: 1rem;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+        .login-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px #00ff41; }
+        .register-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #888;
+            font-size: 0.8rem;
+        }
+        .register-link a { color: #ff0040; text-decoration: none; cursor: pointer; }
+        .error-msg { color: #ff0040; text-align: center; margin-top: 15px; font-size: 0.75rem; }
+        .info-text { color: #00ff41; text-align: center; margin-top: 15px; font-size: 0.7rem; }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-title">⛧ <span>KURABI</span>_AUTH ⛧</div>
+        
+        <div class="lang-selector">
+            <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+            <button class="lang-btn" data-lang="ar">🇸🇦 العربية</button>
+        </div>
+        
+        <div class="input-group">
+            <input type="email" id="email" placeholder="EMAIL">
+        </div>
+        <div class="input-group">
+            <input type="password" id="password" placeholder="PASSWORD">
+        </div>
+        
+        <div class="checkbox-group">
+            <input type="checkbox" id="rememberMe">
+            <label id="rememberLabel">Remember Me</label>
+        </div>
+        
+        <button class="login-btn" id="loginBtn">⟳ LOGIN</button>
+        
+        <div class="register-link">
+            <span id="registerText">DON'T HAVE AN ACCOUNT?</span> <a id="registerContactBtn">📞 CONTACT US</a>
+        </div>
+        
+        <div id="errorMsg" class="error-msg"></div>
+        <div id="infoText" class="info-text"></div>
+    </div>
+</div>
+
+<script type="importmap">
+    {
+        "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+            "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js",
+            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
+        }
+    }
+</script>
+
+<script type="module">
+    import { initializeApp } from "firebase/app";
+    import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from "firebase/auth";
+    import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBSy4oCPNTB1h9l2M1P3rkcvwiDrhu82Ao",
+        authDomain: "camerahhh-15487.firebaseapp.com",
+        projectId: "camerahhh-15487",
+        storageBucket: "camerahhh-15487.firebasestorage.app",
+        messagingSenderId: "212849652224",
+        appId: "1:212849652224:web:19d8a85c01cd81005bdee5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Dil çevirileri
+    const translations = {
+        en: {
+            emailPlaceholder: "EMAIL",
+            passwordPlaceholder: "PASSWORD",
+            rememberLabel: "Remember Me",
+            loginBtn: "⟳ LOGIN",
+            registerText: "DON'T HAVE AN ACCOUNT?",
+            contactText: "📞 CONTACT US",
+            errorRequired: "Please enter email and password!",
+            errorInvalid: "Invalid email or password!",
+            errorBanned: "YOUR ACCOUNT HAS BEEN BANNED!",
+            loginSuccess: "✅ Login successful! Redirecting...",
+            loggingIn: "⟳ Logging in..."
+        },
+        ar: {
+            emailPlaceholder: "البريد الإلكتروني",
+            passwordPlaceholder: "كلمة المرور",
+            rememberLabel: "تذكرني",
+            loginBtn: "⟳ تسجيل الدخول",
+            registerText: "ليس لديك حساب؟",
+            contactText: "📞 اتصل بنا",
+            errorRequired: "الرجاء إدخال البريد الإلكتروني وكلمة المرور!",
+            errorInvalid: "البريد الإلكتروني أو كلمة المرور غير صحيحة!",
+            errorBanned: "⛧ تم حظر حسابك!",
+            loginSuccess: "✅ تم تسجيل الدخول بنجاح! جاري التحويل...",
+            loggingIn: "⟳ جاري تسجيل الدخول..."
+        }
+    };
+
+    let currentLang = localStorage.getItem('app_language') || 'en';
+
+    function applyLanguage() {
+        const t = translations[currentLang];
+        document.getElementById('email').placeholder = t.emailPlaceholder;
+        document.getElementById('password').placeholder = t.passwordPlaceholder;
+        document.getElementById('rememberLabel').innerText = t.rememberLabel;
+        document.getElementById('loginBtn').innerHTML = t.loginBtn;
+        document.getElementById('registerText').innerHTML = t.registerText;
+        document.getElementById('registerContactBtn').innerHTML = t.contactText;
+        
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            if (btn.dataset.lang === currentLang) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        
+        document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+        document.documentElement.lang = currentLang;
+    }
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('app_language', lang);
+        applyLanguage();
+    }
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+    });
+
+    document.getElementById('registerContactBtn').addEventListener('click', () => {
+        window.open('https://t.me/kodlamaogrencom', '_blank');
+    });
+
+    async function getIP() {
+        try {
+            const res = await fetch('https://api.ipify.org?format=json');
+            const data = await res.json();
+            return data.ip;
+        } catch(e) { return 'unknown'; }
+    }
+
+    async function logLoginInfo(uid, email, ip, success) {
+        try {
+            await setDoc(doc(db, "login_logs", Date.now() + "_" + (uid || 'unknown')), {
+                uid: uid || 'unknown', email: email, ip: ip, success: success,
+                timestamp: new Date().toISOString(), unix: Date.now(), userAgent: navigator.userAgent
+            });
+        } catch(e) { console.log(e); }
+    }
+
+    // Sayfa yüklendiğinde kayıtlı kullanıcıyı kontrol et
+    const savedUser = localStorage.getItem('savedUser');
+    if (savedUser) {
+        try {
+            const userData = JSON.parse(savedUser);
+            document.getElementById('email').value = userData.email;
+            document.getElementById('password').value = userData.password;
+            document.getElementById('rememberMe').checked = true;
+        } catch(e) {}
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const rememberMe = document.getElementById('rememberMe').checked;
+        const errorMsg = document.getElementById('errorMsg');
+        const infoText = document.getElementById('infoText');
+        const t = translations[currentLang];
+        
+        if (!email || !password) {
+            errorMsg.innerText = t.errorRequired;
+            return;
+        }
+        
+        errorMsg.innerText = '';
+        infoText.innerText = t.loggingIn;
+        document.getElementById('loginBtn').disabled = true;
+        
+        try {
+            // Oturum kalıcılığını ayarla
+            await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+            
+            const ip = await getIP();
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            
+            await logLoginInfo(user.uid, email, ip, true);
+            
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            let role = 'user';
+            
+            if (userDoc.exists()) {
+                role = userDoc.data().role || 'user';
+                if (userDoc.data().banned === true) {
+                    errorMsg.innerText = t.errorBanned;
+                    infoText.innerText = '';
+                    document.getElementById('loginBtn').disabled = false;
+                    return;
+                }
+            } else {
+                await setDoc(doc(db, "users", user.uid), {
+                    email: email, role: 'user', createdAt: new Date().toISOString(), banned: false
+                });
+            }
+            
+            // Kullanıcı bilgilerini kaydet
+            if (rememberMe) {
+                localStorage.setItem('savedUser', JSON.stringify({ email: email, password: password }));
+            } else {
+                localStorage.removeItem('savedUser');
+            }
+            
+            sessionStorage.setItem('currentUser', JSON.stringify({
+                uid: user.uid, email: user.email, role: role, language: currentLang
+            }));
+            
+            infoText.innerText = t.loginSuccess;
+            
+            setTimeout(() => {
+                window.location.href = role === 'superadmin' ? 'superadmin.html' : 'admin.html';
+            }, 1000);
+            
+        } catch(err) {
+            const ip = await getIP();
+            await logLoginInfo('unknown', email, ip, false);
+            errorMsg.innerText = t.errorInvalid;
+            infoText.innerText = '';
+            document.getElementById('loginBtn').disabled = false;
+        }
+    });
+
+    applyLanguage();
+</script>
+</body>
+</html>
