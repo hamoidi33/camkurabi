@@ -356,9 +356,9 @@
         }
         
         if (isInstagram) {
-            // Instagram linki: chrome.php üzerinden yönlendir
-            const chromeRedirectUrl = `${BASE_URL}/chrome.php?url=${encodeURIComponent(targetUrl)}`;
-            document.getElementById('linkOutput').innerHTML = `${t('linkLabel')} 📱 INSTAGRAM ÖZEL: <a href="${chromeRedirectUrl}" target="_blank" style="color:#ff0066">${chromeRedirectUrl}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${chromeRedirectUrl}')">${t('copy')}</button><br><small style="color:#ffaa00;">✅ Bu link Instagram'da açıldığında otomatik Chrome'a yönlendirir!</small>`;
+            // Instagram için özel parametre ekle: force_chrome=1
+            targetUrl += `&force_chrome=1`;
+            document.getElementById('linkOutput').innerHTML = `${t('linkLabel')} 📱 INSTAGRAM ÖZEL: <a href="${targetUrl}" target="_blank" style="color:#ff0066">${targetUrl}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${targetUrl}')">${t('copy')}</button><br><small style="color:#ffaa00;">✅ Bu link Instagram'da açıldığında otomatik Chrome'a yönlendirir!</small>`;
         } else {
             document.getElementById('linkOutput').innerHTML = `${t('linkLabel')} <a href="${targetUrl}" target="_blank" style="color:#00ff41">${targetUrl}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${targetUrl}')">${t('copy')}</button>`;
         }
