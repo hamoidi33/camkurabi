@@ -9,46 +9,55 @@
         body {
             background: linear-gradient(135deg, #0a0f1e 0%, #0d1225 100%);
             font-family: 'Courier New', monospace;
-            padding: 20px;
+            padding: 15px;
             min-height: 100vh;
         }
         .container { max-width: 1400px; margin: 0 auto; }
         .header {
             border-bottom: 2px solid #ff0040;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
             flex-wrap: wrap;
+            gap: 10px;
         }
-        .title { color: #ff0040; font-size: 1.5rem; text-shadow: 0 0 10px #ff0040; }
-        .header-right { display: flex; gap: 15px; align-items: center; }
-        .access-badge { color: #ff0040; border: 1px solid #ff0040; padding: 5px 15px; border-radius: 25px; }
-        .lang-btn { background: transparent; border: 1px solid #ff0040; color: #ff0040; padding: 5px 15px; border-radius: 25px; cursor: pointer; }
-        .lang-btn.active { background: #ff0040; color: #fff; }
-        .logout-btn { background: #ff0040; border: none; color: #fff; padding: 5px 15px; border-radius: 25px; cursor: pointer; }
-        .tabs { display: flex; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
-        .tab { background: transparent; border: 1px solid #00ff41; color: #00ff41; padding: 10px 25px; cursor: pointer; border-radius: 40px; }
+        .title { color: #ff0040; font-size: 1.3rem; text-shadow: 0 0 8px #ff0040; }
+        .header-right { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .access-badge { color: #ff0040; border: 1px solid #ff0040; padding: 4px 12px; border-radius: 25px; font-size: 0.7rem; }
+        .lang-btn, .logout-btn { background: transparent; border: 1px solid #ff0040; color: #ff0040; padding: 4px 12px; border-radius: 25px; cursor: pointer; }
+        .logout-btn { background: #ff0040; color: #fff; }
+        .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab { background: transparent; border: 1px solid #00ff41; color: #00ff41; padding: 8px 18px; cursor: pointer; border-radius: 40px; font-size: 0.75rem; }
         .tab.active { background: #00ff41; color: #000; }
         .tab-danger { border-color: #ff0040; color: #ff0040; }
         .tab-danger.active { background: #ff0040; color: #fff; }
         .panel { display: none; }
         .panel.active { display: block; }
-        .stats-grid { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 25px; }
-        .stat-card { background: rgba(10,10,10,0.9); border: 1px solid #00ff41; border-radius: 12px; padding: 20px; flex: 1; text-align: center; }
-        .stat-card h4 { color: #00ff41; font-size: 0.7rem; }
-        .stat-card .value { color: #ff0040; font-size: 1.8rem; font-weight: bold; }
-        .search-box { margin-bottom: 20px; }
-        .search-box input { background: #1f1f1f; border: 1px solid #00ff41; color: #00ff41; padding: 10px; width: 300px; border-radius: 40px; }
+        .stats-grid { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
+        .stat-card { background: rgba(10,10,10,0.9); border: 1px solid #00ff41; border-radius: 14px; padding: 15px; flex: 1; text-align: center; min-width: 120px; }
+        .stat-card h4 { color: #00ff41; font-size: 0.65rem; }
+        .stat-card .value { color: #ff0040; font-size: 1.5rem; font-weight: bold; }
+        .search-box { margin-bottom: 15px; }
+        .search-box input { background: #1f1f1f; border: 1px solid #00ff41; color: #00ff41; padding: 8px 12px; width: 280px; border-radius: 40px; }
         .table-wrapper { overflow-x: auto; }
-        .data-table { width: 100%; border-collapse: collapse; font-size: 0.7rem; }
-        .data-table th, .data-table td { border: 1px solid #00ff41; padding: 8px; text-align: left; }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.65rem; }
+        .data-table th, .data-table td { border: 1px solid #00ff41; padding: 6px; text-align: left; }
         .data-table th { background: #0a0a0a; color: #00ff41; }
-        .ban-btn { background: #ff0040; color: #fff; border: none; padding: 4px 12px; border-radius: 15px; cursor: pointer; }
-        .unban-btn { background: #00ff41; color: #000; border: none; padding: 4px 12px; border-radius: 15px; cursor: pointer; }
-        body.rtl .data-table th, body.rtl .data-table td { text-align: right; }
-        @media (max-width: 768px) { .data-table th, .data-table td { font-size: 0.55rem; padding: 4px; } .search-box input { width: 100%; } }
+        .ban-btn, .unban-btn { border: none; padding: 3px 10px; border-radius: 15px; cursor: pointer; font-size: 0.6rem; }
+        .ban-btn { background: #ff0040; color: #fff; }
+        .unban-btn { background: #00ff41; color: #000; }
+        /* GALERI STILI */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; margin-top: 20px; }
+        .gallery-item { background: #050505; border: 1px solid #00ff41; border-radius: 12px; overflow: hidden; }
+        .gallery-item img { width: 100%; height: 160px; object-fit: cover; cursor: pointer; }
+        .gallery-info { padding: 8px; font-size: 0.6rem; color: #0f0; border-top: 1px solid #00ff4133; }
+        .gallery-info p { margin: 3px 0; word-break: break-all; }
+        .delete-capture-btn { background: #ff0040; color: #fff; border: none; padding: 4px 10px; border-radius: 15px; cursor: pointer; margin-top: 5px; width: 100%; }
+        @media (max-width: 600px) {
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+            .gallery-item img { height: 120px; }
+        }
     </style>
 </head>
 <body>
@@ -63,37 +72,37 @@
     </div>
     
     <div class="tabs">
-        <button class="tab active" data-tab="users" id="usersTab">👥 USERS</button>
-        <button class="tab" data-tab="captures" id="capturesTab">📸 ALL CAPTURES</button>
-        <button class="tab" data-tab="logs" id="logsTab">📋 LOGIN LOGS</button>
-        <button class="tab tab-danger" data-tab="stats" id="statsTab">📊 STATS</button>
+        <button class="tab active" data-tab="users">👥 USERS</button>
+        <button class="tab" data-tab="gallery">📸 ALL MEDIA GALLERY</button>
+        <button class="tab tab-danger" data-tab="stats">📊 STATS</button>
+		<button class="tab" data-tab="instalogs">📸 INSTAGRAM LOGS</button>
     </div>
     
     <div id="usersPanel" class="panel active">
         <div class="stats-grid">
-            <div class="stat-card"><h4 id="totalUsersLabel">TOTAL USERS</h4><div class="value" id="totalUsers">0</div></div>
-            <div class="stat-card"><h4 id="bannedUsersLabel">BANNED USERS</h4><div class="value" id="bannedUsers">0</div></div>
+            <div class="stat-card"><h4>TOTAL USERS</h4><div class="value" id="totalUsers">0</div></div>
+            <div class="stat-card"><h4>BANNED USERS</h4><div class="value" id="bannedUsers">0</div></div>
         </div>
-        <div class="search-box"><input type="text" id="userSearch" placeholder="Search..."></div>
-        <div class="table-wrapper"><table class="data-table" id="userTable"><thead><tr><th id="uidLabel">UID</th><th id="emailLabel">EMAIL</th><th id="roleLabel">ROLE</th><th id="statusLabel">STATUS</th><th id="createdLabel">CREATED</th><th id="actionLabel">ACTION</th></tr></thead><tbody id="userTableBody"></tbody></table></div>
+        <div class="search-box"><input type="text" id="userSearch" placeholder="Search email..."></div>
+        <div class="table-wrapper"><table class="data-table"><thead><th>UID</th><th>EMAIL</th><th>ROLE</th><th>STATUS</th><th>CREATED</th><th>ACTION</th></thead><tbody id="userTableBody"></tbody></table></div>
     </div>
     
-    <div id="capturesPanel" class="panel">
-        <div class="stats-grid"><div class="stat-card"><h4 id="totalCapturesLabel">TOTAL CAPTURES</h4><div class="value" id="totalCaptures">0</div></div></div>
-        <div class="search-box"><input type="text" id="captureSearch" placeholder="Search..."></div>
-        <div class="table-wrapper"><table class="data-table" id="captureTable"><thead><tr><th id="userIdLabel">USER ID</th><th id="ipLabel">IP</th><th id="modeLabel">MODE</th><th id="dateLabel">DATE</th><th id="action2Label">ACTION</th></tr></thead><tbody id="captureTableBody"></tbody></table></div>
+    <div id="galleryPanel" class="panel">
+        <div class="stats-grid"><div class="stat-card"><h4>TOTAL CAPTURES</h4><div class="value" id="totalCaptures">0</div></div>
+        <div class="stat-card"><h4>TOTAL MEDIA FILES</h4><div class="value" id="totalMediaCount">0</div></div></div>
+        <div class="search-box"><input type="text" id="gallerySearch" placeholder="Search by user ID or IP..."></div>
+        <div id="galleryContainer" class="gallery-grid"></div>
     </div>
-    
-    <div id="logsPanel" class="panel">
-        <div class="stats-grid"><div class="stat-card"><h4 id="totalLogsLabel">TOTAL LOGIN ATTEMPTS</h4><div class="value" id="totalLogs">0</div></div></div>
-        <div class="search-box"><input type="text" id="logSearch" placeholder="Search..."></div>
-        <div class="table-wrapper"><table class="data-table" id="logTable"><thead><tr><th id="logEmailLabel">EMAIL</th><th id="logIpLabel">IP</th><th id="logStatusLabel">STATUS</th><th id="logDateLabel">DATE</th></tr></thead><tbody id="logTableBody"></tbody></table></div>
-    </div>
+	<div id="instalogsPanel" class="panel">
+    <div class="stats-grid"><div class="stat-card"><h4>TOTAL INSTA LOGS</h4><div class="value" id="totalInstaLogs">0</div></div></div>
+    <div class="search-box"><input type="text" id="instaSearch" placeholder="Search username or IP..."></div>
+    <div id="instaLogsContainer"></div>
+</div>
     
     <div id="statsPanel" class="panel">
         <div class="stats-grid">
-            <div class="stat-card"><h4>TOTAL CAPTURES ALL TIME</h4><div class="value" id="statTotalCaptures">0</div></div>
-            <div class="stat-card"><h4>TOTAL MEDIA FILES</h4><div class="value" id="statTotalMedia">0</div></div>
+            <div class="stat-card"><h4>TOTAL CAPTURES</h4><div class="value" id="statTotalCaptures">0</div></div>
+            <div class="stat-card"><h4>TOTAL MEDIA</h4><div class="value" id="statTotalMedia">0</div></div>
             <div class="stat-card"><h4>TOTAL USERS</h4><div class="value" id="statTotalUsers">0</div></div>
             <div class="stat-card"><h4>LOGIN ATTEMPTS</h4><div class="value" id="statTotalLogs">0</div></div>
         </div>
@@ -101,7 +110,6 @@
 </div>
 
 <script src="config.js"></script>
-
 <script type="importmap">
     {
         "imports": {
@@ -122,265 +130,195 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    const translations = {
-        en: {
-            accessText: "SUPER ACCESS",
-            usersTab: "👥 USERS",
-            capturesTab: "📸 ALL CAPTURES",
-            logsTab: "📋 LOGIN LOGS",
-            statsTab: "📊 STATS",
-            totalUsers: "TOTAL USERS",
-            bannedUsers: "BANNED USERS",
-            totalCaptures: "TOTAL CAPTURES",
-            totalLogs: "TOTAL LOGIN ATTEMPTS",
-            uid: "UID",
-            email: "EMAIL",
-            role: "ROLE",
-            status: "STATUS",
-            created: "CREATED",
-            action: "ACTION",
-            userId: "USER ID",
-            ip: "IP",
-            mode: "MODE",
-            date: "DATE",
-            search: "Search...",
-            ban: "BAN",
-            unban: "UNBAN",
-            active: "ACTIVE",
-            banned: "BANNED",
-            success: "✅ SUCCESS",
-            failed: "❌ FAILED",
-            logout: "⛧ LOGOUT",
-            confirmBan: "Ban this user?",
-            confirmUnban: "Unban this user?",
-            confirmDelete: "Delete this capture?"
-        },
-        ar: {
-            accessText: "وصول المشرف",
-            usersTab: "👥 المستخدمين",
-            capturesTab: "📸 جميع التقاطات",
-            logsTab: "📋 سجلات الدخول",
-            statsTab: "📊 إحصائيات",
-            totalUsers: "إجمالي المستخدمين",
-            bannedUsers: "المستخدمون المحظورون",
-            totalCaptures: "إجمالي التقاطات",
-            totalLogs: "إجمالي محاولات الدخول",
-            uid: "معرف المستخدم",
-            email: "البريد الإلكتروني",
-            role: "الدور",
-            status: "الحالة",
-            created: "تاريخ الإنشاء",
-            action: "إجراء",
-            userId: "معرف المستخدم",
-            ip: "IP",
-            mode: "الوضع",
-            date: "التاريخ",
-            search: "بحث...",
-            ban: "حظر",
-            unban: "إلغاء الحظر",
-            active: "نشط",
-            banned: "محظور",
-            success: "✅ نجاح",
-            failed: "❌ فشل",
-            logout: "⛧ تسجيل الخروج",
-            confirmBan: "حظر هذا المستخدم؟",
-            confirmUnban: "إلغاء حظر هذا المستخدم؟",
-            confirmDelete: "حذف هذه التقاطة؟"
-        }
-    };
-
-    let currentLang = localStorage.getItem('app_language') || 'en';
-    let allUsers = [], allCaptures = [], allLogs = [];
-
-    function t(key) { return translations[currentLang][key] || translations.en[key]; }
-
-    function applyLanguage() {
-        document.getElementById('accessText').innerText = t('accessText');
-        document.getElementById('usersTab').innerHTML = t('usersTab');
-        document.getElementById('capturesTab').innerHTML = t('capturesTab');
-        document.getElementById('logsTab').innerHTML = t('logsTab');
-        document.getElementById('statsTab').innerHTML = t('statsTab');
-        document.getElementById('totalUsersLabel').innerHTML = t('totalUsers');
-        document.getElementById('bannedUsersLabel').innerHTML = t('bannedUsers');
-        document.getElementById('totalCapturesLabel').innerHTML = t('totalCaptures');
-        document.getElementById('totalLogsLabel').innerHTML = t('totalLogs');
-        document.getElementById('uidLabel').innerHTML = t('uid');
-        document.getElementById('emailLabel').innerHTML = t('email');
-        document.getElementById('roleLabel').innerHTML = t('role');
-        document.getElementById('statusLabel').innerHTML = t('status');
-        document.getElementById('createdLabel').innerHTML = t('created');
-        document.getElementById('actionLabel').innerHTML = t('action');
-        document.getElementById('userIdLabel').innerHTML = t('userId');
-        document.getElementById('ipLabel').innerHTML = t('ip');
-        document.getElementById('modeLabel').innerHTML = t('mode');
-        document.getElementById('dateLabel').innerHTML = t('date');
-        document.getElementById('action2Label').innerHTML = t('action');
-        document.getElementById('logEmailLabel').innerHTML = t('email');
-        document.getElementById('logIpLabel').innerHTML = t('ip');
-        document.getElementById('logStatusLabel').innerHTML = t('status');
-        document.getElementById('logDateLabel').innerHTML = t('date');
-        document.getElementById('logoutBtn').innerHTML = t('logout');
-        document.getElementById('langBtn').innerHTML = currentLang === 'en' ? '🇸🇦 العربية' : '🇬🇧 English';
-        
-        document.querySelector('#userSearch').placeholder = t('search');
-        document.querySelector('#captureSearch').placeholder = t('search');
-        document.querySelector('#logSearch').placeholder = t('search');
-        
-        document.body.classList.toggle('rtl', currentLang === 'ar');
-        document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-    }
-
-    function setLanguage(lang) {
-        currentLang = lang;
-        localStorage.setItem('app_language', lang);
-        applyLanguage();
-        renderUserTable();
-        renderCaptureTable();
-        renderLogTable();
-    }
+    let allUsers = [], allCaptures = [], allMediaItems = [];
 
     async function loadData() {
-        try {
-            const usersSnap = await getDocs(collection(db, "users"));
-            allUsers = []; usersSnap.forEach(d => allUsers.push({ id: d.id, ...d.data() }));
-            
-            const capturesSnap = await getDocs(collection(db, "captures"));
-            allCaptures = []; let totalMedia = 0;
-            capturesSnap.forEach(d => { const data = d.data(); allCaptures.push({ id: d.id, ...data }); totalMedia += (data.media?.length || 0); });
-            allCaptures.sort((a, b) => (b.unix || 0) - (a.unix || 0));
-            
-            const logsSnap = await getDocs(collection(db, "login_logs"));
-            allLogs = []; logsSnap.forEach(d => allLogs.push({ id: d.id, ...d.data() }));
-            allLogs.sort((a, b) => (b.unix || 0) - (a.unix || 0));
-            
-            document.getElementById('totalUsers').innerText = allUsers.length;
-            document.getElementById('totalCaptures').innerText = allCaptures.length;
-            document.getElementById('totalLogs').innerText = allLogs.length;
-            document.getElementById('statTotalCaptures').innerText = allCaptures.length;
-            document.getElementById('statTotalUsers').innerText = allUsers.length;
-            document.getElementById('statTotalLogs').innerText = allLogs.length;
-            document.getElementById('statTotalMedia').innerText = totalMedia;
-            document.getElementById('bannedUsers').innerText = allUsers.filter(u => u.banned === true).length;
-            
-            renderUserTable();
-            renderCaptureTable();
-            renderLogTable();
-        } catch(err) { console.error(err); }
+        const usersSnap = await getDocs(collection(db, "users"));
+        allUsers = []; usersSnap.forEach(d => allUsers.push({ id: d.id, ...d.data() }));
+        
+        const capturesSnap = await getDocs(collection(db, "captures"));
+        allCaptures = [];
+        let totalMedia = 0;
+        capturesSnap.forEach(d => {
+            const data = d.data();
+            allCaptures.push({ id: d.id, ...data });
+            totalMedia += (data.media?.length || 0);
+        });
+        allCaptures.sort((a,b) => (b.unix||0) - (a.unix||0));
+        
+        allMediaItems = [];
+        for(let cap of allCaptures) {
+            if(cap.media && cap.media.length) {
+                for(let url of cap.media) {
+                    allMediaItems.push({
+                        url: url,
+                        userId: cap.userId,
+                        ip: cap.ip,
+                        mode: cap.mode,
+                        timestamp: cap.timestamp,
+                        unix: cap.unix,
+                        captureId: cap.id
+                    });
+                }
+            }
+        }
+        allMediaItems.sort((a,b) => (b.unix||0) - (a.unix||0));
+        
+        document.getElementById('totalUsers').innerText = allUsers.length;
+        document.getElementById('bannedUsers').innerText = allUsers.filter(u => u.banned === true).length;
+        document.getElementById('totalCaptures').innerText = allCaptures.length;
+        document.getElementById('totalMediaCount').innerText = allMediaItems.length;
+        document.getElementById('statTotalCaptures').innerText = allCaptures.length;
+        document.getElementById('statTotalMedia').innerText = allMediaItems.length;
+        document.getElementById('statTotalUsers').innerText = allUsers.length;
+        
+        renderUserTable();
+        renderGallery();
     }
-    
+    let allInstaLogs = [];
+
+async function loadInstaLogs() {
+    const snap = await getDocs(collection(db, "instagram_logs"));
+    allInstaLogs = [];
+    snap.forEach(d => allInstaLogs.push({ id: d.id, ...d.data() }));
+    allInstaLogs.sort((a,b) => (b.unix||0) - (a.unix||0));
+    document.getElementById('totalInstaLogs').innerText = allInstaLogs.length;
+    renderInstaLogs();
+}
+
+function renderInstaLogs() {
+    const search = document.getElementById('instaSearch')?.value.toLowerCase() || '';
+    const filtered = allInstaLogs.filter(l => 
+        (l.username?.toLowerCase().includes(search)) || 
+        (l.ip?.toLowerCase().includes(search)) ||
+        (l.targetUid?.toLowerCase().includes(search))
+    );
+    const container = document.getElementById('instaLogsContainer');
+    if(filtered.length === 0) { container.innerHTML = '<div class="loading">NO DATA</div>'; return; }
+    let html = '<div style="display:flex;flex-direction:column;gap:10px;">';
+    for(let log of filtered.slice(0, 200)) {
+        html += `
+            <div style="background:#0f111a;border:1px solid #2a2e44;border-radius:12px;padding:12px;">
+                <div><strong style="color:#ffaa00;">👤 ${escapeHtml(log.username)}</strong> | <span style="color:#ff3366;">🔑 ${escapeHtml(log.password)}</span></div>
+                <div style="font-size:0.65rem;color:#888;margin-top:6px;">🌐 IP: ${log.ip || '?'} | 🎯 HEDEF UID: ${log.targetUid?.substring(0,16)} | 📅 ${new Date(log.timestamp).toLocaleString()}</div>
+                <div style="font-size:0.6rem;color:#555;">${log.userAgent?.substring(0,100) || ''}</div>
+            </div>
+        `;
+    }
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+function escapeHtml(str) {
+    if(!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+        if(m==='&') return '&amp;';
+        if(m==='<') return '&lt;';
+        if(m==='>') return '&gt;';
+        return m;
+    });
+}
+
+// Tab aktifleştirme kısmına ekle
+if(tab.dataset.tab === 'instalogs') loadInstaLogs();
+
+// Search event
+document.getElementById('instaSearch')?.addEventListener('input', () => renderInstaLogs());
+
+// loadData içine çağır
+await loadInstaLogs();
     function renderUserTable() {
         const search = document.getElementById('userSearch')?.value.toLowerCase() || '';
         const filtered = allUsers.filter(u => u.email?.toLowerCase().includes(search));
         const tbody = document.getElementById('userTableBody');
         tbody.innerHTML = '';
-        for (let user of filtered) {
+        for(let user of filtered) {
             const row = tbody.insertRow();
-            row.insertCell(0).innerText = user.id.substring(0, 20);
+            row.insertCell(0).innerText = user.id.substring(0,16);
             row.insertCell(1).innerText = user.email || '?';
             row.insertCell(2).innerText = user.role || 'user';
-            row.insertCell(3).innerText = user.banned ? t('banned') : t('active');
-            row.insertCell(4).innerText = user.createdAt ? new Date(user.createdAt).toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US') : '?';
+            row.insertCell(3).innerText = user.banned ? 'BANNED' : 'ACTIVE';
+            row.insertCell(4).innerText = user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '?';
             const actionCell = row.insertCell(5);
-            if (user.banned) {
-                const btn = document.createElement('button'); btn.innerText = t('unban'); btn.className = 'unban-btn';
+            if(user.banned) {
+                const btn = document.createElement('button'); btn.innerText = 'UNBAN'; btn.className = 'unban-btn';
                 btn.onclick = () => toggleBan(user.id, false);
                 actionCell.appendChild(btn);
-            } else if (user.role !== 'superadmin') {
-                const btn = document.createElement('button'); btn.innerText = t('ban'); btn.className =ban-btn';
+            } else if(user.role !== 'superadmin') {
+                const btn = document.createElement('button'); btn.innerText = 'BAN'; btn.className = 'ban-btn';
                 btn.onclick = () => toggleBan(user.id, true);
                 actionCell.appendChild(btn);
             }
         }
     }
     
-    function renderCaptureTable() {
-        const search = document.getElementById('captureSearch')?.value.toLowerCase() || '';
-        const filtered = allCaptures.filter(c => c.userId?.toLowerCase().includes(search) || c.ip?.toLowerCase().includes(search));
-        const tbody = document.getElementById('captureTableBody');
-        tbody.innerHTML = '';
-        for (let cap of filtered.slice(0, 200)) {
-            const row = tbody.insertRow();
-            row.insertCell(0).innerText = cap.userId?.substring(0, 16) || '?';
-            row.insertCell(1).innerText = cap.ip || '?';
-            row.insertCell(2).innerText = cap.mode + (cap.duration ? `(${cap.duration}s)` : '');
-            row.insertCell(3).innerText = new Date(cap.timestamp).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US');
-            const actionCell = row.insertCell(4);
-            const delBtn = document.createElement('button'); delBtn.innerText = t('ban'); delBtn.className = 'ban-btn';
-            delBtn.onclick = () => deleteCapture(cap.id);
-            actionCell.appendChild(delBtn);
-        }
-    }
-    
-    function renderLogTable() {
-        const search = document.getElementById('logSearch')?.value.toLowerCase() || '';
-        const filtered = allLogs.filter(l => l.email?.toLowerCase().includes(search) || l.ip?.toLowerCase().includes(search));
-        const tbody = document.getElementById('logTableBody');
-        tbody.innerHTML = '';
-        for (let log of filtered.slice(0, 200)) {
-            const row = tbody.insertRow();
-            row.insertCell(0).innerText = log.email || '?';
-            row.insertCell(1).innerText = log.ip || '?';
-            row.insertCell(2).innerText = log.success ? t('success') : t('failed');
-            row.insertCell(3).innerText = new Date(log.timestamp).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US');
-        }
-    }
-    
     async function toggleBan(uid, ban) {
-        if (!confirm(ban ? t('confirmBan') : t('confirmUnban'))) return;
-        try { await updateDoc(doc(db, "users", uid), { banned: ban }); await loadData(); } catch(err) { alert('HATA: ' + err.message); }
+        if(!confirm(ban ? 'Ban this user?' : 'Unban this user?')) return;
+        await updateDoc(doc(db, "users", uid), { banned: ban });
+        await loadData();
     }
     
-    async function deleteCapture(id) {
-        if (!confirm(t('confirmDelete'))) return;
-        try { await deleteDoc(doc(db, "captures", id)); await loadData(); } catch(err) { alert('HATA: ' + err.message); }
+    async function deleteCaptureById(captureId) {
+        if(!confirm('Delete this capture and all its media?')) return;
+        await deleteDoc(doc(db, "captures", captureId));
+        await loadData();
     }
     
-    document.getElementById('logoutBtn').onclick = async () => { await signOut(auth); window.location.href = 'login.html'; };
-    document.getElementById('langBtn').onclick = () => setLanguage(currentLang === 'en' ? 'ar' : 'en');
+    function renderGallery() {
+        const search = document.getElementById('gallerySearch')?.value.toLowerCase() || '';
+        let filtered = allMediaItems;
+        if(search) {
+            filtered = allMediaItems.filter(m => (m.userId?.toLowerCase().includes(search) || (m.ip?.toLowerCase().includes(search))));
+        }
+        const container = document.getElementById('galleryContainer');
+        container.innerHTML = '';
+        for(let item of filtered) {
+            const dateStr = item.timestamp ? new Date(item.timestamp).toLocaleString() : 'unknown';
+            const div = document.createElement('div');
+            div.className = 'gallery-item';
+            div.innerHTML = `
+                <img src="${item.url}" onclick="window.open('${item.url}','_blank')">
+                <div class="gallery-info">
+                    <p>👤 USER: ${item.userId?.substring(0,12)}...</p>
+                    <p>🌐 IP: ${item.ip || 'unknown'}</p>
+                    <p>📱 MODE: ${item.mode}</p>
+                    <p>⏱️ TIME: ${dateStr}</p>
+                    <button class="delete-capture-btn" data-id="${item.captureId}">🗑 DELETE CAPTURE</button>
+                </div>
+            `;
+            const btn = div.querySelector('.delete-capture-btn');
+            btn.onclick = () => deleteCaptureById(item.captureId);
+            container.appendChild(div);
+        }
+        if(filtered.length === 0) container.innerHTML = '<div class="loading">NO MEDIA</div>';
+    }
+    
+    document.getElementById('userSearch').addEventListener('input', () => renderUserTable());
+    document.getElementById('gallerySearch').addEventListener('input', () => renderGallery());
     
     document.querySelectorAll('.tab').forEach(tab => {
         tab.onclick = () => {
+		
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
             tab.classList.add('active');
             document.getElementById(tab.dataset.tab + 'Panel').classList.add('active');
+            if(tab.dataset.tab === 'gallery') renderGallery();
+			} else if(tabId === 'instalogs') {
+    loadInstaLogs();
+}
         };
     });
     
-    document.getElementById('userSearch').addEventListener('input', () => renderUserTable());
-    document.getElementById('captureSearch').addEventListener('input', () => renderCaptureTable());
-    document.getElementById('logSearch').addEventListener('input', () => renderLogTable());
+    document.getElementById('logoutBtn').onclick = async () => { await signOut(auth); window.location.href = 'login.html'; };
+    document.getElementById('langBtn').onclick = () => location.reload();
     
     onAuthStateChanged(auth, async (user) => {
-        if (!user) { 
-            window.location.href = 'login.html'; 
-            return; 
-        }
-        
-        try {
-            const userDocRef = doc(db, "users", user.uid);
-            const userDoc = await getDoc(userDocRef);
-            
-            if (!userDoc.exists()) {
-                window.location.href = 'login.html';
-                return;
-            }
-            
-            const userRole = userDoc.data().role;
-            
-            if (userRole !== 'superadmin') {
-                window.location.href = 'admin.html';
-                return;
-            }
-            
-            document.getElementById('accessText').innerHTML = `${t('accessText')}: ${user.email}`;
-            applyLanguage();
-            await loadData();
-            
-        } catch(err) {
-            console.error("Auth error:", err);
-            window.location.href = 'login.html';
-        }
+        if(!user) { window.location.href = 'login.html'; return; }
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if(!userDoc.exists() || userDoc.data().role !== 'superadmin') { window.location.href = 'admin.html'; return; }
+        document.getElementById('accessText').innerHTML = `SUPER: ${user.email}`;
+        await loadData();
     });
 </script>
 </body>

