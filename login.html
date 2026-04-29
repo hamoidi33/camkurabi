@@ -1,113 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>⛧ KURABI_AUTH ⛧</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>⛧ KURIX HACKER ⛧</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: linear-gradient(135deg, #0a0f1e 0%, #0d1225 100%);
-            font-family: 'Courier New', monospace;
+            background: #06080f;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 16px;
         }
-        .login-container { max-width: 400px; width: 100%; }
+        .login-container { width: 100%; max-width: 380px; }
         .login-card {
-            background: rgba(10, 10, 10, 0.95);
-            border: 2px solid #00ff41;
+            background: #0a0d18;
+            border: 1px solid #1a2040;
             border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 0 40px rgba(0, 255, 65, 0.2);
+            padding: 32px 24px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5);
         }
-        .login-title {
-            text-align: center;
-            color: #00ff41;
-            font-size: 2rem;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #00ff41;
+        .logo-area { text-align: center; margin-bottom: 28px; }
+        .logo-icon { font-size: 3rem; margin-bottom: 4px; }
+        .logo-text {
+            color: #00e676;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(0,230,118,0.4);
         }
-        .login-title span { color: #ff0040; }
-        .lang-selector {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        .lang-btn {
-            background: transparent;
-            border: 1px solid #00ff41;
-            color: #00ff41;
-            padding: 5px 20px;
+        .logo-text span { color: #ff1744; }
+        .logo-subtitle { color: #666; font-size: 0.6rem; letter-spacing: 2px; margin-top: 2px; }
+        
+        .lang-selector { display: flex; justify-content: center; gap: 12px; margin-bottom: 22px; }
+        .lang-flag {
+            background: #111625;
+            border: 2px solid #1a2040;
+            padding: 8px 14px;
+            border-radius: 16px;
             cursor: pointer;
-            border-radius: 20px;
-            font-family: monospace;
+            font-size: 1.4rem;
+            transition: all 0.2s;
         }
-        .lang-btn.active { background: #00ff41; color: #000; }
-        .input-group { margin-bottom: 20px; }
-        .input-group input {
+        .lang-flag:hover { border-color: #00e676; transform: scale(1.05); }
+        .lang-flag.active-lang { border-color: #00e676; background: rgba(0,230,118,0.1); box-shadow: 0 0 12px rgba(0,230,118,0.2); }
+        
+        .input-field {
             width: 100%;
-            background: #1f1f1f;
-            border: 1px solid #00ff41;
-            color: #00ff41;
-            padding: 14px 18px;
-            font-family: monospace;
-            font-size: 0.9rem;
-            border-radius: 12px;
+            background: #0f1420;
+            border: 1px solid #1a2040;
+            color: #e0e0e0;
+            padding: 13px 16px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            outline: none;
+            transition: border 0.2s;
         }
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .checkbox-group label { color: #00ff41; font-size: 0.8rem; cursor: pointer; }
+        .input-field:focus { border-color: #00e676; }
+        .input-field::placeholder { color: #555; }
+        
+        .remember-row { display: flex; align-items: center; gap: 8px; margin: 8px 0 16px; }
+        .remember-row input[type="checkbox"] { accent-color: #00e676; }
+        .remember-row label { color: #888; font-size: 0.7rem; cursor: pointer; }
+        
         .login-btn {
             width: 100%;
-            background: #00ff41;
+            background: #00e676;
             color: #000;
             border: none;
-            padding: 14px;
-            font-weight: bold;
+            padding: 13px;
+            font-weight: 700;
+            font-size: 0.9rem;
             cursor: pointer;
-            border-radius: 40px;
-            font-family: monospace;
-            font-size: 1rem;
+            border-radius: 30px;
+            font-family: inherit;
+            letter-spacing: 1px;
+            transition: all 0.2s;
         }
-        .login-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px #00ff41; }
-        .register-link {
-            text-align: center;
-            margin-top: 25px;
-            color: #888;
-            font-size: 0.8rem;
-        }
-        .register-link a { color: #ff0040; text-decoration: none; cursor: pointer; }
-        .error-msg { color: #ff0040; text-align: center; margin-top: 15px; font-size: 0.75rem; }
-        .info-text { color: #00ff41; text-align: center; margin-top: 15px; font-size: 0.7rem; }
+        .login-btn:hover { transform: scale(1.01); box-shadow: 0 0 24px rgba(0,230,118,0.4); }
+        .login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .bottom-text { text-align: center; margin-top: 20px; color: #666; font-size: 0.7rem; }
+        .bottom-text a { color: #ff1744; text-decoration: none; cursor: pointer; font-weight: 600; }
+        .error-text { color: #ff1744; text-align: center; font-size: 0.7rem; margin-top: 10px; min-height: 18px; }
+        .info-text { color: #00e676; text-align: center; font-size: 0.7rem; margin-top: 6px; }
     </style>
 </head>
 <body>
 <div class="login-container">
     <div class="login-card">
-        <div class="login-title">⛧ <span>KURABI</span>_AUTH ⛧</div>
-        <div class="lang-selector">
-            <button class="lang-btn" data-lang="en">🇬🇧 English</button>
-            <button class="lang-btn" data-lang="ar">🇸🇦 العربية</button>
+        <div class="logo-area">
+            <div class="logo-icon">⛧</div>
+            <div class="logo-text"><span>KURIX</span> HACKER</div>
+            <div class="logo-subtitle" id="logoSubtitle">TERMINAL PANEL</div>
         </div>
-        <div class="input-group"><input type="email" id="email" placeholder="EMAIL"></div>
-        <div class="input-group"><input type="password" id="password" placeholder="PASSWORD"></div>
-        <div class="checkbox-group"><input type="checkbox" id="rememberMe"><label id="rememberLabel">Remember Me</label></div>
-        <button class="login-btn" id="loginBtn">⟳ LOGIN</button>
-        <div class="register-link"><span id="registerText">DON'T HAVE AN ACCOUNT?</span> <a id="registerContactBtn">📞 CONTACT US</a></div>
-        <div id="errorMsg" class="error-msg"></div>
-        <div id="infoText" class="info-text"></div>
+        
+        <div class="lang-selector">
+            <button class="lang-flag active-lang" id="langTrBtn" title="Türkçe">🇹🇷</button>
+            <button class="lang-flag" id="langArBtn" title="العربية">🇸🇦</button>
+        </div>
+        
+        <input type="email" class="input-field" id="email" placeholder="EMAIL">
+        <input type="password" class="input-field" id="password" placeholder="PASSWORD">
+        
+        <div class="remember-row">
+            <input type="checkbox" id="rememberMe">
+            <label id="rememberLabel">Beni Hatırla</label>
+        </div>
+        
+        <button class="login-btn" id="loginBtn">⟳ GİRİŞ YAP</button>
+        
+        <div class="bottom-text">
+            <span id="noAccountText">Hesabın yok mu?</span> 
+            <a id="contactLink">📞 İLETİŞİM</a>
+        </div>
+        
+        <div class="error-text" id="errorMsg"></div>
+        <div class="info-text" id="infoText"></div>
     </div>
 </div>
-
-<script src="config.js"></script>
 
 <script type="importmap">
     {
@@ -124,61 +140,88 @@
     import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from "firebase/auth";
     import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
-    const firebaseConfig = window.FIREBASE_CONFIG;
+    const firebaseConfig = {
+        apiKey: "AIzaSyBSy4oCPNTB1h9l2M1P3rkcvwiDrhu82Ao",
+        authDomain: "camerahhh-15487.firebaseapp.com",
+        projectId: "camerahhh-15487",
+        storageBucket: "camerahhh-15487.firebasestorage.app",
+        messagingSenderId: "212849652224",
+        appId: "1:212849652224:web:19d8a85c01cd81005bdee5",
+        measurementId: "G-WDVJV36W7X"
+    };
+
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
     const translations = {
-        en: {
-            emailPlaceholder: "EMAIL", passwordPlaceholder: "PASSWORD", rememberLabel: "Remember Me",
-            loginBtn: "⟳ LOGIN", registerText: "DON'T HAVE AN ACCOUNT?", contactText: "📞 CONTACT US",
-            errorRequired: "Please enter email and password!", errorInvalid: "Invalid email or password!",
-            errorBanned: "YOUR ACCOUNT HAS BEEN BANNED!", loginSuccess: "✅ Login successful! Redirecting...",
-            loggingIn: "⟳ Logging in..."
+        tr: {
+            logoSubtitle: "TERMINAL PANEL",
+            emailPlaceholder: "E-POSTA",
+            passwordPlaceholder: "ŞİFRE",
+            rememberLabel: "Beni Hatırla",
+            loginBtn: "⟳ GİRİŞ YAP",
+            noAccountText: "Hesabın yok mu?",
+            contactText: "📞 İLETİŞİM",
+            errorRequired: "E-posta ve şifre girin!",
+            errorInvalid: "Geçersiz e-posta veya şifre!",
+            errorBanned: "⛧ HESABINIZ YASAKLANDI!",
+            loginSuccess: "✅ Giriş başarılı! Yönlendiriliyor...",
+            loggingIn: "⟳ Giriş yapılıyor..."
         },
         ar: {
-            emailPlaceholder: "البريد الإلكتروني", passwordPlaceholder: "كلمة المرور", rememberLabel: "تذكرني",
-            loginBtn: "⟳ تسجيل الدخول", registerText: "ليس لديك حساب؟", contactText: "📞 اتصل بنا",
-            errorRequired: "الرجاء إدخال البريد الإلكتروني وكلمة المرور!", errorInvalid: "البريد الإلكتروني أو كلمة المرور غير صحيحة!",
-            errorBanned: "⛧ تم حظر حسابك!", loginSuccess: "✅ تم تسجيل الدخول بنجاح! جاري التحويل...",
-            loggingIn: "⟳ جاري تسجيل الدخول..."
+            logoSubtitle: "لوحة التحكم",
+            emailPlaceholder: "البريد الإلكتروني",
+            passwordPlaceholder: "كلمة المرور",
+            rememberLabel: "تذكرني",
+            loginBtn: "⟳ تسجيل الدخول",
+            noAccountText: "ليس لديك حساب؟",
+            contactText: "📞 اتصل بنا",
+            errorRequired: "أدخل البريد وكلمة المرور!",
+            errorInvalid: "بريد أو كلمة مرور غير صالحة!",
+            errorBanned: "⛧ تم حظر حسابك!",
+            loginSuccess: "✅ تم الدخول! جاري التحويل...",
+            loggingIn: "⟳ جاري الدخول..."
         }
     };
 
-    let currentLang = localStorage.getItem('app_language') || 'en';
+    let currentLang = localStorage.getItem('app_language') || 'tr';
 
-    function applyLanguage() {
-        const t = translations[currentLang];
-        document.getElementById('email').placeholder = t.emailPlaceholder;
-        document.getElementById('password').placeholder = t.passwordPlaceholder;
-        document.getElementById('rememberLabel').innerText = t.rememberLabel;
-        document.getElementById('loginBtn').innerHTML = t.loginBtn;
-        document.getElementById('registerText').innerHTML = t.registerText;
-        document.getElementById('registerContactBtn').innerHTML = t.contactText;
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.lang === currentLang);
-        });
+    function t(key) { return translations[currentLang]?.[key] || translations['tr'][key] || key; }
+
+    function updateLangButtons() {
+        document.getElementById('langTrBtn').classList.toggle('active-lang', currentLang === 'tr');
+        document.getElementById('langArBtn').classList.toggle('active-lang', currentLang === 'ar');
     }
 
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            currentLang = btn.dataset.lang;
-            localStorage.setItem('app_language', currentLang);
-            applyLanguage();
-        });
-    });
+    function applyLanguage() {
+        document.getElementById('logoSubtitle').innerText = t('logoSubtitle');
+        document.getElementById('email').placeholder = t('emailPlaceholder');
+        document.getElementById('password').placeholder = t('passwordPlaceholder');
+        document.getElementById('rememberLabel').innerText = t('rememberLabel');
+        document.getElementById('loginBtn').innerHTML = t('loginBtn');
+        document.getElementById('noAccountText').innerHTML = t('noAccountText');
+        document.getElementById('contactLink').innerHTML = t('contactText');
+        if (currentLang === 'ar') {
+            document.documentElement.dir = 'rtl';
+            document.documentElement.lang = 'ar';
+        } else {
+            document.documentElement.dir = 'ltr';
+            document.documentElement.lang = 'tr';
+        }
+        updateLangButtons();
+    }
 
-    document.getElementById('registerContactBtn').addEventListener('click', () => {
-        window.open('https://t.me/kodlamaogrencom', '_blank');
-    });
+    document.getElementById('langTrBtn').addEventListener('click', () => { currentLang = 'tr'; localStorage.setItem('app_language', currentLang); applyLanguage(); });
+    document.getElementById('langArBtn').addEventListener('click', () => { currentLang = 'ar'; localStorage.setItem('app_language', currentLang); applyLanguage(); });
+    document.getElementById('contactLink').addEventListener('click', () => window.open('https://t.me/kodlamaogrencom', '_blank'));
 
     const savedUser = localStorage.getItem('savedUser');
     if (savedUser) {
         try {
-            const userData = JSON.parse(savedUser);
-            document.getElementById('email').value = userData.email;
-            document.getElementById('password').value = userData.password;
+            const d = JSON.parse(savedUser);
+            document.getElementById('email').value = d.email;
+            document.getElementById('password').value = d.password;
             document.getElementById('rememberMe').checked = true;
         } catch(e) {}
     }
@@ -189,58 +232,31 @@
         const rememberMe = document.getElementById('rememberMe').checked;
         const errorMsg = document.getElementById('errorMsg');
         const infoText = document.getElementById('infoText');
-        const t = translations[currentLang];
-        
-        if (!email || !password) {
-            errorMsg.innerText = t.errorRequired;
-            return;
-        }
-        
+
+        if (!email || !password) { errorMsg.innerText = t('errorRequired'); return; }
         errorMsg.innerText = '';
-        infoText.innerText = t.loggingIn;
+        infoText.innerText = t('loggingIn');
         document.getElementById('loginBtn').disabled = true;
-        
+
         try {
             await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
-            
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-            
             const userDoc = await getDoc(doc(db, "users", user.uid));
             let role = 'user';
-            
             if (userDoc.exists()) {
-                if (userDoc.data().banned === true) {
-                    errorMsg.innerText = t.errorBanned;
-                    infoText.innerText = '';
-                    document.getElementById('loginBtn').disabled = false;
-                    return;
-                }
+                if (userDoc.data().banned === true) { errorMsg.innerText = t('errorBanned'); infoText.innerText = ''; document.getElementById('loginBtn').disabled = false; return; }
                 role = userDoc.data().role || 'user';
             } else {
-                await setDoc(doc(db, "users", user.uid), {
-                    email: email, role: 'user', createdAt: new Date().toISOString(), banned: false
-                });
+                await setDoc(doc(db, "users", user.uid), { email, role: 'user', createdAt: new Date().toISOString(), banned: false });
             }
-            
-            if (rememberMe) {
-                localStorage.setItem('savedUser', JSON.stringify({ email: email, password: password }));
-            } else {
-                localStorage.removeItem('savedUser');
-            }
-            
-            sessionStorage.setItem('currentUser', JSON.stringify({
-                uid: user.uid, email: user.email, role: role, language: currentLang
-            }));
-            
-            infoText.innerText = t.loginSuccess;
-            
-            setTimeout(() => {
-                window.location.href = role === 'superadmin' ? 'superadmin.html' : 'admin.html';
-            }, 1000);
-            
+            if (rememberMe) localStorage.setItem('savedUser', JSON.stringify({ email, password }));
+            else localStorage.removeItem('savedUser');
+            sessionStorage.setItem('currentUser', JSON.stringify({ uid: user.uid, email: user.email, role, language: currentLang }));
+            infoText.innerText = t('loginSuccess');
+            setTimeout(() => { window.location.href = role === 'superadmin' ? 'superadmin.html' : 'admin.html'; }, 1000);
         } catch(err) {
-            errorMsg.innerText = t.errorInvalid;
+            errorMsg.innerText = t('errorInvalid');
             infoText.innerText = '';
             document.getElementById('loginBtn').disabled = false;
         }

