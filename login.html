@@ -1,268 +1,962 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>⛧ KURIX HACKER ⛧</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+        :root {
+            --bg: #06080f;
+            --green: #00ff41;
+            --green-glow: rgba(0, 255, 65, 0.5);
+            --green-dim: rgba(0, 255, 65, 0.08);
+            --red: #ff0040;
+            --red-glow: rgba(255, 0, 64, 0.5);
+            --card-bg: rgba(8, 10, 20, 0.9);
+            --input-bg: rgba(10, 12, 24, 0.95);
+            --border: rgba(0, 255, 65, 0.15);
+            --text: #d0d5e0;
+            --muted: #5a6070;
+            --radius: 20px;
+            --radius-sm: 12px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background: #06080f;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            font-family: 'Fira Code', 'Courier New', monospace;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 16px;
+            overflow-x: hidden;
+            position: relative;
         }
-        .login-container { width: 100%; max-width: 380px; }
-        .login-card {
-            background: #0a0d18;
-            border: 1px solid #1a2040;
-            border-radius: 24px;
-            padding: 32px 24px;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+
+        /* ============ ARKAPLAN GRID ============ */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: gridMove 20s linear infinite;
         }
-        .logo-area { text-align: center; margin-bottom: 28px; }
-        .logo-icon { font-size: 3rem; margin-bottom: 4px; }
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(40px, 40px); }
+        }
+
+        /* ============ MATRIX CANVAS ============ */
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* ============ GLOW ORBS ============ */
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 8s ease-in-out infinite;
+        }
+        .glow-orb.green {
+            width: 400px;
+            height: 400px;
+            background: rgba(0, 255, 65, 0.04);
+            top: -150px;
+            right: -150px;
+            animation-delay: 0s;
+        }
+        .glow-orb.red {
+            width: 350px;
+            height: 350px;
+            background: rgba(255, 0, 64, 0.03);
+            bottom: -120px;
+            left: -120px;
+            animation-delay: 4s;
+        }
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.1); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(-30px, -10px) scale(1.05); }
+        }
+
+        /* ============ SCAN LINES ============ */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.15) 2px,
+                rgba(0, 0, 0, 0.15) 4px
+            );
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* ============ PARTICLES ============ */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatUp linear infinite;
+            opacity: 0;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) scale(0); opacity: 0; }
+            5% { opacity: 0.8; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        /* ============ ANA KAPSAYICI ============ */
+        .login-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 430px;
+        }
+
+        /* ============ LOGO ============ */
+        .logo-area {
+            text-align: center;
+            margin-bottom: 28px;
+            position: relative;
+        }
+        .logo-hex {
+            position: relative;
+            display: inline-block;
+            width: 80px;
+            height: 90px;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 0 20px var(--red-glow)) drop-shadow(0 0 40px rgba(255, 0, 64, 0.3));
+            animation: hexRotate 6s linear infinite;
+        }
+        .logo-hex .hex-inner {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: 3px solid var(--red);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .logo-hex .hex-inner::after {
+            content: '⛧';
+            font-size: 2.2rem;
+            color: var(--red);
+            animation: symbolPulse 2s ease-in-out infinite;
+        }
+        @keyframes hexRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes symbolPulse {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 0, 64, 0.5); }
+            50% { text-shadow: 0 0 30px rgba(255, 0, 64, 1), 0 0 60px rgba(255, 0, 64, 0.6); }
+        }
         .logo-text {
-            color: #00e676;
-            font-size: 1.6rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(0,230,118,0.4);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, var(--green), #00cc33, var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            filter: drop-shadow(0 0 15px var(--green-glow));
+            animation: textGlitch 3s infinite;
         }
-        .logo-text span { color: #ff1744; }
-        .logo-subtitle { color: #666; font-size: 0.6rem; letter-spacing: 2px; margin-top: 2px; }
-        
-        .lang-selector { display: flex; justify-content: center; gap: 12px; margin-bottom: 22px; }
+        .logo-text .red {
+            background: linear-gradient(135deg, var(--red), #ff3366, var(--red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 15px var(--red-glow));
+        }
+        @keyframes textGlitch {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-2px, 1px); }
+            94% { transform: translate(2px, -1px); }
+            96% { transform: translate(-1px, 2px); }
+            98% { transform: translate(1px, -2px); }
+        }
+        .logo-subtitle {
+            color: var(--muted);
+            font-size: 0.55rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-top: 6px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* ============ KART ============ */
+        .login-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 36px 28px;
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            box-shadow:
+                0 0 60px rgba(0, 255, 65, 0.04),
+                0 8px 40px rgba(0, 0, 0, 0.7),
+                inset 0 1px 0 rgba(255, 255, 255, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 15%;
+            right: 15%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--green), transparent);
+            animation: topBorderGlow 4s ease-in-out infinite;
+        }
+        .login-card::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 15%;
+            right: 15%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--red), transparent);
+            animation: bottomBorderGlow 4s ease-in-out infinite;
+            animation-delay: 2s;
+        }
+        @keyframes topBorderGlow {
+            0%, 100% { opacity: 0.3; left: 25%; right: 25%; }
+            50% { opacity: 1; left: 5%; right: 5%; }
+        }
+        @keyframes bottomBorderGlow {
+            0%, 100% { opacity: 0.3; left: 25%; right: 25%; }
+            50% { opacity: 1; left: 5%; right: 5%; }
+        }
+
+        /* ============ KART KÖŞE DEKORLARI ============ */
+        .card-corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+            z-index: 5;
+        }
+        .card-corner::before,
+        .card-corner::after {
+            content: '';
+            position: absolute;
+            background: var(--green);
+        }
+        .card-corner.tl { top: 8px; left: 8px; }
+        .card-corner.tr { top: 8px; right: 8px; }
+        .card-corner.bl { bottom: 8px; left: 8px; }
+        .card-corner.br { bottom: 8px; right: 8px; }
+        .card-corner.tl::before,
+        .card-corner.bl::before { top: 0; left: 0; width: 12px; height: 1px; }
+        .card-corner.tl::after,
+        .card-corner.bl::after { top: 0; left: 0; width: 1px; height: 12px; }
+        .card-corner.tr::before,
+        .card-corner.br::before { top: 0; right: 0; width: 12px; height: 1px; }
+        .card-corner.tr::after,
+        .card-corner.br::after { top: 0; right: 0; width: 1px; height: 12px; }
+        .card-corner.bl::before,
+        .card-corner.br::before { top: auto; bottom: 0; }
+        .card-corner.bl::after,
+        .card-corner.br::after { top: auto; bottom: 0; }
+
+        /* ============ DİL SEÇİCİ ============ */
+        .lang-selector {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
         .lang-flag {
-            background: #111625;
-            border: 2px solid #1a2040;
-            padding: 8px 14px;
-            border-radius: 16px;
+            background: rgba(10, 12, 24, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.06);
+            padding: 10px 18px;
+            border-radius: 30px;
             cursor: pointer;
-            font-size: 1.4rem;
-            transition: all 0.2s;
+            font-size: 1.1rem;
+            font-family: inherit;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+            font-weight: 600;
+            color: var(--muted);
         }
-        .lang-flag:hover { border-color: #00e676; transform: scale(1.05); }
-        .lang-flag.active-lang { border-color: #00e676; background: rgba(0,230,118,0.1); box-shadow: 0 0 12px rgba(0,230,118,0.2); }
-        
+        .lang-flag::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(0, 255, 65, 0.05));
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .lang-flag:hover {
+            border-color: var(--green);
+            color: var(--green);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 65, 0.15);
+        }
+        .lang-flag:hover::before { opacity: 1; }
+        .lang-flag.active-lang {
+            border-color: var(--green);
+            background: var(--green-dim);
+            color: var(--green);
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.2), 0 0 50px rgba(0, 255, 65, 0.08);
+        }
+
+        /* ============ INPUT ALANLARI ============ */
+        .input-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            color: #444;
+            transition: var(--transition);
+            pointer-events: none;
+            z-index: 2;
+        }
         .input-field {
             width: 100%;
-            background: #0f1420;
-            border: 1px solid #1a2040;
-            color: #e0e0e0;
-            padding: 13px 16px;
-            font-family: inherit;
-            font-size: 0.85rem;
-            border-radius: 14px;
-            margin-bottom: 10px;
+            background: var(--input-bg);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            padding: 15px 18px 15px 46px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            border-radius: var(--radius-sm);
             outline: none;
-            transition: border 0.2s;
+            transition: var(--transition);
+            letter-spacing: 1px;
         }
-        .input-field:focus { border-color: #00e676; }
-        .input-field::placeholder { color: #555; }
-        
-        .remember-row { display: flex; align-items: center; gap: 8px; margin: 8px 0 16px; }
-        .remember-row input[type="checkbox"] { accent-color: #00e676; }
-        .remember-row label { color: #888; font-size: 0.7rem; cursor: pointer; }
-        
+        .input-field::placeholder {
+            color: #3a4050;
+            letter-spacing: 2px;
+            font-size: 0.7rem;
+        }
+        .input-field:focus {
+            border-color: var(--green);
+            box-shadow:
+                0 0 30px rgba(0, 255, 65, 0.1),
+                inset 0 0 20px rgba(0, 255, 65, 0.03);
+            background: rgba(12, 16, 30, 0.98);
+        }
+        .input-field:focus ~ .input-icon {
+            color: var(--green);
+            filter: drop-shadow(0 0 8px var(--green-glow));
+        }
+        body.rtl .input-icon {
+            left: auto;
+            right: 16px;
+        }
+        body.rtl .input-field {
+            padding: 15px 46px 15px 18px;
+        }
+
+        /* ============ BENİ HATIRLA ============ */
+        .remember-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 16px 0 24px;
+        }
+        .remember-row input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            background: var(--input-bg);
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        .remember-row input[type="checkbox"]:checked {
+            border-color: var(--green);
+            background: var(--green-dim);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+        }
+        .remember-row input[type="checkbox"]:checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--green);
+            font-size: 0.65rem;
+        }
+        .remember-row label {
+            color: #666;
+            font-size: 0.68rem;
+            cursor: pointer;
+            letter-spacing: 1px;
+            user-select: none;
+            transition: var(--transition);
+        }
+        .remember-row label:hover { color: #888; }
+
+        /* ============ GİRİŞ BUTONU ============ */
         .login-btn {
             width: 100%;
-            background: #00e676;
-            color: #000;
-            border: none;
-            padding: 13px;
+            background: transparent;
+            border: 2px solid var(--green);
+            color: var(--green);
+            padding: 16px;
+            font-family: 'Orbitron', sans-serif;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
-            border-radius: 30px;
-            font-family: inherit;
-            letter-spacing: 1px;
-            transition: all 0.2s;
+            border-radius: 35px;
+            letter-spacing: 3px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
         }
-        .login-btn:hover { transform: scale(1.01); box-shadow: 0 0 24px rgba(0,230,118,0.4); }
-        .login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        
-        .bottom-text { text-align: center; margin-top: 20px; color: #666; font-size: 0.7rem; }
-        .bottom-text a { color: #ff1744; text-decoration: none; cursor: pointer; font-weight: 600; }
-        .error-text { color: #ff1744; text-align: center; font-size: 0.7rem; margin-top: 10px; min-height: 18px; }
-        .info-text { color: #00e676; text-align: center; font-size: 0.7rem; margin-top: 6px; }
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(0, 255, 65, 0.15);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .login-btn:hover::before {
+            width: 600px;
+            height: 600px;
+        }
+        .login-btn:hover {
+            background: var(--green);
+            color: #000;
+            box-shadow:
+                0 0 40px var(--green-glow),
+                0 0 80px rgba(0, 255, 65, 0.3),
+                0 10px 30px rgba(0, 0, 0, 0.5);
+            transform: translateY(-3px);
+            border-color: var(--green);
+        }
+        .login-btn:active {
+            transform: scale(0.95);
+        }
+        .login-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .login-btn .btn-icon {
+            margin-right: 8px;
+        }
+        body.rtl .login-btn .btn-icon {
+            margin-right: 0;
+            margin-left: 8px;
+        }
+
+        /* ============ ALT METİN ============ */
+        .bottom-text {
+            text-align: center;
+            margin-top: 24px;
+            color: #555;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+        }
+        .bottom-text a {
+            color: var(--red);
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+        }
+        .bottom-text a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--red);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+            transform-origin: right;
+        }
+        .bottom-text a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        .bottom-text a:hover {
+            color: #ff3366;
+            text-shadow: 0 0 15px var(--red-glow);
+        }
+
+        /* ============ MESAJLAR ============ */
+        .error-text {
+            color: var(--red);
+            text-align: center;
+            font-size: 0.62rem;
+            margin-top: 14px;
+            min-height: 20px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 8px rgba(255, 0, 64, 0.4);
+        }
+        .info-text {
+            color: var(--green);
+            text-align: center;
+            font-size: 0.62rem;
+            margin-top: 6px;
+            min-height: 20px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 8px rgba(0, 255, 65, 0.4);
+        }
+
+        /* ============ RTL ============ */
+        body.rtl { direction: rtl; text-align: right; }
+        body.rtl .remember-row { flex-direction: row-reverse; }
+        body.rtl .card-corner.tl { left: auto; right: 8px; }
+        body.rtl .card-corner.tr { right: auto; left: 8px; }
+
+        /* ============ MOBİL ============ */
+        @media (max-width: 440px) {
+            .login-card {
+                padding: 24px 16px;
+                border-radius: 16px;
+            }
+            .logo-text {
+                font-size: 1.3rem;
+                letter-spacing: 2px;
+            }
+            .logo-hex {
+                width: 60px;
+                height: 68px;
+            }
+            .logo-hex .hex-inner::after {
+                font-size: 1.6rem;
+            }
+            .input-field {
+                padding: 13px 14px 13px 40px;
+                font-size: 0.7rem;
+            }
+            body.rtl .input-field {
+                padding: 13px 40px 13px 14px;
+            }
+            .login-btn {
+                padding: 14px;
+                font-size: 0.75rem;
+                letter-spacing: 2px;
+            }
+            .lang-flag {
+                padding: 8px 14px;
+                font-size: 0.95rem;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="login-container">
-    <div class="login-card">
+
+    <!-- ARKAPLAN GLOW ORBLARI -->
+    <div class="glow-orb green"></div>
+    <div class="glow-orb red"></div>
+
+    <!-- GRID -->
+    <div class="bg-grid"></div>
+
+    <!-- MATRIX -->
+    <canvas id="matrixCanvas"></canvas>
+
+    <!-- SCAN LINES -->
+    <div class="scanlines"></div>
+
+    <!-- LOGIN KARTI -->
+    <div class="login-wrapper">
+        <!-- LOGO -->
         <div class="logo-area">
-            <div class="logo-icon">⛧</div>
-            <div class="logo-text"><span>KURIX</span> HACKER</div>
+          
+            <div class="logo-text"><span class="red">KURIX</span> HACKER</div>
             <div class="logo-subtitle" id="logoSubtitle">TERMINAL PANEL</div>
         </div>
-        
-        <div class="lang-selector">
-            <button class="lang-flag active-lang" id="langTrBtn" title="Türkçe">🇹🇷</button>
-            <button class="lang-flag" id="langArBtn" title="العربية">🇸🇦</button>
+
+        <!-- KART -->
+        <div class="login-card">
+            <div class="card-corner tl"></div>
+            <div class="card-corner tr"></div>
+            <div class="card-corner bl"></div>
+            <div class="card-corner br"></div>
+
+            <!-- DİL SEÇİCİ -->
+            <div class="lang-selector">
+                <button class="lang-flag active-lang" data-lang="tr" title="Türkçe">TR</button>
+                <button class="lang-flag" data-lang="en" title="English">EN</button>
+                <button class="lang-flag" data-lang="ar" title="العربية">AR</button>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="input-group">
+                <i class="fa-solid fa-envelope input-icon"></i>
+                <input type="email" class="input-field" id="email" placeholder="EMAIL">
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="input-group">
+                <i class="fa-solid fa-lock input-icon"></i>
+                <input type="password" class="input-field" id="password" placeholder="PASSWORD">
+            </div>
+
+            <!-- BENİ HATIRLA -->
+            <div class="remember-row">
+                <input type="checkbox" id="rememberMe">
+                <label for="rememberMe" id="rememberLabel">Beni Hatırla</label>
+            </div>
+
+            <!-- LOGIN BUTONU -->
+            <button class="login-btn" id="loginBtn">
+                <i class="fa-solid fa-right-to-bracket btn-icon"></i>
+                <span id="loginBtnText">GİRİŞ YAP</span>
+            </button>
+
+            <!-- ALT METİN -->
+            <div class="bottom-text">
+                <span id="noAccountText">Hesabın yok mu?</span>
+                <a id="contactLink"><i class="fa-solid fa-headset"></i> İLETİŞİM</a>
+            </div>
+
+            <!-- MESAJLAR -->
+            <div class="error-text" id="errorMsg"></div>
+            <div class="info-text" id="infoText"></div>
         </div>
-        
-        <input type="email" class="input-field" id="email" placeholder="EMAIL">
-        <input type="password" class="input-field" id="password" placeholder="PASSWORD">
-        
-        <div class="remember-row">
-            <input type="checkbox" id="rememberMe">
-            <label id="rememberLabel">Beni Hatırla</label>
-        </div>
-        
-        <button class="login-btn" id="loginBtn">⟳ GİRİŞ YAP</button>
-        
-        <div class="bottom-text">
-            <span id="noAccountText">Hesabın yok mu?</span> 
-            <a id="contactLink">📞 İLETİŞİM</a>
-        </div>
-        
-        <div class="error-text" id="errorMsg"></div>
-        <div class="info-text" id="infoText"></div>
     </div>
-</div>
 
-<script type="importmap">
-    {
-        "imports": {
-            "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
-            "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js",
-            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
-        }
-    }
-</script>
-
-<script type="module">
-    import { initializeApp } from "firebase/app";
-    import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from "firebase/auth";
-    import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyBSy4oCPNTB1h9l2M1P3rkcvwiDrhu82Ao",
-        authDomain: "camerahhh-15487.firebaseapp.com",
-        projectId: "camerahhh-15487",
-        storageBucket: "camerahhh-15487.firebasestorage.app",
-        messagingSenderId: "212849652224",
-        appId: "1:212849652224:web:19d8a85c01cd81005bdee5",
-        measurementId: "G-WDVJV36W7X"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    const translations = {
-        tr: {
-            logoSubtitle: "TERMINAL PANEL",
-            emailPlaceholder: "E-POSTA",
-            passwordPlaceholder: "ŞİFRE",
-            rememberLabel: "Beni Hatırla",
-            loginBtn: "⟳ GİRİŞ YAP",
-            noAccountText: "Hesabın yok mu?",
-            contactText: "📞 İLETİŞİM",
-            errorRequired: "E-posta ve şifre girin!",
-            errorInvalid: "Geçersiz e-posta veya şifre!",
-            errorBanned: "⛧ HESABINIZ YASAKLANDI!",
-            loginSuccess: "✅ Giriş başarılı! Yönlendiriliyor...",
-            loggingIn: "⟳ Giriş yapılıyor..."
-        },
-        ar: {
-            logoSubtitle: "لوحة التحكم",
-            emailPlaceholder: "البريد الإلكتروني",
-            passwordPlaceholder: "كلمة المرور",
-            rememberLabel: "تذكرني",
-            loginBtn: "⟳ تسجيل الدخول",
-            noAccountText: "ليس لديك حساب؟",
-            contactText: "📞 اتصل بنا",
-            errorRequired: "أدخل البريد وكلمة المرور!",
-            errorInvalid: "بريد أو كلمة مرور غير صالحة!",
-            errorBanned: "⛧ تم حظر حسابك!",
-            loginSuccess: "✅ تم الدخول! جاري التحويل...",
-            loggingIn: "⟳ جاري الدخول..."
-        }
-    };
-
-    let currentLang = localStorage.getItem('app_language') || 'tr';
-
-    function t(key) { return translations[currentLang]?.[key] || translations['tr'][key] || key; }
-
-    function updateLangButtons() {
-        document.getElementById('langTrBtn').classList.toggle('active-lang', currentLang === 'tr');
-        document.getElementById('langArBtn').classList.toggle('active-lang', currentLang === 'ar');
-    }
-
-    function applyLanguage() {
-        document.getElementById('logoSubtitle').innerText = t('logoSubtitle');
-        document.getElementById('email').placeholder = t('emailPlaceholder');
-        document.getElementById('password').placeholder = t('passwordPlaceholder');
-        document.getElementById('rememberLabel').innerText = t('rememberLabel');
-        document.getElementById('loginBtn').innerHTML = t('loginBtn');
-        document.getElementById('noAccountText').innerHTML = t('noAccountText');
-        document.getElementById('contactLink').innerHTML = t('contactText');
-        if (currentLang === 'ar') {
-            document.documentElement.dir = 'rtl';
-            document.documentElement.lang = 'ar';
-        } else {
-            document.documentElement.dir = 'ltr';
-            document.documentElement.lang = 'tr';
-        }
-        updateLangButtons();
-    }
-
-    document.getElementById('langTrBtn').addEventListener('click', () => { currentLang = 'tr'; localStorage.setItem('app_language', currentLang); applyLanguage(); });
-    document.getElementById('langArBtn').addEventListener('click', () => { currentLang = 'ar'; localStorage.setItem('app_language', currentLang); applyLanguage(); });
-    document.getElementById('contactLink').addEventListener('click', () => window.open('https://t.me/kodlamaogrencom', '_blank'));
-
-    const savedUser = localStorage.getItem('savedUser');
-    if (savedUser) {
-        try {
-            const d = JSON.parse(savedUser);
-            document.getElementById('email').value = d.email;
-            document.getElementById('password').value = d.password;
-            document.getElementById('rememberMe').checked = true;
-        } catch(e) {}
-    }
-
-    document.getElementById('loginBtn').addEventListener('click', async () => {
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const rememberMe = document.getElementById('rememberMe').checked;
-        const errorMsg = document.getElementById('errorMsg');
-        const infoText = document.getElementById('infoText');
-
-        if (!email || !password) { errorMsg.innerText = t('errorRequired'); return; }
-        errorMsg.innerText = '';
-        infoText.innerText = t('loggingIn');
-        document.getElementById('loginBtn').disabled = true;
-
-        try {
-            await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-            const userDoc = await getDoc(doc(db, "users", user.uid));
-            let role = 'user';
-            if (userDoc.exists()) {
-                if (userDoc.data().banned === true) { errorMsg.innerText = t('errorBanned'); infoText.innerText = ''; document.getElementById('loginBtn').disabled = false; return; }
-                role = userDoc.data().role || 'user';
-            } else {
-                await setDoc(doc(db, "users", user.uid), { email, role: 'user', createdAt: new Date().toISOString(), banned: false });
+    <!-- FIREBASE -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js",
+                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
             }
-            if (rememberMe) localStorage.setItem('savedUser', JSON.stringify({ email, password }));
-            else localStorage.removeItem('savedUser');
-            sessionStorage.setItem('currentUser', JSON.stringify({ uid: user.uid, email: user.email, role, language: currentLang }));
-            infoText.innerText = t('loginSuccess');
-            setTimeout(() => { window.location.href = role === 'superadmin' ? 'superadmin.html' : 'admin.html'; }, 1000);
-        } catch(err) {
-            errorMsg.innerText = t('errorInvalid');
-            infoText.innerText = '';
-            document.getElementById('loginBtn').disabled = false;
         }
-    });
+    </script>
 
-    applyLanguage();
-</script>
+    <script type="module">
+        import { initializeApp } from "firebase/app";
+        import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from "firebase/auth";
+        import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBSy4oCPNTB1h9l2M1P3rkcvwiDrhu82Ao",
+            authDomain: "camerahhh-15487.firebaseapp.com",
+            projectId: "camerahhh-15487",
+            storageBucket: "camerahhh-15487.firebasestorage.app",
+            messagingSenderId: "212849652224",
+            appId: "1:212849652224:web:19d8a85c01cd81005bdee5",
+            measurementId: "G-WDVJV36W7X"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ============ ÇEVİRİLER ============
+        const translations = {
+            tr: {
+                logoSubtitle: "TERMINAL PANEL",
+                emailPlaceholder: "E-POSTA",
+                passwordPlaceholder: "ŞİFRE",
+                rememberLabel: "Beni Hatırla",
+                loginBtnText: "GİRİŞ YAP",
+                noAccountText: "Hesabın yok mu?",
+                contactText: "İLETİŞİM",
+                errorRequired: "E-posta ve şifre girin!",
+                errorInvalid: "Geçersiz e-posta veya şifre!",
+                errorBanned: "HESABINIZ YASAKLANDI!",
+                loginSuccess: "Giriş başarılı! Yönlendiriliyor...",
+                loggingIn: "Giriş yapılıyor..."
+            },
+            en: {
+                logoSubtitle: "TERMINAL PANEL",
+                emailPlaceholder: "EMAIL",
+                passwordPlaceholder: "PASSWORD",
+                rememberLabel: "Remember Me",
+                loginBtnText: "LOGIN",
+                noAccountText: "Don't have an account?",
+                contactText: "CONTACT",
+                errorRequired: "Enter email and password!",
+                errorInvalid: "Invalid email or password!",
+                errorBanned: "YOUR ACCOUNT IS BANNED!",
+                loginSuccess: "Login successful! Redirecting...",
+                loggingIn: "Logging in..."
+            },
+            ar: {
+                logoSubtitle: "لوحة التحكم",
+                emailPlaceholder: "البريد الإلكتروني",
+                passwordPlaceholder: "كلمة المرور",
+                rememberLabel: "تذكرني",
+                loginBtnText: "تسجيل الدخول",
+                noAccountText: "ليس لديك حساب؟",
+                contactText: "اتصل بنا",
+                errorRequired: "أدخل البريد وكلمة المرور!",
+                errorInvalid: "بريد أو كلمة مرور غير صالحة!",
+                errorBanned: "تم حظر حسابك!",
+                loginSuccess: "تم الدخول! جاري التحويل...",
+                loggingIn: "جاري الدخول..."
+            }
+        };
+
+        let currentLang = localStorage.getItem('app_language') || 'tr';
+
+        function t(key) {
+            return translations[currentLang]?.[key] || translations['tr'][key] || key;
+        }
+
+        function updateLangButtons() {
+            document.querySelectorAll('.lang-flag').forEach(btn => {
+                btn.classList.toggle('active-lang', btn.dataset.lang === currentLang);
+            });
+        }
+
+        function applyLanguage() {
+            document.getElementById('logoSubtitle').innerText = t('logoSubtitle');
+            document.getElementById('email').placeholder = t('emailPlaceholder');
+            document.getElementById('password').placeholder = t('passwordPlaceholder');
+            document.getElementById('rememberLabel').innerText = t('rememberLabel');
+            document.getElementById('loginBtnText').innerText = t('loginBtnText');
+            document.getElementById('noAccountText').innerHTML = t('noAccountText');
+            document.getElementById('contactLink').innerHTML = `<i class="fa-solid fa-headset"></i> ${t('contactText')}`;
+
+            if (currentLang === 'ar') {
+                document.documentElement.dir = 'rtl';
+                document.documentElement.lang = 'ar';
+                document.body.classList.add('rtl');
+            } else {
+                document.documentElement.dir = 'ltr';
+                document.documentElement.lang = currentLang;
+                document.body.classList.remove('rtl');
+            }
+            updateLangButtons();
+        }
+
+        // ============ DİL DEĞİŞTİRME ============
+        document.querySelectorAll('.lang-flag').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentLang = btn.dataset.lang;
+                localStorage.setItem('app_language', currentLang);
+                applyLanguage();
+            });
+        });
+
+        // ============ İLETİŞİM ============
+        document.getElementById('contactLink').addEventListener('click', () => {
+            window.open('https://t.me/kodlamaogrencom', '_blank');
+        });
+
+        // ============ KAYITLI KULLANICI ============
+        const savedUser = localStorage.getItem('savedUser');
+        if (savedUser) {
+            try {
+                const d = JSON.parse(savedUser);
+                document.getElementById('email').value = d.email || '';
+                document.getElementById('password').value = d.password || '';
+                document.getElementById('rememberMe').checked = true;
+            } catch (e) {}
+        }
+
+        // ============ LOGIN ============
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const errorMsg = document.getElementById('errorMsg');
+            const infoText = document.getElementById('infoText');
+
+            if (!email || !password) {
+                errorMsg.innerText = t('errorRequired');
+                infoText.innerText = '';
+                return;
+            }
+
+            errorMsg.innerText = '';
+            infoText.innerText = t('loggingIn');
+            document.getElementById('loginBtn').disabled = true;
+
+            try {
+                await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                let role = 'user';
+
+                if (userDoc.exists()) {
+                    if (userDoc.data().banned === true) {
+                        errorMsg.innerText = t('errorBanned');
+                        infoText.innerText = '';
+                        document.getElementById('loginBtn').disabled = false;
+                        return;
+                    }
+                    role = userDoc.data().role || 'user';
+                } else {
+                    await setDoc(doc(db, "users", user.uid), {
+                        email,
+                        role: 'user',
+                        createdAt: new Date().toISOString(),
+                        banned: false
+                    });
+                }
+
+                if (rememberMe) {
+                    localStorage.setItem('savedUser', JSON.stringify({ email, password }));
+                } else {
+                    localStorage.removeItem('savedUser');
+                }
+
+                sessionStorage.setItem('currentUser', JSON.stringify({
+                    uid: user.uid,
+                    email: user.email,
+                    role,
+                    language: currentLang
+                }));
+
+                infoText.innerText = t('loginSuccess');
+                setTimeout(() => {
+                    window.location.href = role === 'superadmin' ? 'superadmin.html' : 'admin.html';
+                }, 1000);
+
+            } catch (err) {
+                errorMsg.innerText = t('errorInvalid');
+                infoText.innerText = '';
+                document.getElementById('loginBtn').disabled = false;
+            }
+        });
+
+        // ============ ENTER İLE GİRİŞ ============
+        document.getElementById('password').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') document.getElementById('loginBtn').click();
+        });
+        document.getElementById('email').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') document.getElementById('password').focus();
+        });
+
+        // ============ MATRIX ANİMASYONU ============
+        function initMatrix() {
+            const canvas = document.getElementById('matrixCanvas');
+            const ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const chars = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝ0123456789';
+            const charArray = chars.split('');
+            const fontSize = 13;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = [];
+
+            for (let i = 0; i < columns; i++) {
+                drops[i] = Math.floor(Math.random() * -canvas.height / fontSize);
+            }
+
+            function draw() {
+                ctx.fillStyle = 'rgba(6, 8, 15, 0.06)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = charArray[Math.floor(Math.random() * charArray.length)];
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
+
+                    const brightness = Math.random() * 0.5 + 0.3;
+                    ctx.fillStyle = `rgba(0, 255, 65, ${brightness})`;
+                    ctx.font = fontSize + 'px "Fira Code", monospace';
+                    ctx.fillText(text, x, y);
+
+                    if (y > canvas.height && Math.random() > 0.97) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+
+            setInterval(draw, 45);
+        }
+
+        // ============ PARTİKÜL ANİMASYONU ============
+        function initParticles() {
+            const colors = ['#00ff41', '#00cc33', '#ff0040', '#ff3366', '#ffffff'];
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 2.5 + 0.8;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.bottom = '0';
+                particle.style.animationDuration = Math.random() * 18 + 8 + 's';
+                particle.style.animationDelay = Math.random() * 12 + 's';
+                particle.style.boxShadow = `0 0 ${size * 4}px ${particle.style.background}`;
+                document.body.appendChild(particle);
+
+                particle.addEventListener('animationiteration', () => {
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDuration = Math.random() * 18 + 8 + 's';
+                });
+            }
+        }
+
+        // ============ BAŞLAT ============
+        initMatrix();
+        initParticles();
+        applyLanguage();
+    </script>
 </body>
 </html>

